@@ -1,0 +1,608 @@
+EXPORTS
+    _Z10b2DistanceP16b2DistanceOutputP14b2SimplexCachePK15b2DistanceInput @1
+    _Z10b2OpenDumpPKc @2
+    _Z11b2CloseDumpv @3
+    _Z11b2ShapeCastP17b2ShapeCastOutputPK16b2ShapeCastInput @4
+    _Z13b2Log_DefaultPKcPc @5
+    _Z13b2TestOverlapPK7b2ShapeiS1_iRK11b2TransformS4_ @6
+    _Z14b2Free_DefaultPv @7
+    _Z14b2TimeOfImpactP11b2TOIOutputPK10b2TOIInput @8
+    _Z15b2Alloc_Defaulti @9
+    _Z16b2CollideCirclesP10b2ManifoldPK13b2CircleShapeRK11b2TransformS3_S6_ @10
+    _Z16b2GetPointStatesP12b2PointStateS0_PK10b2ManifoldS3_ @11
+    _Z17b2CollidePolygonsP10b2ManifoldPK14b2PolygonShapeRK11b2TransformS3_S6_ @12
+    _Z17b2LinearStiffnessRfS_ffPK6b2BodyS2_ @13
+    _Z18b2AngularStiffnessRfS_ffPK6b2BodyS2_ @14
+    _Z19b2ClipSegmentToLineP12b2ClipVertexPKS_RK6b2Vec2fi @15
+    _Z22b2CollideEdgeAndCircleP10b2ManifoldPK11b2EdgeShapeRK11b2TransformPK13b2CircleShapeS6_ @16
+    _Z23b2CollideEdgeAndPolygonP10b2ManifoldPK11b2EdgeShapeRK11b2TransformPK14b2PolygonShapeS6_ @17
+    _Z25b2CollidePolygonAndCircleP10b2ManifoldPK14b2PolygonShapeRK11b2TransformPK13b2CircleShapeS6_ @18
+    _Z5b2LogPKcz @19
+    _Z6b2DumpPKcz @20
+    _ZN11b2EdgeShape11SetOneSidedERK6b2Vec2S2_S2_S2_ @21
+    _ZN11b2EdgeShape11SetTwoSidedERK6b2Vec2S2_ @22
+    _ZN11b2EdgeShapeD0Ev @23
+    _ZN11b2EdgeShapeD1Ev @24
+    _ZN11b2GearJoint23InitVelocityConstraintsERK12b2SolverData @25
+    _ZN11b2GearJoint24SolvePositionConstraintsERK12b2SolverData @26
+    _ZN11b2GearJoint24SolveVelocityConstraintsERK12b2SolverData @27
+    _ZN11b2GearJoint4DumpEv @28
+    _ZN11b2GearJoint8SetRatioEf @29
+    _ZN11b2GearJointC1EPK14b2GearJointDef @30
+    _ZN11b2GearJointC2EPK14b2GearJointDef @31
+    _ZN11b2GearJointD0Ev @32
+    _ZN11b2GearJointD1Ev @33
+    _ZN11b2WeldJoint23InitVelocityConstraintsERK12b2SolverData @34
+    _ZN11b2WeldJoint24SolvePositionConstraintsERK12b2SolverData @35
+    _ZN11b2WeldJoint24SolveVelocityConstraintsERK12b2SolverData @36
+    _ZN11b2WeldJoint4DumpEv @37
+    _ZN11b2WeldJointC1EPK14b2WeldJointDef @38
+    _ZN11b2WeldJointC2EPK14b2WeldJointDef @39
+    _ZN11b2WeldJointD0Ev @40
+    _ZN11b2WeldJointD1Ev @41
+    _ZN12b2BroadPhase10BufferMoveEi @42
+    _ZN12b2BroadPhase10TouchProxyEi @43
+    _ZN12b2BroadPhase11CreateProxyERK6b2AABBPv @44
+    _ZN12b2BroadPhase11UpdatePairsI16b2ContactManagerEEvPT_ @45
+    _ZN12b2BroadPhase12DestroyProxyEi @46
+    _ZN12b2BroadPhase12UnBufferMoveEi @47
+    _ZN12b2BroadPhase13QueryCallbackEi @48
+    _ZN12b2BroadPhase9MoveProxyEiRK6b2AABBRK6b2Vec2 @49
+    _ZN12b2BroadPhaseC1Ev @50
+    _ZN12b2BroadPhaseC2Ev @51
+    _ZN12b2BroadPhaseD1Ev @52
+    _ZN12b2BroadPhaseD2Ev @53
+    _ZN12b2ChainShape10CreateLoopEPK6b2Vec2i @54
+    _ZN12b2ChainShape11CreateChainEPK6b2Vec2iRS1_S3_ @55
+    _ZN12b2ChainShape5ClearEv @56
+    _ZN12b2ChainShapeD0Ev @57
+    _ZN12b2ChainShapeD1Ev @58
+    _ZN12b2ChainShapeD2Ev @59
+    _ZN12b2MotorJoint11SetMaxForceEf @60
+    _ZN12b2MotorJoint12SetMaxTorqueEf @61
+    _ZN12b2MotorJoint15SetLinearOffsetERK6b2Vec2 @62
+    _ZN12b2MotorJoint16SetAngularOffsetEf @63
+    _ZN12b2MotorJoint19SetCorrectionFactorEf @64
+    _ZN12b2MotorJoint23InitVelocityConstraintsERK12b2SolverData @65
+    _ZN12b2MotorJoint24SolvePositionConstraintsERK12b2SolverData @66
+    _ZN12b2MotorJoint24SolveVelocityConstraintsERK12b2SolverData @67
+    _ZN12b2MotorJoint4DumpEv @68
+    _ZN12b2MotorJointC1EPK15b2MotorJointDef @69
+    _ZN12b2MotorJointC2EPK15b2MotorJointDef @70
+    _ZN12b2MotorJointD0Ev @71
+    _ZN12b2MotorJointD1Ev @72
+    _ZN12b2MouseJoint11SetMaxForceEf @73
+    _ZN12b2MouseJoint11ShiftOriginERK6b2Vec2 @74
+    _ZN12b2MouseJoint23InitVelocityConstraintsERK12b2SolverData @75
+    _ZN12b2MouseJoint24SolvePositionConstraintsERK12b2SolverData @76
+    _ZN12b2MouseJoint24SolveVelocityConstraintsERK12b2SolverData @77
+    _ZN12b2MouseJoint4DumpEv @78
+    _ZN12b2MouseJoint9SetTargetERK6b2Vec2 @79
+    _ZN12b2MouseJointC1EPK15b2MouseJointDef @80
+    _ZN12b2MouseJointC2EPK15b2MouseJointDef @81
+    _ZN12b2MouseJointD0Ev @82
+    _ZN12b2MouseJointD1Ev @83
+    _ZN12b2WheelJoint10SetDampingEf @84
+    _ZN12b2WheelJoint11EnableLimitEb @85
+    _ZN12b2WheelJoint11EnableMotorEb @86
+    _ZN12b2WheelJoint12SetStiffnessEf @87
+    _ZN12b2WheelJoint13SetMotorSpeedEf @88
+    _ZN12b2WheelJoint17SetMaxMotorTorqueEf @89
+    _ZN12b2WheelJoint23InitVelocityConstraintsERK12b2SolverData @90
+    _ZN12b2WheelJoint24SolvePositionConstraintsERK12b2SolverData @91
+    _ZN12b2WheelJoint24SolveVelocityConstraintsERK12b2SolverData @92
+    _ZN12b2WheelJoint4DumpEv @93
+    _ZN12b2WheelJoint9SetLimitsEff @94
+    _ZN12b2WheelJointC1EPK15b2WheelJointDef @95
+    _ZN12b2WheelJointC2EPK15b2WheelJointDef @96
+    _ZN12b2WheelJointD0Ev @97
+    _ZN12b2WheelJointD1Ev @98
+    _ZN13b2CircleShapeD0Ev @99
+    _ZN13b2CircleShapeD1Ev @100
+    _ZN13b2DynamicTree10InsertLeafEi @101
+    _ZN13b2DynamicTree10RemoveLeafEi @102
+    _ZN13b2DynamicTree11CreateProxyERK6b2AABBPv @103
+    _ZN13b2DynamicTree11ShiftOriginERK6b2Vec2 @104
+    _ZN13b2DynamicTree12AllocateNodeEv @105
+    _ZN13b2DynamicTree12DestroyProxyEi @106
+    _ZN13b2DynamicTree15RebuildBottomUpEv @107
+    _ZN13b2DynamicTree7BalanceEi @108
+    _ZN13b2DynamicTree8FreeNodeEi @109
+    _ZN13b2DynamicTree9MoveProxyEiRK6b2AABBRK6b2Vec2 @110
+    _ZN13b2DynamicTreeC1Ev @111
+    _ZN13b2DynamicTreeC2Ev @112
+    _ZN13b2DynamicTreeD1Ev @113
+    _ZN13b2DynamicTreeD2Ev @114
+    _ZN13b2PulleyJoint11ShiftOriginERK6b2Vec2 @115
+    _ZN13b2PulleyJoint23InitVelocityConstraintsERK12b2SolverData @116
+    _ZN13b2PulleyJoint24SolvePositionConstraintsERK12b2SolverData @117
+    _ZN13b2PulleyJoint24SolveVelocityConstraintsERK12b2SolverData @118
+    _ZN13b2PulleyJoint4DumpEv @119
+    _ZN13b2PulleyJointC1EPK16b2PulleyJointDef @120
+    _ZN13b2PulleyJointC2EPK16b2PulleyJointDef @121
+    _ZN13b2PulleyJointD0Ev @122
+    _ZN13b2PulleyJointD1Ev @123
+    _ZN14b2PolygonShape3SetEPK6b2Vec2i @124
+    _ZN14b2PolygonShape8SetAsBoxEff @125
+    _ZN14b2PolygonShape8SetAsBoxEffRK6b2Vec2f @126
+    _ZN14b2PolygonShapeD0Ev @127
+    _ZN14b2PolygonShapeD1Ev @128
+    _ZN14b2WeldJointDef10InitializeEP6b2BodyS1_RK6b2Vec2 @129
+    _ZN15b2CircleContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @130
+    _ZN15b2CircleContact7DestroyEP9b2ContactP16b2BlockAllocator @131
+    _ZN15b2CircleContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @132
+    _ZN15b2CircleContactC1EP9b2FixtureS1_ @133
+    _ZN15b2CircleContactC2EP9b2FixtureS1_ @134
+    _ZN15b2CircleContactD0Ev @135
+    _ZN15b2CircleContactD1Ev @136
+    _ZN15b2ContactFilter13ShouldCollideEP9b2FixtureS1_ @137
+    _ZN15b2ContactFilterD0Ev @138
+    _ZN15b2ContactFilterD1Ev @139
+    _ZN15b2ContactSolver13StoreImpulsesEv @140
+    _ZN15b2ContactSolver24SolvePositionConstraintsEv @141
+    _ZN15b2ContactSolver24SolveVelocityConstraintsEv @142
+    _ZN15b2ContactSolver27SolveTOIPositionConstraintsEii @143
+    _ZN15b2ContactSolver29InitializeVelocityConstraintsEv @144
+    _ZN15b2ContactSolver9WarmStartEv @145
+    _ZN15b2ContactSolverC1EP18b2ContactSolverDef @146
+    _ZN15b2ContactSolverC2EP18b2ContactSolverDef @147
+    _ZN15b2ContactSolverD1Ev @148
+    _ZN15b2ContactSolverD2Ev @149
+    _ZN15b2DistanceJoint12SetMaxLengthEf @150
+    _ZN15b2DistanceJoint12SetMinLengthEf @151
+    _ZN15b2DistanceJoint23InitVelocityConstraintsERK12b2SolverData @152
+    _ZN15b2DistanceJoint24SolvePositionConstraintsERK12b2SolverData @153
+    _ZN15b2DistanceJoint24SolveVelocityConstraintsERK12b2SolverData @154
+    _ZN15b2DistanceJoint4DumpEv @155
+    _ZN15b2DistanceJoint9SetLengthEf @156
+    _ZN15b2DistanceJointC1EPK18b2DistanceJointDef @157
+    _ZN15b2DistanceJointC2EPK18b2DistanceJointDef @158
+    _ZN15b2DistanceJointD0Ev @159
+    _ZN15b2DistanceJointD1Ev @160
+    _ZN15b2DistanceProxy3SetEPK6b2Vec2if @161
+    _ZN15b2DistanceProxy3SetEPK7b2Shapei @162
+    _ZN15b2FrictionJoint11SetMaxForceEf @163
+    _ZN15b2FrictionJoint12SetMaxTorqueEf @164
+    _ZN15b2FrictionJoint23InitVelocityConstraintsERK12b2SolverData @165
+    _ZN15b2FrictionJoint24SolvePositionConstraintsERK12b2SolverData @166
+    _ZN15b2FrictionJoint24SolveVelocityConstraintsERK12b2SolverData @167
+    _ZN15b2FrictionJoint4DumpEv @168
+    _ZN15b2FrictionJointC1EPK18b2FrictionJointDef @169
+    _ZN15b2FrictionJointC2EPK18b2FrictionJointDef @170
+    _ZN15b2FrictionJointD0Ev @171
+    _ZN15b2FrictionJointD1Ev @172
+    _ZN15b2MotorJointDef10InitializeEP6b2BodyS1_ @173
+    _ZN15b2RevoluteJoint11EnableLimitEb @174
+    _ZN15b2RevoluteJoint11EnableMotorEb @175
+    _ZN15b2RevoluteJoint13SetMotorSpeedEf @176
+    _ZN15b2RevoluteJoint17SetMaxMotorTorqueEf @177
+    _ZN15b2RevoluteJoint23InitVelocityConstraintsERK12b2SolverData @178
+    _ZN15b2RevoluteJoint24SolvePositionConstraintsERK12b2SolverData @179
+    _ZN15b2RevoluteJoint24SolveVelocityConstraintsERK12b2SolverData @180
+    _ZN15b2RevoluteJoint4DumpEv @181
+    _ZN15b2RevoluteJoint9SetLimitsEff @182
+    _ZN15b2RevoluteJointC1EPK18b2RevoluteJointDef @183
+    _ZN15b2RevoluteJointC2EPK18b2RevoluteJointDef @184
+    _ZN15b2RevoluteJointD0Ev @185
+    _ZN15b2RevoluteJointD1Ev @186
+    _ZN15b2WheelJointDef10InitializeEP6b2BodyS1_RK6b2Vec2S4_ @187
+    _ZN15b2WorldManifold10InitializeEPK10b2ManifoldRK11b2TransformfS5_f @188
+    _ZN16b2BlockAllocator4FreeEPvi @189
+    _ZN16b2BlockAllocator5ClearEv @190
+    _ZN16b2BlockAllocator8AllocateEi @191
+    _ZN16b2BlockAllocatorC1Ev @192
+    _ZN16b2BlockAllocatorC2Ev @193
+    _ZN16b2BlockAllocatorD1Ev @194
+    _ZN16b2BlockAllocatorD2Ev @195
+    _ZN16b2ContactManager15FindNewContactsEv @196
+    _ZN16b2ContactManager7AddPairEPvS0_ @197
+    _ZN16b2ContactManager7CollideEv @198
+    _ZN16b2ContactManager7DestroyEP9b2Contact @199
+    _ZN16b2ContactManagerC1Ev @200
+    _ZN16b2ContactManagerC2Ev @201
+    _ZN16b2PolygonContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @202
+    _ZN16b2PolygonContact7DestroyEP9b2ContactP16b2BlockAllocator @203
+    _ZN16b2PolygonContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @204
+    _ZN16b2PolygonContactC1EP9b2FixtureS1_ @205
+    _ZN16b2PolygonContactC2EP9b2FixtureS1_ @206
+    _ZN16b2PolygonContactD0Ev @207
+    _ZN16b2PolygonContactD1Ev @208
+    _ZN16b2PrismaticJoint11EnableLimitEb @209
+    _ZN16b2PrismaticJoint11EnableMotorEb @210
+    _ZN16b2PrismaticJoint13SetMotorSpeedEf @211
+    _ZN16b2PrismaticJoint16SetMaxMotorForceEf @212
+    _ZN16b2PrismaticJoint23InitVelocityConstraintsERK12b2SolverData @213
+    _ZN16b2PrismaticJoint24SolvePositionConstraintsERK12b2SolverData @214
+    _ZN16b2PrismaticJoint24SolveVelocityConstraintsERK12b2SolverData @215
+    _ZN16b2PrismaticJoint4DumpEv @216
+    _ZN16b2PrismaticJoint9SetLimitsEff @217
+    _ZN16b2PrismaticJointC1EPK19b2PrismaticJointDef @218
+    _ZN16b2PrismaticJointC2EPK19b2PrismaticJointDef @219
+    _ZN16b2PrismaticJointD0Ev @220
+    _ZN16b2PrismaticJointD1Ev @221
+    _ZN16b2PulleyJointDef10InitializeEP6b2BodyS1_RK6b2Vec2S4_S4_S4_f @222
+    _ZN16b2StackAllocator4FreeEPv @223
+    _ZN16b2StackAllocator8AllocateEi @224
+    _ZN16b2StackAllocatorC1Ev @225
+    _ZN16b2StackAllocatorC2Ev @226
+    _ZN16b2StackAllocatorD1Ev @227
+    _ZN16b2StackAllocatorD2Ev @228
+    _ZN17b2ContactListener10EndContactEP9b2Contact @229
+    _ZN17b2ContactListener12BeginContactEP9b2Contact @230
+    _ZN17b2ContactListener8PreSolveEP9b2ContactPK10b2Manifold @231
+    _ZN17b2ContactListener9PostSolveEP9b2ContactPK16b2ContactImpulse @232
+    _ZN17b2ContactListenerD0Ev @233
+    _ZN17b2ContactListenerD1Ev @234
+    _ZN18b2DistanceJointDef10InitializeEP6b2BodyS1_RK6b2Vec2S4_ @235
+    _ZN18b2FrictionJointDef10InitializeEP6b2BodyS1_RK6b2Vec2 @236
+    _ZN18b2RevoluteJointDef10InitializeEP6b2BodyS1_RK6b2Vec2 @237
+    _ZN19b2PrismaticJointDef10InitializeEP6b2BodyS1_RK6b2Vec2S4_ @238
+    _ZN22b2EdgeAndCircleContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @239
+    _ZN22b2EdgeAndCircleContact7DestroyEP9b2ContactP16b2BlockAllocator @240
+    _ZN22b2EdgeAndCircleContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @241
+    _ZN22b2EdgeAndCircleContactC1EP9b2FixtureS1_ @242
+    _ZN22b2EdgeAndCircleContactC2EP9b2FixtureS1_ @243
+    _ZN22b2EdgeAndCircleContactD0Ev @244
+    _ZN22b2EdgeAndCircleContactD1Ev @245
+    _ZN23b2ChainAndCircleContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @246
+    _ZN23b2ChainAndCircleContact7DestroyEP9b2ContactP16b2BlockAllocator @247
+    _ZN23b2ChainAndCircleContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @248
+    _ZN23b2ChainAndCircleContactC1EP9b2FixtureiS1_i @249
+    _ZN23b2ChainAndCircleContactC2EP9b2FixtureiS1_i @250
+    _ZN23b2ChainAndCircleContactD0Ev @251
+    _ZN23b2ChainAndCircleContactD1Ev @252
+    _ZN23b2EdgeAndPolygonContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @253
+    _ZN23b2EdgeAndPolygonContact7DestroyEP9b2ContactP16b2BlockAllocator @254
+    _ZN23b2EdgeAndPolygonContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @255
+    _ZN23b2EdgeAndPolygonContactC1EP9b2FixtureS1_ @256
+    _ZN23b2EdgeAndPolygonContactC2EP9b2FixtureS1_ @257
+    _ZN23b2EdgeAndPolygonContactD0Ev @258
+    _ZN23b2EdgeAndPolygonContactD1Ev @259
+    _ZN24b2ChainAndPolygonContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @260
+    _ZN24b2ChainAndPolygonContact7DestroyEP9b2ContactP16b2BlockAllocator @261
+    _ZN24b2ChainAndPolygonContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @262
+    _ZN24b2ChainAndPolygonContactC1EP9b2FixtureiS1_i @263
+    _ZN24b2ChainAndPolygonContactC2EP9b2FixtureiS1_i @264
+    _ZN24b2ChainAndPolygonContactD0Ev @265
+    _ZN24b2ChainAndPolygonContactD1Ev @266
+    _ZN25b2PolygonAndCircleContact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @267
+    _ZN25b2PolygonAndCircleContact7DestroyEP9b2ContactP16b2BlockAllocator @268
+    _ZN25b2PolygonAndCircleContact8EvaluateEP10b2ManifoldRK11b2TransformS4_ @269
+    _ZN25b2PolygonAndCircleContactC1EP9b2FixtureS1_ @270
+    _ZN25b2PolygonAndCircleContactC2EP9b2FixtureS1_ @271
+    _ZN25b2PolygonAndCircleContactD0Ev @272
+    _ZN25b2PolygonAndCircleContactD1Ev @273
+    _ZN6b2Body10SetEnabledEb @274
+    _ZN6b2Body11SetMassDataEPK10b2MassData @275
+    _ZN6b2Body12SetTransformERK6b2Vec2f @276
+    _ZN6b2Body13CreateFixtureEPK12b2FixtureDef @277
+    _ZN6b2Body13CreateFixtureEPK7b2Shapef @278
+    _ZN6b2Body13ResetMassDataEv @279
+    _ZN6b2Body14DestroyFixtureEP9b2Fixture @280
+    _ZN6b2Body16SetFixedRotationEb @281
+    _ZN6b2Body19SynchronizeFixturesEv @282
+    _ZN6b2Body4DumpEv @283
+    _ZN6b2Body7SetTypeE10b2BodyType @284
+    _ZN6b2BodyC1EPK9b2BodyDefP7b2World @285
+    _ZN6b2BodyC2EPK9b2BodyDefP7b2World @286
+    _ZN6b2BodyD1Ev @287
+    _ZN6b2BodyD2Ev @288
+    _ZN6b2Draw10ClearFlagsEj @289
+    _ZN6b2Draw11AppendFlagsEj @290
+    _ZN6b2Draw8SetFlagsEj @291
+    _ZN6b2DrawC1Ev @292
+    _ZN6b2DrawC2Ev @293
+    _ZN6b2Rope15ApplyBendForcesEf @294
+    _ZN6b2Rope16SolveStretch_PBDEv @295
+    _ZN6b2Rope17SolveStretch_XPBDEf @296
+    _ZN6b2Rope19SolveBend_PBD_AngleEv @297
+    _ZN6b2Rope20SolveBend_PBD_HeightEv @298
+    _ZN6b2Rope20SolveBend_XPBD_AngleEf @299
+    _ZN6b2Rope22SolveBend_PBD_DistanceEv @300
+    _ZN6b2Rope22SolveBend_PBD_TriangleEv @301
+    _ZN6b2Rope4StepEfiRK6b2Vec2 @302
+    _ZN6b2Rope5ResetERK6b2Vec2 @303
+    _ZN6b2Rope6CreateERK9b2RopeDef @304
+    _ZN6b2Rope9SetTuningERK12b2RopeTuning @305
+    _ZN6b2RopeC1Ev @306
+    _ZN6b2RopeC2Ev @307
+    _ZN6b2RopeD1Ev @308
+    _ZN6b2RopeD2Ev @309
+    _ZN7b2Joint11ShiftOriginERK6b2Vec2 @310
+    _ZN7b2Joint4DumpEv @311
+    _ZN7b2Joint6CreateEPK10b2JointDefP16b2BlockAllocator @312
+    _ZN7b2Joint7DestroyEPS_P16b2BlockAllocator @313
+    _ZN7b2JointC1EPK10b2JointDef @314
+    _ZN7b2JointC2EPK10b2JointDef @315
+    _ZN7b2Timer14s_invFrequencyE @316 DATA
+    _ZN7b2Timer5ResetEv @317
+    _ZN7b2TimerC1Ev @318
+    _ZN7b2TimerC2Ev @319
+    _ZN7b2World10CreateBodyEPK9b2BodyDef @320
+    _ZN7b2World11ClearForcesEv @321
+    _ZN7b2World11CreateJointEPK10b2JointDef @322
+    _ZN7b2World11DestroyBodyEP6b2Body @323
+    _ZN7b2World11ShiftOriginERK6b2Vec2 @324
+    _ZN7b2World12DestroyJointEP7b2Joint @325
+    _ZN7b2World12SetDebugDrawEP6b2Draw @326
+    _ZN7b2World16SetAllowSleepingEb @327
+    _ZN7b2World16SetContactFilterEP15b2ContactFilter @328
+    _ZN7b2World18SetContactListenerEP17b2ContactListener @329
+    _ZN7b2World22SetDestructionListenerEP21b2DestructionListener @330
+    _ZN7b2World4DumpEv @331
+    _ZN7b2World4StepEfii @332
+    _ZN7b2World5SolveERK10b2TimeStep @333
+    _ZN7b2World8SolveTOIERK10b2TimeStep @334
+    _ZN7b2World9DebugDrawEv @335
+    _ZN7b2World9DrawShapeEP9b2FixtureRK11b2TransformRK7b2Color @336
+    _ZN7b2WorldC1ERK6b2Vec2 @337
+    _ZN7b2WorldC2ERK6b2Vec2 @338
+    _ZN7b2WorldD1Ev @339
+    _ZN7b2WorldD2Ev @340
+    _ZN8b2Island5SolveEP9b2ProfileRK10b2TimeStepRK6b2Vec2b @341
+    _ZN8b2Island6ReportEPK27b2ContactVelocityConstraint @342
+    _ZN8b2Island8SolveTOIERK10b2TimeStepii @343
+    _ZN8b2IslandC1EiiiP16b2StackAllocatorP17b2ContactListener @344
+    _ZN8b2IslandC2EiiiP16b2StackAllocatorP17b2ContactListener @345
+    _ZN8b2IslandD1Ev @346
+    _ZN8b2IslandD2Ev @347
+    _ZN9b2Contact11s_registersE @348 DATA
+    _ZN9b2Contact13s_initializedE @349 DATA
+    _ZN9b2Contact19InitializeRegistersEv @350
+    _ZN9b2Contact6CreateEP9b2FixtureiS1_iP16b2BlockAllocator @351
+    _ZN9b2Contact6UpdateEP17b2ContactListener @352
+    _ZN9b2Contact7AddTypeEPFPS_P9b2FixtureiS2_iP16b2BlockAllocatorEPFvS0_S4_EN7b2Shape4TypeESA_ @353
+    _ZN9b2Contact7DestroyEPS_P16b2BlockAllocator @354
+    _ZN9b2ContactC1EP9b2FixtureiS1_i @355
+    _ZN9b2ContactC2EP9b2FixtureiS1_i @356
+    _ZN9b2Fixture11SynchronizeEP12b2BroadPhaseRK11b2TransformS4_ @357
+    _ZN9b2Fixture13CreateProxiesEP12b2BroadPhaseRK11b2Transform @358
+    _ZN9b2Fixture13SetFilterDataERK8b2Filter @359
+    _ZN9b2Fixture14DestroyProxiesEP12b2BroadPhase @360
+    _ZN9b2Fixture4DumpEi @361
+    _ZN9b2Fixture6CreateEP16b2BlockAllocatorP6b2BodyPK12b2FixtureDef @362
+    _ZN9b2Fixture7DestroyEP16b2BlockAllocator @363
+    _ZN9b2Fixture8RefilterEv @364
+    _ZN9b2Fixture9SetSensorEb @365
+    _ZN9b2FixtureC1Ev @366
+    _ZN9b2FixtureC2Ev @367
+    _ZN9b2Simplex6Solve2Ev @368
+    _ZN9b2Simplex6Solve3Ev @369
+    _ZNK11b2EdgeShape11ComputeAABBEP6b2AABBRK11b2Transformi @370
+    _ZNK11b2EdgeShape11ComputeMassEP10b2MassDataf @371
+    _ZNK11b2EdgeShape13GetChildCountEv @372
+    _ZNK11b2EdgeShape5CloneEP16b2BlockAllocator @373
+    _ZNK11b2EdgeShape7RayCastEP15b2RayCastOutputRK14b2RayCastInputRK11b2Transformi @374
+    _ZNK11b2EdgeShape9TestPointERK11b2TransformRK6b2Vec2 @375
+    _ZNK11b2GearJoint10GetAnchorAEv @376
+    _ZNK11b2GearJoint10GetAnchorBEv @377
+    _ZNK11b2GearJoint16GetReactionForceEf @378
+    _ZNK11b2GearJoint17GetReactionTorqueEf @379
+    _ZNK11b2GearJoint8GetRatioEv @380
+    _ZNK11b2WeldJoint10GetAnchorAEv @381
+    _ZNK11b2WeldJoint10GetAnchorBEv @382
+    _ZNK11b2WeldJoint16GetReactionForceEf @383
+    _ZNK11b2WeldJoint17GetReactionTorqueEf @384
+    _ZNK12b2ChainShape11ComputeAABBEP6b2AABBRK11b2Transformi @385
+    _ZNK12b2ChainShape11ComputeMassEP10b2MassDataf @386
+    _ZNK12b2ChainShape12GetChildEdgeEP11b2EdgeShapei @387
+    _ZNK12b2ChainShape13GetChildCountEv @388
+    _ZNK12b2ChainShape5CloneEP16b2BlockAllocator @389
+    _ZNK12b2ChainShape7RayCastEP15b2RayCastOutputRK14b2RayCastInputRK11b2Transformi @390
+    _ZNK12b2ChainShape9TestPointERK11b2TransformRK6b2Vec2 @391
+    _ZNK12b2MotorJoint10GetAnchorAEv @392
+    _ZNK12b2MotorJoint10GetAnchorBEv @393
+    _ZNK12b2MotorJoint11GetMaxForceEv @394
+    _ZNK12b2MotorJoint12GetMaxTorqueEv @395
+    _ZNK12b2MotorJoint15GetLinearOffsetEv @396
+    _ZNK12b2MotorJoint16GetAngularOffsetEv @397
+    _ZNK12b2MotorJoint16GetReactionForceEf @398
+    _ZNK12b2MotorJoint17GetReactionTorqueEf @399
+    _ZNK12b2MotorJoint19GetCorrectionFactorEv @400
+    _ZNK12b2MouseJoint10GetAnchorAEv @401
+    _ZNK12b2MouseJoint10GetAnchorBEv @402
+    _ZNK12b2MouseJoint11GetMaxForceEv @403
+    _ZNK12b2MouseJoint16GetReactionForceEf @404
+    _ZNK12b2MouseJoint17GetReactionTorqueEf @405
+    _ZNK12b2MouseJoint9GetTargetEv @406
+    _ZNK12b2WheelJoint10GetAnchorAEv @407
+    _ZNK12b2WheelJoint10GetAnchorBEv @408
+    _ZNK12b2WheelJoint10GetDampingEv @409
+    _ZNK12b2WheelJoint12GetStiffnessEv @410
+    _ZNK12b2WheelJoint13GetJointAngleEv @411
+    _ZNK12b2WheelJoint13GetLowerLimitEv @412
+    _ZNK12b2WheelJoint13GetUpperLimitEv @413
+    _ZNK12b2WheelJoint14GetMotorTorqueEf @414
+    _ZNK12b2WheelJoint14IsLimitEnabledEv @415
+    _ZNK12b2WheelJoint14IsMotorEnabledEv @416
+    _ZNK12b2WheelJoint16GetReactionForceEf @417
+    _ZNK12b2WheelJoint17GetReactionTorqueEf @418
+    _ZNK12b2WheelJoint19GetJointLinearSpeedEv @419
+    _ZNK12b2WheelJoint19GetJointTranslationEv @420
+    _ZNK12b2WheelJoint20GetJointAngularSpeedEv @421
+    _ZNK12b2WheelJoint4DrawEP6b2Draw @422
+    _ZNK13b2CircleShape11ComputeAABBEP6b2AABBRK11b2Transformi @423
+    _ZNK13b2CircleShape11ComputeMassEP10b2MassDataf @424
+    _ZNK13b2CircleShape13GetChildCountEv @425
+    _ZNK13b2CircleShape5CloneEP16b2BlockAllocator @426
+    _ZNK13b2CircleShape7RayCastEP15b2RayCastOutputRK14b2RayCastInputRK11b2Transformi @427
+    _ZNK13b2CircleShape9TestPointERK11b2TransformRK6b2Vec2 @428
+    _ZNK13b2DynamicTree12GetAreaRatioEv @429
+    _ZNK13b2DynamicTree13ComputeHeightEi @430
+    _ZNK13b2DynamicTree13ComputeHeightEv @431
+    _ZNK13b2DynamicTree13GetMaxBalanceEv @432
+    _ZNK13b2DynamicTree15ValidateMetricsEi @433
+    _ZNK13b2DynamicTree17ValidateStructureEi @434
+    _ZNK13b2DynamicTree5QueryI12b2BroadPhaseEEvPT_RK6b2AABB @435
+    _ZNK13b2DynamicTree5QueryI19b2WorldQueryWrapperEEvPT_RK6b2AABB @436
+    _ZNK13b2DynamicTree7RayCastI21b2WorldRayCastWrapperEEvPT_RK14b2RayCastInput @437
+    _ZNK13b2DynamicTree8ValidateEv @438
+    _ZNK13b2DynamicTree9GetHeightEv @439
+    _ZNK13b2PulleyJoint10GetAnchorAEv @440
+    _ZNK13b2PulleyJoint10GetAnchorBEv @441
+    _ZNK13b2PulleyJoint10GetLengthAEv @442
+    _ZNK13b2PulleyJoint10GetLengthBEv @443
+    _ZNK13b2PulleyJoint16GetGroundAnchorAEv @444
+    _ZNK13b2PulleyJoint16GetGroundAnchorBEv @445
+    _ZNK13b2PulleyJoint16GetReactionForceEf @446
+    _ZNK13b2PulleyJoint17GetCurrentLengthAEv @447
+    _ZNK13b2PulleyJoint17GetCurrentLengthBEv @448
+    _ZNK13b2PulleyJoint17GetReactionTorqueEf @449
+    _ZNK13b2PulleyJoint8GetRatioEv @450
+    _ZNK14b2PolygonShape11ComputeAABBEP6b2AABBRK11b2Transformi @451
+    _ZNK14b2PolygonShape11ComputeMassEP10b2MassDataf @452
+    _ZNK14b2PolygonShape13GetChildCountEv @453
+    _ZNK14b2PolygonShape5CloneEP16b2BlockAllocator @454
+    _ZNK14b2PolygonShape7RayCastEP15b2RayCastOutputRK14b2RayCastInputRK11b2Transformi @455
+    _ZNK14b2PolygonShape8ValidateEv @456
+    _ZNK14b2PolygonShape9TestPointERK11b2TransformRK6b2Vec2 @457
+    _ZNK15b2DistanceJoint10GetAnchorAEv @458
+    _ZNK15b2DistanceJoint10GetAnchorBEv @459
+    _ZNK15b2DistanceJoint16GetCurrentLengthEv @460
+    _ZNK15b2DistanceJoint16GetReactionForceEf @461
+    _ZNK15b2DistanceJoint17GetReactionTorqueEf @462
+    _ZNK15b2DistanceJoint4DrawEP6b2Draw @463
+    _ZNK15b2FrictionJoint10GetAnchorAEv @464
+    _ZNK15b2FrictionJoint10GetAnchorBEv @465
+    _ZNK15b2FrictionJoint11GetMaxForceEv @466
+    _ZNK15b2FrictionJoint12GetMaxTorqueEv @467
+    _ZNK15b2FrictionJoint16GetReactionForceEf @468
+    _ZNK15b2FrictionJoint17GetReactionTorqueEf @469
+    _ZNK15b2RevoluteJoint10GetAnchorAEv @470
+    _ZNK15b2RevoluteJoint10GetAnchorBEv @471
+    _ZNK15b2RevoluteJoint13GetJointAngleEv @472
+    _ZNK15b2RevoluteJoint13GetJointSpeedEv @473
+    _ZNK15b2RevoluteJoint13GetLowerLimitEv @474
+    _ZNK15b2RevoluteJoint13GetUpperLimitEv @475
+    _ZNK15b2RevoluteJoint14GetMotorTorqueEf @476
+    _ZNK15b2RevoluteJoint14IsLimitEnabledEv @477
+    _ZNK15b2RevoluteJoint14IsMotorEnabledEv @478
+    _ZNK15b2RevoluteJoint16GetReactionForceEf @479
+    _ZNK15b2RevoluteJoint17GetReactionTorqueEf @480
+    _ZNK15b2RevoluteJoint4DrawEP6b2Draw @481
+    _ZNK16b2PrismaticJoint10GetAnchorAEv @482
+    _ZNK16b2PrismaticJoint10GetAnchorBEv @483
+    _ZNK16b2PrismaticJoint13GetJointSpeedEv @484
+    _ZNK16b2PrismaticJoint13GetLowerLimitEv @485
+    _ZNK16b2PrismaticJoint13GetMotorForceEf @486
+    _ZNK16b2PrismaticJoint13GetUpperLimitEv @487
+    _ZNK16b2PrismaticJoint14IsLimitEnabledEv @488
+    _ZNK16b2PrismaticJoint14IsMotorEnabledEv @489
+    _ZNK16b2PrismaticJoint16GetReactionForceEf @490
+    _ZNK16b2PrismaticJoint17GetReactionTorqueEf @491
+    _ZNK16b2PrismaticJoint19GetJointTranslationEv @492
+    _ZNK16b2PrismaticJoint4DrawEP6b2Draw @493
+    _ZNK16b2StackAllocator16GetMaxAllocationEv @494
+    _ZNK6b2AABB7RayCastEP15b2RayCastOutputRK14b2RayCastInput @495
+    _ZNK6b2Body13ShouldCollideEPKS_ @496
+    _ZNK6b2Draw8GetFlagsEv @497
+    _ZNK6b2Rope4DrawEP6b2Draw @498
+    _ZNK7b2Joint4DrawEP6b2Draw @499
+    _ZNK7b2Joint9IsEnabledEv @500
+    _ZNK7b2Mat3312GetInverse22EPS_ @501
+    _ZNK7b2Mat3315GetSymInverse33EPS_ @502
+    _ZNK7b2Mat337Solve22ERK6b2Vec2 @503
+    _ZNK7b2Mat337Solve33ERK6b2Vec3 @504
+    _ZNK7b2Timer15GetMillisecondsEv @505
+    _ZNK7b2World13GetProxyCountEv @506
+    _ZNK7b2World13GetTreeHeightEv @507
+    _ZNK7b2World14GetTreeBalanceEv @508
+    _ZNK7b2World14GetTreeQualityEv @509
+    _ZNK7b2World7RayCastEP17b2RayCastCallbackRK6b2Vec2S4_ @510
+    _ZNK7b2World9QueryAABBEP15b2QueryCallbackRK6b2AABB @511
+    _ZTI11b2EdgeShape @512 DATA
+    _ZTI11b2GearJoint @513 DATA
+    _ZTI11b2WeldJoint @514 DATA
+    _ZTI12b2ChainShape @515 DATA
+    _ZTI12b2MotorJoint @516 DATA
+    _ZTI12b2MouseJoint @517 DATA
+    _ZTI12b2WheelJoint @518 DATA
+    _ZTI13b2CircleShape @519 DATA
+    _ZTI13b2PulleyJoint @520 DATA
+    _ZTI14b2PolygonShape @521 DATA
+    _ZTI15b2CircleContact @522 DATA
+    _ZTI15b2ContactFilter @523 DATA
+    _ZTI15b2DistanceJoint @524 DATA
+    _ZTI15b2FrictionJoint @525 DATA
+    _ZTI15b2RevoluteJoint @526 DATA
+    _ZTI16b2PolygonContact @527 DATA
+    _ZTI16b2PrismaticJoint @528 DATA
+    _ZTI17b2ContactListener @529 DATA
+    _ZTI22b2EdgeAndCircleContact @530 DATA
+    _ZTI23b2ChainAndCircleContact @531 DATA
+    _ZTI23b2EdgeAndPolygonContact @532 DATA
+    _ZTI24b2ChainAndPolygonContact @533 DATA
+    _ZTI25b2PolygonAndCircleContact @534 DATA
+    _ZTI6b2Draw @535 DATA
+    _ZTI7b2Joint @536 DATA
+    _ZTI7b2Shape @537 DATA
+    _ZTI9b2Contact @538 DATA
+    _ZTS11b2EdgeShape @539 DATA
+    _ZTS11b2GearJoint @540 DATA
+    _ZTS11b2WeldJoint @541 DATA
+    _ZTS12b2ChainShape @542 DATA
+    _ZTS12b2MotorJoint @543 DATA
+    _ZTS12b2MouseJoint @544 DATA
+    _ZTS12b2WheelJoint @545 DATA
+    _ZTS13b2CircleShape @546 DATA
+    _ZTS13b2PulleyJoint @547 DATA
+    _ZTS14b2PolygonShape @548 DATA
+    _ZTS15b2CircleContact @549 DATA
+    _ZTS15b2ContactFilter @550 DATA
+    _ZTS15b2DistanceJoint @551 DATA
+    _ZTS15b2FrictionJoint @552 DATA
+    _ZTS15b2RevoluteJoint @553 DATA
+    _ZTS16b2PolygonContact @554 DATA
+    _ZTS16b2PrismaticJoint @555 DATA
+    _ZTS17b2ContactListener @556 DATA
+    _ZTS22b2EdgeAndCircleContact @557 DATA
+    _ZTS23b2ChainAndCircleContact @558 DATA
+    _ZTS23b2EdgeAndPolygonContact @559 DATA
+    _ZTS24b2ChainAndPolygonContact @560 DATA
+    _ZTS25b2PolygonAndCircleContact @561 DATA
+    _ZTS6b2Draw @562 DATA
+    _ZTS7b2Joint @563 DATA
+    _ZTS7b2Shape @564 DATA
+    _ZTS9b2Contact @565 DATA
+    _ZTV11b2EdgeShape @566 DATA
+    _ZTV11b2GearJoint @567 DATA
+    _ZTV11b2WeldJoint @568 DATA
+    _ZTV12b2ChainShape @569 DATA
+    _ZTV12b2MotorJoint @570 DATA
+    _ZTV12b2MouseJoint @571 DATA
+    _ZTV12b2WheelJoint @572 DATA
+    _ZTV13b2CircleShape @573 DATA
+    _ZTV13b2PulleyJoint @574 DATA
+    _ZTV14b2PolygonShape @575 DATA
+    _ZTV15b2CircleContact @576 DATA
+    _ZTV15b2ContactFilter @577 DATA
+    _ZTV15b2DistanceJoint @578 DATA
+    _ZTV15b2FrictionJoint @579 DATA
+    _ZTV15b2RevoluteJoint @580 DATA
+    _ZTV16b2PolygonContact @581 DATA
+    _ZTV16b2PrismaticJoint @582 DATA
+    _ZTV17b2ContactListener @583 DATA
+    _ZTV22b2EdgeAndCircleContact @584 DATA
+    _ZTV23b2ChainAndCircleContact @585 DATA
+    _ZTV23b2EdgeAndPolygonContact @586 DATA
+    _ZTV24b2ChainAndPolygonContact @587 DATA
+    _ZTV25b2PolygonAndCircleContact @588 DATA
+    _ZTV6b2Draw @589 DATA
+    _ZTV7b2Joint @590 DATA
+    _ZTV9b2Contact @591 DATA
+    b2Vec2_zero @592 DATA
+    b2_defaultFilter @593 DATA
+    b2_defaultListener @594 DATA
+    b2_dumpFile @595 DATA
+    b2_gjkCalls @596 DATA
+    b2_gjkIters @597 DATA
+    b2_gjkMaxIters @598 DATA
+    b2_toiCalls @599 DATA
+    b2_toiIters @600 DATA
+    b2_toiMaxIters @601 DATA
+    b2_toiMaxRootIters @602 DATA
+    b2_toiMaxTime @603 DATA
+    b2_toiRootIters @604 DATA
+    b2_toiTime @605 DATA
+    b2_version @606 DATA
+    g_blockSolve @607 DATA

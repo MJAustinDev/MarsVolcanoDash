@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="RecompileBox2d" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/RecompileBox2d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="b2_block_allocator.cpp" />
+		<Unit filename="b2_body.cpp" />
+		<Unit filename="b2_broad_phase.cpp" />
+		<Unit filename="b2_chain_circle_contact.cpp" />
+		<Unit filename="b2_chain_circle_contact.h" />
+		<Unit filename="b2_chain_polygon_contact.cpp" />
+		<Unit filename="b2_chain_polygon_contact.h" />
+		<Unit filename="b2_chain_shape.cpp" />
+		<Unit filename="b2_circle_contact.cpp" />
+		<Unit filename="b2_circle_contact.h" />
+		<Unit filename="b2_circle_shape.cpp" />
+		<Unit filename="b2_collide_circle.cpp" />
+		<Unit filename="b2_collide_edge.cpp" />
+		<Unit filename="b2_collide_polygon.cpp" />
+		<Unit filename="b2_collision.cpp" />
+		<Unit filename="b2_contact.cpp" />
+		<Unit filename="b2_contact_manager.cpp" />
+		<Unit filename="b2_contact_solver.cpp" />
+		<Unit filename="b2_contact_solver.h" />
+		<Unit filename="b2_distance.cpp" />
+		<Unit filename="b2_distance_joint.cpp" />
+		<Unit filename="b2_draw.cpp" />
+		<Unit filename="b2_dynamic_tree.cpp" />
+		<Unit filename="b2_edge_circle_contact.cpp" />
+		<Unit filename="b2_edge_circle_contact.h" />
+		<Unit filename="b2_edge_polygon_contact.cpp" />
+		<Unit filename="b2_edge_polygon_contact.h" />
+		<Unit filename="b2_edge_shape.cpp" />
+		<Unit filename="b2_fixture.cpp" />
+		<Unit filename="b2_friction_joint.cpp" />
+		<Unit filename="b2_gear_joint.cpp" />
+		<Unit filename="b2_island.cpp" />
+		<Unit filename="b2_island.h" />
+		<Unit filename="b2_joint.cpp" />
+		<Unit filename="b2_math.cpp" />
+		<Unit filename="b2_motor_joint.cpp" />
+		<Unit filename="b2_mouse_joint.cpp" />
+		<Unit filename="b2_polygon_circle_contact.cpp" />
+		<Unit filename="b2_polygon_circle_contact.h" />
+		<Unit filename="b2_polygon_contact.cpp" />
+		<Unit filename="b2_polygon_contact.h" />
+		<Unit filename="b2_polygon_shape.cpp" />
+		<Unit filename="b2_prismatic_joint.cpp" />
+		<Unit filename="b2_pulley_joint.cpp" />
+		<Unit filename="b2_revolute_joint.cpp" />
+		<Unit filename="b2_rope.cpp" />
+		<Unit filename="b2_settings.cpp" />
+		<Unit filename="b2_stack_allocator.cpp" />
+		<Unit filename="b2_time_of_impact.cpp" />
+		<Unit filename="b2_timer.cpp" />
+		<Unit filename="b2_weld_joint.cpp" />
+		<Unit filename="b2_wheel_joint.cpp" />
+		<Unit filename="b2_world.cpp" />
+		<Unit filename="b2_world_callbacks.cpp" />
+		<Unit filename="box2d/b2_api.h" />
+		<Unit filename="box2d/b2_block_allocator.h" />
+		<Unit filename="box2d/b2_body.h" />
+		<Unit filename="box2d/b2_broad_phase.h" />
+		<Unit filename="box2d/b2_chain_shape.h" />
+		<Unit filename="box2d/b2_circle_shape.h" />
+		<Unit filename="box2d/b2_collision.h" />
+		<Unit filename="box2d/b2_common.h" />
+		<Unit filename="box2d/b2_contact.h" />
+		<Unit filename="box2d/b2_contact_manager.h" />
+		<Unit filename="box2d/b2_distance.h" />
+		<Unit filename="box2d/b2_distance_joint.h" />
+		<Unit filename="box2d/b2_draw.h" />
+		<Unit filename="box2d/b2_dynamic_tree.h" />
+		<Unit filename="box2d/b2_edge_shape.h" />
+		<Unit filename="box2d/b2_fixture.h" />
+		<Unit filename="box2d/b2_friction_joint.h" />
+		<Unit filename="box2d/b2_gear_joint.h" />
+		<Unit filename="box2d/b2_growable_stack.h" />
+		<Unit filename="box2d/b2_joint.h" />
+		<Unit filename="box2d/b2_math.h" />
+		<Unit filename="box2d/b2_motor_joint.h" />
+		<Unit filename="box2d/b2_mouse_joint.h" />
+		<Unit filename="box2d/b2_polygon_shape.h" />
+		<Unit filename="box2d/b2_prismatic_joint.h" />
+		<Unit filename="box2d/b2_pulley_joint.h" />
+		<Unit filename="box2d/b2_revolute_joint.h" />
+		<Unit filename="box2d/b2_rope.h" />
+		<Unit filename="box2d/b2_settings.h" />
+		<Unit filename="box2d/b2_shape.h" />
+		<Unit filename="box2d/b2_stack_allocator.h" />
+		<Unit filename="box2d/b2_time_of_impact.h" />
+		<Unit filename="box2d/b2_time_step.h" />
+		<Unit filename="box2d/b2_timer.h" />
+		<Unit filename="box2d/b2_types.h" />
+		<Unit filename="box2d/b2_weld_joint.h" />
+		<Unit filename="box2d/b2_wheel_joint.h" />
+		<Unit filename="box2d/b2_world.h" />
+		<Unit filename="box2d/b2_world_callbacks.h" />
+		<Unit filename="box2d/box2d.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
