@@ -1,25 +1,14 @@
 
+### See the repository's main LICENSE or main README for more information
+
 ---
 
 
 
 The following license applies to my work and my work alone.
-The license can also be found in comment form at the top of my files.
 
-This license applies to all .cpp and .h files within these directories:
-- GameControl/
-- GameEntities/
-- GameEntities/Enemy/
-- Utility/
-- Visuals/
-
-This license also applies to 
-- Release/Mars Volcano Dash.exe
-
-The only exception is the file GameControl/entry.cpp.
-Which I don't see any point attempting to copyright as it's a bare bones game loop similar to any other GLFW application,
-hence only the capitalised section of the license applies to it.
-
+This license applies to 
+- Mars Volcano Dash.exe
 
 MIT License
 
@@ -49,21 +38,10 @@ SOFTWARE.
 
 
 
-The following license applies to the Box2D engine and copyright belongs to Erin Catto.
-All I have done is recompile the physics engine into a separate dynamic link library.
-This involved restructuring the positioning of the files and possibly changing some of the #include lines to fit the new structure.
-Hence all Box2D header files are either exactly the same as the original or the same as the original with a few #include lines changed.
-
 A copy of the original license file is available at include/RecompileBox2d/LICENSE
 
-This license applies to all .h files within these directories:
-- include/RecompileBox2d/
-- include/RecompileBox2d/box2d/
-
-
-This license also applies to 
-- libraries/RecompileBox2d.dll
-- libraries/libRecompileBox2d.a
+The following license applies to 
+- RecompileBox2d.dll
 
 MIT License
 
@@ -93,20 +71,10 @@ SOFTWARE.
 
 
 
-The following license applies to GLFW and copyright belongs to Marcus Geelnard and Camilla Löwy.
-All I've done is dynamically link to the DLL from the 64-bit Windows binaries available from the GLFW website.
-(Version 3.3.7)
-
 A copy of the original license file is available at include/GLFW/LICENSE.md
 
-This license applies to all .h files within these directories:
-- include/GLFW/
-
-This license also applies to 
-- libraries/glfw3.dll
-- libraries/libglfw3dll.a
-
-
+This license applies to 
+- glfw3.dll
 
 
 Copyright (c) 2002-2006 Marcus Geelnard

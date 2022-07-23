@@ -1,8 +1,6 @@
-/*
-
 MIT License
 
-Copyright (c) 2022 Matthew James Austin
+Copyright (c) 2019 Erin Catto
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,24 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-*/
-
-#ifndef RANGEDRANDOM_H
-#define RANGEDRANDOM_H
-
-/*
-Same code of random numbers either between 0 and 1 or a minimum and maximum range are used a lot in the code,
-so making callable functions helps keep the files size down and easier to maintain.
-*/
-
-inline float randZeroToOne(){
-    return ((float) rand() / (float) RAND_MAX);
-}
-
-
-inline float randRanged(float low, float high){
-    return (((high - low) * randZeroToOne()) + low);
-}
-
-#endif
