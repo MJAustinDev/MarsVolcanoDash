@@ -68,7 +68,7 @@ BaseBreakableEnemy :: ~BaseBreakableEnemy(){
 void BaseBreakableEnemy :: process(){
     BaseEnemy::process();
     if (!terminate){
-        //iterates over all contacts attached to the main body, see: https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_dynamics.html#autotoc_md106
+        //iterates over all contacts attached to the main body as advised in the manual, see: https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_dynamics.html#autotoc_md106
         for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next){
             b2Contact* c = ce->contact;
             //for each sensor, check if this contact contains it

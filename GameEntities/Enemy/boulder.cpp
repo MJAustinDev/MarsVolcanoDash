@@ -30,7 +30,7 @@ SOFTWARE.
 /*
 Boulders take the form of "boxcar" bodies, i.e., multiple connected triangles revolving around a point
 See here for a better explanation: http://boxcar2d.com/about.html
-My final year project revolved around boxcars so a lot of this code has been carried over and simplified from what I built for my degree
+My final year university project revolved around boxcars so a lot of this code has been carried over and simplified from what I built for my degree
 
 Boulders break into the triangle fragments when contacting another physics object during simulation
 */

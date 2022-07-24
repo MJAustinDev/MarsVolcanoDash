@@ -81,7 +81,7 @@ int main(){
     //set error call back
     glfwSetErrorCallback(errorHandler);
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Mars Volcano Dash", NULL, NULL); //TODO -- CONFIGURE SIZE AND FINAL NAME -- not priority
+    GLFWwindow* window = glfwCreateWindow(1280, 960, "Mars Volcano Dash", NULL, NULL); //TODO -- CONFIGURE SIZE AND FINAL NAME -- not priority
     if (!window){
         glfwTerminate(); //terminate glfw before exiting
         return -1; //window creation failed

@@ -2,6 +2,8 @@
 
 Simple game I've built using the Box2D physics engine and GLFW. Currently in a WIP stage, but the base mechanics are all working as I intent.
 
+**Game is in its pre-release state, currently compiled stable build is found in the Release directory**
+
 ---
 
 ## Important (Licenses)
