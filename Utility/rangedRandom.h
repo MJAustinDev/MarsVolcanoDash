@@ -41,4 +41,8 @@ inline float randRanged(float low, float high){
     return (((high - low) * randZeroToOne()) + low);
 }
 
+inline int randModRanged(int high){
+    return (rand()%high);
+}
+
 #endif

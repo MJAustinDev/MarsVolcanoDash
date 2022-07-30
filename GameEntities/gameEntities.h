@@ -41,11 +41,12 @@ protected:
 
     BaseEnemy(int ticks, b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle);
     BaseEnemy(int ticks, b2World* w, b2Vec2 pos,b2Vec2 linVel) : BaseEnemy(ticks,w,pos,linVel,0.0f) {}; //send over position and linear velocity
-    BaseEnemy(int ticks, b2World* w, b2Vec2 pos) : BaseEnemy(ticks,w,pos,b2Vec2(0.0f,0.0f),0.0f) {}; //send over just position
+    BaseEnemy(int ticks, b2World* w, b2Vec2 pos): BaseEnemy(ticks,w,pos,b2Vec2(0.0f,0.0f),0.0f) {}; //send over just position
 
     ~BaseEnemy();
     void process();
 
+    float colour[3];
     int ttl;
     bool terminate = false;
     b2World* world;
@@ -55,7 +56,6 @@ protected:
 
 //base class all big enemies are built off
 class BaseBreakableEnemy : protected BaseEnemy {
-
 
 protected:
 
@@ -81,12 +81,13 @@ friend class EnemyManager;
 
 private:
 
-    Fireball(b2World* w, b2Vec2 pos, b2Vec2 linVel, float s, b2Vec2 force);
+    Fireball(b2World* w, b2Vec2 pos, b2Vec2 linVel, float s, b2Vec2 force, float* col);
     ~Fireball(){}; //base class destroys body
 
     void draw(Camera* camera);
 
     b2CircleShape shape;
+
 };
 
 
@@ -117,7 +118,7 @@ friend class Node<Fragment>;
 
 private:
 
-    Fragment(b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle, b2PolygonShape* shp);
+    Fragment(b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle, b2PolygonShape* shp, float* col);
     ~Fragment(){}; //base class destroys body
 
     void draw(Camera* camera);
@@ -161,7 +162,7 @@ friend class EnemyManager;
 
 private:
 
-    Player(b2World* world, GLfloat* colour);
+    Player(b2World* world, float* col);
     ~Player();
 
     b2Vec2 getPos(){return mainBody->GetPosition();};
@@ -169,7 +170,8 @@ private:
     void processInput(bool keyW, bool keyS, bool keyA, bool keyD);
     void draw(Camera* camera);
 
-    GLfloat col[3]; //TODO -- UPDATE COLOUR SYSTEM
+    float colour[3];
+    float wheelDrawAng = 0.0f; //angle to draw wheels at (prevent rapid flickering when using real angle)
 
     b2Body* mainBody;
     b2Body* wheelBack;
@@ -183,6 +185,7 @@ private:
     b2WheelJoint* motorFront;
 
 };
+
 
 //controls enemy spawning and behaviour
 class EnemyManager {
@@ -210,6 +213,14 @@ private:
 
     float lavaX; //x position of lava
     float lavaSpeed; //speed lava moves along
+
+    //lava draw shape coordinates
+    //set corner points
+    b2Vec2 lavaShapePoints[4] = {b2Vec2(5.0f, -128.0f), b2Vec2(-5.0f, 128.0f), b2Vec2(-128.0f, 128.0f), b2Vec2(-128.0f, -128.0f)}; //bottom right -> top right -> top left -> bottom left
+    //random edge points
+    b2Vec2 lavaShapeEdge[32]; //0-7 bottom edge, 8-15 right edge, 16-23 top edge, 24-31 left edge
+    //random internal points
+    b2Vec2 lavaShapeInner[32];
 
     //enemies controlled by the enemy manager
     LinkedList<Fireball> fireballs;

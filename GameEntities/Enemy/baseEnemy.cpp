@@ -57,6 +57,21 @@ void BaseEnemy :: process(){
 BaseBreakableEnemy :: BaseBreakableEnemy(int ticks, b2World* w, b2Vec2 pos, int numSen) : BaseEnemy(ticks,w,pos){
     numSensors = numSen;
     sensors = new b2Fixture*[numSensors];
+    //set colour randomly
+    switch (randModRanged(2)){
+        case 0 : { //purple
+            colour[0] = 0.69f;
+            colour[1] = 0.14f;
+            colour[2] = 1.0f;
+            break;
+        }
+        case 1 : { //orange
+            colour[0] = 1.0f;
+            colour[1] = 0.55f;
+            colour[2] = 0.15;
+            break;
+        }
+    }
 };
 
 //breakable enemy destructor

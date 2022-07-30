@@ -40,7 +40,7 @@ bool approxEqual(float a, float b){
     return (a >= (b-0.02)) && (a <= (b+0.02));
 }
 
-//b2World* w, b2Vec2 pos, float sizeRand, float maxForce
+
 Boulder :: Boulder(b2World* w, b2Vec2 pos, float sizeRand, float maxForce) : BaseBreakableEnemy(400,w,pos,8){
 
     float minSize = 1.0;
@@ -109,7 +109,7 @@ void Boulder :: insertSortPoints(float* mags, float* angs){
     }
 }
 
-//removes equal points by over writting them with the rest of the array
+//removes equal points by over writing them with the rest of the array
 int Boulder :: overWriteEqual(float* mags, float* angs){
     int valid = 8; //assume already ordered
     //scan upwards
@@ -196,7 +196,7 @@ void Boulder :: afterCollide(LinkedList<Fragment>* fragments){
 
     for (int i=0;i<8;i++){
         if (shapes[i]!=nullptr){
-            Fragment* fragment = new Fragment(world, body->GetPosition(), body->GetLinearVelocity(), body->GetAngle(), shapes[i]);
+            Fragment* fragment = new Fragment(world, body->GetPosition(), body->GetLinearVelocity(), body->GetAngle(), shapes[i], colour);
             fragments->addEnd(fragment);
             fragment = nullptr;
         }
@@ -204,15 +204,9 @@ void Boulder :: afterCollide(LinkedList<Fragment>* fragments){
 
 }
 
-//TODO -- OVERHAUL GRAPHICS
-void Boulder :: draw(Camera* camera){
-    GLfloat col[3] = {0.5,0.5,0.5};
-    for (int i=0;i<8;i++){
-        if (shapes[i]!=nullptr){
-            camera->drawB2Polygon(body,shapes[i],col);
-        }
-    }
 
+void Boulder :: draw(Camera* camera){
+    camera->drawBoulder(body, shapes, colour);
 }
 
 

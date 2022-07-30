@@ -50,24 +50,29 @@ Chunk :: ~Chunk(){
 
 //camera tries to draw chunk to world
 void Chunk :: draw(Camera* camera){
-    GLfloat col[3] = {1.0f,0.0f,0.0f}; //TODO -- UPDATE COLOURING/GRAPHICS SYSTEM
 
-    //cycle through all attached shapes inside of the linked list
+    //cycle through and draw all attached shapes inside of the linked list
     if (shapes.resetCycle()){
         do {
-            camera->drawB2Polygon(body,(shapes.cycle->obj),col); //use camera to draw b2polygon shape
+            camera->drawChunkShape(body, shapes.cycle->obj);
         } while (shapes.cycleUp());
     }
 }
 
 
 //creates polygon shape from series of passed points, adding it to the linked list, handles dynamic allocation and pointers
-void Chunk :: addShape(b2Vec2* points, int num){
-    b2PolygonShape* shape = new b2PolygonShape(); //define shape in memory
-    shape->Set(points,num); //set shape
-    shapes.addEnd(shape); //store shape position in linked list
-    body->CreateFixture(shape,0.0f); //create box2d fixture from shape
-    shape = nullptr; //render pointer null as object is remembered by linked list (shouldn't matter as ptr will go out of scope but good practice)
+void Chunk :: addShape(b2Vec2* points, int num, int drawId){
+    DrawShape* drawShape = new DrawShape;
+    for (int i=0;i<num;i++){
+        drawShape->shapePoints[i] = points[i]; //set all points
+    }
+    drawShape->pointCount = num; //store number of points
+    drawShape->drawId = drawId; //set draw method identifier
+    b2PolygonShape shape;
+    shape.Set(points, num); //set shape for fixture
+    body->CreateFixture(&shape,0.0f); //create box2d fixture from shape
+    shapes.addEnd(drawShape); //store shape position in linked list
+    drawShape = nullptr; //render pointer null as object is remembered by linked list
 }
 
 //adds a rock (series of connected shapes with varying height) over a space on the main chunk ground
@@ -92,7 +97,7 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
     points[0].Set(x,y[0]);
     points[1].Set(x+2,y[1]);
     points[2].Set(x+2,y[num-1] + mag[num-1]);
-    addShape(points,3);
+    addShape(points,3,-1);
 
     //generate each rock segment
     int i=num-1;
@@ -102,7 +107,7 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
         points[1].Set(x+2,y[i-1]);
         points[2].Set(x+2,y[i-1] + mag[i-1]);
         points[3].Set(x,y[i] + mag[i]);
-        addShape(points,4);
+        addShape(points,4,-1);
         i--;
         x +=2;
     }
@@ -111,7 +116,7 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
     points[0].Set(x,y[i]);
     points[1].Set(x+2,y[1]);
     points[2].Set(x,y[i]+mag[i]);
-    addShape(points,3);
+    addShape(points,3,-1);
 }
 
 //define starting segment -- TODO redesign the volcano edge
@@ -122,22 +127,23 @@ void Chunk :: defSegmentStart(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4);
+    addShape(points,4,0);
 
+    //TODO -- REDESIGN STARTING MOUNTAIN
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-20.0f,0.0f);
     points[2].Set(-25.0f,3.0f);
-    addShape(points,3);
+    addShape(points,3,-1); //use default shading for now
 
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-25.0f,3.0f);
     points[2].Set(-30.0f,10.0f);
-    addShape(points,3);
+    addShape(points,3,-1);
 
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-30.0f,10.0f);
     points[2].Set(-32.0f,32.0f);
-    addShape(points,3);
+    addShape(points,3,-1);
 
 }
 
@@ -150,7 +156,7 @@ void Chunk :: defSegment0(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4);
+    addShape(points,4,0);
 
     float x = -32;
     float y[8] = {0,0,0,0,0,0,0,0};

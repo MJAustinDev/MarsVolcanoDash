@@ -27,7 +27,7 @@ SOFTWARE.
 #include "gameEntities.h"
 
 
-Fireball :: Fireball(b2World* w, b2Vec2 pos, b2Vec2 linVel, float s, b2Vec2 force) : BaseEnemy(1500,w,pos,linVel){
+Fireball :: Fireball(b2World* w, b2Vec2 pos, b2Vec2 linVel, float s, b2Vec2 force, float* col) : BaseEnemy(1500,w,pos,linVel){
 
     shape.m_p.Set(0,0);
     shape.m_radius = s;
@@ -35,16 +35,13 @@ Fireball :: Fireball(b2World* w, b2Vec2 pos, b2Vec2 linVel, float s, b2Vec2 forc
     defFix.density = 1.5f;
     defFix.shape = &shape;
     body->CreateFixture(&defFix);
-
     body->ApplyLinearImpulseToCenter(force,true);
+    for (int i=0;i<3;i++){
+        colour[i] = col[i]; //set colour from parameter passed array, i.e., same colour as the meteor it spawned off
+    }
 
 }
 
-//TODO -- OVERHAUL GRAPHICS
 void Fireball :: draw(Camera* camera){
-
-    GLfloat col[3] = {1,1,1};
-    camera->drawCircle(body,&shape,col,36);
-
+    camera->drawFireball(body,&shape,colour);
 }
-

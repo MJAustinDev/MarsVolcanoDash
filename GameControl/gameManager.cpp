@@ -43,13 +43,11 @@ GameManager :: GameManager(gameConfig* config) {
     addChunk(0);
 
     //define player
-    GLfloat col[3] = {0,0,1};
-    player = new Player(world,col);
+    GLfloat colour1[3] = {0.69,0.14,1.0}; //purple
+    player = new Player(world,colour1);
     if (config->twoPlayer){
-        col[0] = 1;
-        col[1] = 1;
-        col[2] = 0;
-        player2 = new Player(world,col);
+        GLfloat colour2[3] = {1.0,0.55,0.15}; //orange
+        player2 = new Player(world,colour2);
     } else {
         player2 = nullptr;
     }
@@ -120,17 +118,17 @@ void GameManager :: processChunkAddition() {
 
 }
 
-//removes chunks if they are 70 meters behind the lava
+//removes chunks if they are 128 meters behind the lava
 void GameManager :: processChunkRemoval() {
     //safety catch, but chunks should never be empty
     if (chunks.first!=nullptr){
         bool repeat = true;
         //remove chunks from the front of the linked list until no chunks are behind the lava
         while (repeat){
-            if (chunks.first->obj->getPos().x <= enemies->lavaX - 70) {
+            if (chunks.first->obj->getPos().x <= enemies->lavaX - 128) {
                 chunks.remFront();
                 if (chunks.first==nullptr){
-                    repeat = false; //safety catch, shouldn't be hit
+                    repeat = false; //safety catch, shouldn't be hit. Was an issue before death mechanic
                 }
             } else {
                 repeat = false;
@@ -142,18 +140,21 @@ void GameManager :: processChunkRemoval() {
 //draw world and game objects to the screen
 void GameManager :: draw(Camera* camera){
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
+    //draw terrain
     if (chunks.resetCycle()){
         do {
             chunks.cycle->obj->draw(camera);
         } while (chunks.cycleUp());
     }
 
+    //draw player/players
     player->draw(camera);
     if (player2!=nullptr){
         player2->draw(camera);
     }
 
-    enemies->draw(camera);
+    enemies->draw(camera); //draw enemies
+    camera->updateGlow(); //update glow value
 
 }
 

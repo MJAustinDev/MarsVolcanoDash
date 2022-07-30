@@ -32,11 +32,7 @@ SOFTWARE.
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 
-/*
-Main class used to draw the menus and box2d worlds to the screen
-Keeping it all public for now for temporary ease of access, will not remain as such by the end.
-I'm going to overhaul the graphics once I've read up more on opengl, so I'll integrate the proper camera system then
-*/
+#include "visualStructures.h"
 
 
 class Camera{
@@ -46,15 +42,46 @@ public:
     Camera(GLfloat x, GLfloat y, GLfloat z, bool* keyP, bool* keyM){posX = x; posY = y; zoom = z; keyPlus = keyP; keyMinus = keyM;};
     ~Camera(){};
 
-    void drawButtonIcon(bool highlight, GLfloat* col, GLfloat* pos);
+    void drawButtonIcon(bool highlight, GLfloat* col, GLfloat* pos); //TODO --OVERHAUL
 
     void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
     void processInput();
+    void updateGlow();
 
-    void drawB2Polygon(b2Body* body, b2PolygonShape* shape, GLfloat* col);
-    void drawCircle(b2Body* body, b2CircleShape* shape, GLfloat* col, int res);
+    //draw player car
+    void drawCarBody(b2Body* body, b2PolygonShape* mainShape, b2PolygonShape* roofShape, float* colour);
+    void drawWheel(b2Body* body, b2CircleShape* shape, float* colour, float baseAngle);
 
-    void drawPolygon(GLfloat* posBody, GLfloat angle, GLfloat* posShape, int total, GLfloat* col);
+    //draw enemies
+    void drawFireball(b2Body* body, b2CircleShape* shape, float* colour);
+    void drawMeteor(b2Body* body, b2CircleShape* shape, float* colour);
+    void drawFragment(b2Body* body, b2PolygonShape* shape, float* colour);
+    void drawBoulder(b2Body* body, b2PolygonShape** shapes, float* colour);
+
+    //draw terrain and lava
+    void drawChunkShape(b2Body* body, DrawShape* drawShape);
+    void drawLava(float lavaX, float playerY, b2Vec2* baseShape, b2Vec2* edgeShape, b2Vec2* innerShape);
+
+private:
+
+    //get main point in world relative to camera position
+    b2Vec2 getCamPos(b2Vec2 pos);
+    b2Vec2 getCamBodyPos(b2Body* body);
+
+    //glVertex2f place points relative to a translated body and camera position
+    void placePoint(b2Vec2 posBody, b2Vec2 pos);
+    void placeRotatePoint(b2Vec2 posBody, b2Vec2 pos, float angle);
+    void placeCirclePoints(int res, int lower, int upper, b2Vec2 posBody, float radius, float baseAngle);
+
+    //draw basic shapes
+    void drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle); //draw b2PolygonShape from body position and angle
+    void drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut); //draws circle with different colours at centre and circumfrence
+    void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
+
+    //draw chunks dependant on identifier
+    void drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape);
+    void drawChunkId0(b2Vec2 posBody, b2Vec2* points);
+
 
     GLfloat posX;
     GLfloat posY;
@@ -62,6 +89,12 @@ public:
 
     bool* keyPlus;
     bool* keyMinus;
+
+    CarDetails carDetail;
+
+    float glow = 0.1;
+    float glowChange = +0.005;
+
 
 
 };

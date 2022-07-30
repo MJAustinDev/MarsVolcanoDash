@@ -28,14 +28,14 @@ SOFTWARE.
 #include "gameEntities.h"
 
 
-Player :: Player(b2World* world, GLfloat* colour){
+Player :: Player(b2World* world, float* col){
 
     //default spawn point
     float x = 0;
     float y = 20;
-    //TEMP -- COLOUR SYSTEM
+    //set base colour
     for (int i=0;i<3;i++){
-        col[i] = colour[i];
+        colour[i] = col[i];
     }
 
     //define car body shapes
@@ -117,17 +117,13 @@ Player :: ~Player(){
 //draw car's body then wheels
 void Player :: draw(Camera* camera){
 
-    //TODO UPDATE COLOUR AND WHEEL DRAWING STYLE -- OVERHALL GRAPHICS
-    camera->drawB2Polygon(mainBody,&mainShape,col);
-    camera->drawB2Polygon(mainBody,&roofShape,col);
+    //draw main car body
+    camera->drawCarBody(mainBody,&mainShape,&roofShape,colour);
 
-    GLfloat temp = col[0];
-    col[0] = col[2];
-    col[2] = temp;
-    camera->drawCircle(wheelBack,&wheelShape,col,36);
-    camera->drawCircle(wheelFront,&wheelShape,col,36);
-    col[2] = col[0];
-    col[0] = temp;
+    //draw both wheels over main body
+    camera->drawWheel(wheelFront,&wheelShape,colour,wheelDrawAng);
+    camera->drawWheel(wheelBack,&wheelShape,colour,wheelDrawAng);
+
 }
 
 
@@ -148,12 +144,14 @@ void Player :: processInput(bool keyW, bool keyS, bool keyA, bool keyD){
     if (keyW){
         motorFront->SetMotorSpeed(-100.0f);
         motorBack->SetMotorSpeed(-100.0f);
+        wheelDrawAng-=0.15;
     }
 
     //S is pressed -- accelerate wheels for leftwards movement
     if (keyS){
         motorFront->SetMotorSpeed(100.0f);
         motorBack->SetMotorSpeed(100.0f);
+        wheelDrawAng+=0.15;
     }
 
     //neither W or S are pressed -- stop wheel motors

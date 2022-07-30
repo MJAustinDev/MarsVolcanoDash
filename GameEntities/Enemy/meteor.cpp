@@ -55,17 +55,8 @@ Meteor :: Meteor(b2World* w, b2Vec2 pos, float sizeRand, float maxForce) : BaseB
 
 }
 
-//TODO -- OVERHAUL GRAPHICS
 void Meteor :: draw(Camera* camera){
-
-    //temp colouring system
-    GLfloat col[3] = {1,1,0};
-    if (collided){
-        col[2] = 1;
-    }
-
-    camera->drawCircle(body,&shape,col,36);
-
+    camera->drawMeteor(body,&shape,colour);
 }
 
 
@@ -84,7 +75,7 @@ void Meteor :: afterCollide(LinkedList<Fireball>* fireballs){
         float angle = ((M_PI/4) * i) + angRand;
         b2Vec2 force(power*cos(angle),power*sin(angle));
         b2Vec2 posBall(pos.x+(s*cos(angle)),pos.y+(s*sin(angle)));
-        Fireball* fireball = new Fireball(world,posBall,body->GetLinearVelocity(),s*0.34,force);
+        Fireball* fireball = new Fireball(world,posBall,body->GetLinearVelocity(),s*0.34,force,colour);
         fireballs->addEnd(fireball);
         fireball = nullptr;
     }

@@ -26,8 +26,7 @@ SOFTWARE.
 
 #include "camera.h"
 
-
-//TODO -- OVERHALL GRAPHICS SYSTEM
+//TODO -- OVERHAUL MENU GRAPHICS
 
 //handle camera zoom from user input
 void Camera :: processInput(){
@@ -48,68 +47,17 @@ void Camera :: processInput(){
 
 }
 
-//convert b2body and polygon data into GLfloat from
-void Camera :: drawB2Polygon(b2Body* body, b2PolygonShape* shape, GLfloat* col){
-    GLfloat posBody[2] = {body->GetPosition().x,body->GetPosition().y};
-    GLfloat* posShape = new GLfloat[2*(shape->m_count)];
-    for (int i=0;i<shape->m_count;i++){
-        posShape[i*2] = shape->m_vertices[i].x;
-        posShape[(i*2)+1] = shape->m_vertices[i].y;
+
+void Camera :: updateGlow(){
+    glow += glowChange;
+    if (glow < 0.0f){
+        glowChange *= -1; //switch change direction
+        glow = glowChange;
+    } else if (glow > 0.1f){
+        glowChange *= -1; //switch change direction
+        glow = 0.1f + glowChange;
     }
-    drawPolygon(posBody,body->GetAngle(),posShape,shape->m_count,col);
-    delete[] posShape;
-};
-
-//draw polygon in the b2world
-void Camera :: drawPolygon(GLfloat* posBody, GLfloat angle, GLfloat* posShape, int total, GLfloat* col){
-
-    posBody[0] = zoom*(posBody[0]-posX);
-    posBody[1] = zoom*(posBody[1]-posY);
-
-    glBegin(GL_POLYGON);
-    glColor3f(col[0], col[1], col[2]);
-    for (int i=0;i<total;i++){
-        posShape[i*2] = posShape[i*2] * zoom;
-        posShape[(i*2)+1] = posShape[(i*2)+1] * zoom;
-        GLfloat temp = posShape[i*2]; //x'
-        posShape[i*2] = (posShape[i*2]*cos(angle)) - (posShape[(i*2)+1]*sin(angle)); //x
-        posShape[(i*2)+1] = (temp*sin(angle)) + (posShape[(i*2)+1]*cos(angle)); //y
-        posShape[i*2] = posShape[i*2] + posBody[0]; //translate across x axis
-        posShape[(i*2)+1] = posShape[(i*2)+1] + posBody[1]; //translate across y axis
-        glVertex2f(posShape[i*2],posShape[(i*2)+1]);
-    }
-    glEnd();
 }
-
-//draw b2circle in the b2world
-void Camera :: drawCircle(b2Body* body, b2CircleShape* shape, GLfloat* col, int res){
-
-    GLfloat posBody[2] = {zoom*(body->GetPosition().x-posX),zoom*(body->GetPosition().y-posY)}; //position of body
-    GLfloat radius = shape->m_radius;
-    GLfloat angle;
-
-    glBegin(GL_POLYGON);
-    glColor3f(col[0], col[1], col[2]);
-    for (int i=0;i<res;i++){
-        angle = i*((2*M_PI)/(GLfloat)res);
-        GLfloat posShape[2] = {zoom*radius*cos(angle), zoom*radius*sin(angle)};
-        posShape[0] = posShape[0] + posBody[0]; //translate across x axis
-        posShape[1] = posShape[1] + posBody[1]; //translate across y axis
-        glVertex2f(posShape[0],posShape[1]);
-    }
-    glEnd();
-
-    angle = body->GetAngle();
-    glBegin(GL_POLYGON);
-    glColor3f(col[2], col[1], col[0]);
-    glVertex2f(posBody[0],posBody[1]);
-    glVertex2f((zoom*radius*cos(angle-0.1))+posBody[0], (zoom*radius*sin(angle-0.1))+posBody[1]);
-    glVertex2f((zoom*radius*cos(angle))+posBody[0], (zoom*radius*sin(angle))+posBody[1]);
-    glVertex2f((zoom*radius*cos(angle+0.1))+posBody[0], (zoom*radius*sin(angle+0.1))+posBody[1]);
-    glEnd();
-}
-
-
 
 
 //draw boarded rectangle icon to the screen, no zooming/positioning relative to world
@@ -165,6 +113,131 @@ void Camera :: drawButtonIcon(bool highlight, GLfloat* col, GLfloat* pos){
     glEnd();
 
 }
+
+
+
+
+//crops up a lot, return b2Vec of world points position relative to camera view
+b2Vec2 Camera :: getCamPos(b2Vec2 pos){
+    pos.x -=posX;
+    pos.y -=posY;
+    pos.x *=zoom;
+    pos.y *=zoom;
+    return pos;
+}
+
+//crops up a lot, return b2Vec of bodys position relative to camera view
+b2Vec2 Camera :: getCamBodyPos(b2Body* body){
+    return getCamPos(body->GetPosition()); //position of main body on camera
+}
+
+
+void Camera :: placeRotatePoint(b2Vec2 posBody, b2Vec2 pos, float angle){
+    //x' = posBody.x + (((pos.x*cos(angle))+(pos.y*-sin(angle)))*zoom); //rotate, scale, then translate
+    //y' = posBody.y + (((pos.y*cos(angle))+(temp*sin(angle)))*zoom);
+    glVertex2f(posBody.x+(((pos.x*cos(angle))+(pos.y*-sin(angle)))*zoom),posBody.y+(((pos.y*cos(angle))+(pos.x*sin(angle)))*zoom));
+}
+
+void Camera :: placePoint(b2Vec2 posBody, b2Vec2 pos){
+    glVertex2f(posBody.x+(pos.x*zoom),posBody.y+(pos.y*zoom)); //scale then translate
+}
+
+//registers the circular points for opengl, assumes glBegin has already been called
+void Camera :: placeCirclePoints(int res, int lower, int upper, b2Vec2 posBody, float radius, float baseAngle){
+
+    float angle;
+    for (int i=lower;i<upper;i++){
+        angle = i*((2*M_PI)/(GLfloat)res) + baseAngle;
+        float zr = zoom*radius; //zoom-radius save re-calulating
+        glVertex2f(posBody.x + (zr*cos(angle)),posBody.y + (zr*sin(angle)));
+    }
+
+}
+
+//marks down a solid polygon, assumes colour has been set externally
+void Camera :: drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle){
+
+    glBegin(GL_POLYGON);
+    for (int i=0;i<shape->m_count;i++){
+        placeRotatePoint(posBody,shape->m_vertices[i],angle);
+    }
+    glEnd();
+
+}
+
+//draws a circle with different shaded centre and circumference
+void Camera :: drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut){
+    int res = 36; //number of connected points on the circumference, i.e., how circle-y the ball should be
+    glBegin(GL_POLYGON);
+    glColor4f(colour[0]*glowCen,colour[1]*glowCen,colour[2]*glowCen,1.0f);
+    placePoint(posBody, b2Vec2(0.0f,0.0f));
+    glColor4f(colour[0]*glowOut,colour[1]*glowOut,colour[2]*glowOut,1.0f);
+    placeCirclePoints(res,0,res+1,posBody,radius,0.0f); //+1 as have to fit the same final point on circumference again
+    glEnd();
+}
+
+//draws triangle with different shaded edge points and centre point(0.0, 0.0)
+void Camera :: drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut){
+    glBegin(GL_POLYGON);
+    glColor4f(colour[0]*glowCen,colour[1]*glowCen,colour[2]*glowCen,1.0f);
+    placeRotatePoint(posBody,b2Vec2(0.0f,0.0f),angle);
+    glColor4f(colour[0]*glowOut,colour[1]*glowOut,colour[2]*glowOut,1.0f);
+    placeRotatePoint(posBody,points[0],angle);
+    placeRotatePoint(posBody,points[1],angle);
+    glEnd();
+}
+
+
+
+//TODO -- in future if file exceeds reasonable lines of code, send over to new chunks drawing .cpp file
+void Camera :: drawChunkShape(b2Body* body, DrawShape* drawShape){
+
+    b2Vec2 posBody = getCamBodyPos(body);
+
+    switch (drawShape->drawId) {
+        case 0 : {drawChunkId0(posBody, drawShape->shapePoints); break;} //basic ground chunk shape
+        default : {drawDefaultChunkShape(posBody, drawShape);} //default shape shading
+    }
+}
+
+//basic ground chunk
+void Camera :: drawChunkId0(b2Vec2 posBody, b2Vec2* points){
+
+    //order of points in b2Vec2 array, top left -> bottom left -> bottom right -> top right
+
+    //colour should be scoped locally to allow for design changes in specific terrain
+    float baseColour[3] = {0.73f,0.0f,0.0f};
+    float shade = 1.0f-glow;
+
+    //starting at [1],.. and ending at ...,[0] to save colour changing
+    glBegin(GL_POLYGON);
+    glColor4f(baseColour[0]*0.1, baseColour[1]*0.1, baseColour[2]*0.1, 1.0f);
+    placePoint(posBody, b2Vec2(points[1].x, points[1].y - 15.0f));
+    placePoint(posBody, b2Vec2(points[2].x, points[2].y - 15.0f));
+    glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, 1.0f);
+    placePoint(posBody, points[3]);
+    placePoint(posBody, points[0]);
+    glEnd();
+
+}
+
+//solid fills in the chunk shape with glow
+void Camera :: drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape){
+
+    //colour should be scoped locally to allow for design changes in specific terrain
+    float baseColour[3] = {0.73f,0.0f,0.0f};
+    float shade = 1.0f-glow;
+
+    glBegin(GL_POLYGON);
+    glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade,1.0f);
+    for (int i=0;i<drawShape->pointCount;i++){
+        placePoint(posBody, drawShape->shapePoints[i]);
+    }
+    glEnd();
+
+}
+
+
 
 
 

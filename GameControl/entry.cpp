@@ -90,6 +90,10 @@ int main(){
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window,inputHandler);
 
+    //set blending function for transparency
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
     //TODO -- CONFIGRE BETTER POSITION/METHOD
     bool** keys = new bool*[12];
     keys[0] = &keyA;

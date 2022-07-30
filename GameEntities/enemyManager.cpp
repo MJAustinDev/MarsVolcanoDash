@@ -30,17 +30,70 @@ SOFTWARE.
 #include <iostream>
 using namespace std;
 
+//Pythagorean theorem for displacement between 2 points
+float pointDistance(b2Vec2 a, b2Vec2 b){
+    float x = a.x - b.x;
+    float y = a.y - b.y;
+    return sqrt((x*x) + (y*y));
+}
+
+//law of cosigns to return angle of point against front triangle of lava shape
+float cosignRuleAngle(b2Vec2 pos){
+
+    float a = pointDistance(b2Vec2(-5,128), pos); //top left point of triangle to position
+    //b = 256 and is right hand span of the triangle
+    float c = pointDistance(b2Vec2(-5,-128), pos); //bottom left point of triangle to position
+    return acos(((c*c) - (65536) - (a*a)) / (-512*a)); //law of cosigns rearranged to get angle from all 3 sides, with b filled in as it's constant
+
+}
+
 EnemyManager :: EnemyManager(b2World* w, Player** p, gameConfig* cfig){
 
     world = w;
     player = p;
 
-    //TODO -- ADD LAVA SPEED TO CONFIG -- not priotity
+    //TODO -- ADD LAVA SPEED TO CONFIG -- not priority
     lavaSpeed = 0.1f;
     lavaX = (*player)->getPos().x - 128;
     config = cfig;
 
+    //set random draw points inside of lava polygon
+    for (int i=0;i<32;i++){
+        bool valid = false;
+        while (!valid){
+            lavaShapeInner[i].Set(randRanged(-128.0,5.0), randRanged(-128, 128)); //lava point is P
+            /*                               B=(-5,128)
+            |--------------------------------|\
+            |                                | \
+            |                                |  \
+            |                                |   \
+            |                                |    \
+            |                                |     \
+            |                                |      \
+            |                                |       \
+            |                                |        \
+            |                                |         \
+            |                                |          \
+            |                                |           \
+            |                                |            \
+            |--------------------------------|-------------|
+                                             A=(-5,-128)   C=(5,128)
+            if P is behind or on triangle's left edge (P.x<=-5) then P lies inside the main lava rectangle,
+            else if (angle ABP is less than or equal to angle ABC) then P is inside the lava front triangle */
+            valid = (lavaShapeInner[i].x <= -5.0f) || (cosignRuleAngle(lavaShapeInner[i]) <= 0.039); //ABC is approx 0.039 radians
+        }
+    }
+
+    //set random edge draw points for lava polygon
+    for (int i=0;i<8;i++){
+        lavaShapeEdge[i].Set(randRanged(-128,5.0),-128); //bottom edge
+        lavaShapeEdge[i+8].x = randRanged(-5,5); //right edge x axis
+        lavaShapeEdge[i+8].y = (-25.6*lavaShapeEdge[i+8].x) + 1; //right edge y axis using y = mx + c, using B and C m = -25.6 and c = 1
+        lavaShapeEdge[i+16].Set(randRanged(-128,-5.0),128); //top edge
+        lavaShapeEdge[i+24].Set(-128, randRanged(-128,128)); //left edge
+    }
 }
+
 
 EnemyManager :: ~EnemyManager(){
 
@@ -89,7 +142,6 @@ void EnemyManager :: attemptSpawn(){
             }
         }
     }
-
 }
 
 //process enemy game events
@@ -190,10 +242,6 @@ void EnemyManager :: draw(Camera* camera){
         } while (fragments.cycleUp());
     }
 
-    //draw lava -- TODO MAKE PERNIMENT VAR TYPE ONCE LAVA STYLE AND SIZE HAS BEEN FINALISED
-    GLfloat bodyPos[2] = {lavaX,0};
-    GLfloat posShape[8] = {0,-64,-5,64,-20,64,-20,-64};
-    GLfloat col[3] = {0,1,0};
-    camera->drawPolygon(bodyPos,0.0,posShape,4,col);
-
+    //draw lava
+    camera->drawLava(lavaX, (*player)->getPos().y, lavaShapePoints, lavaShapeEdge, lavaShapeInner);
 }

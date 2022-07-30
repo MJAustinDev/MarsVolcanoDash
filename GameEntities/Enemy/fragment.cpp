@@ -28,7 +28,7 @@ SOFTWARE.
 #include "gameEntities.h"
 
 
-Fragment :: Fragment(b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle, b2PolygonShape* shp) : BaseEnemy(1500,w,pos,linVel,angle){
+Fragment :: Fragment(b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle, b2PolygonShape* shp, float* col) : BaseEnemy(1500,w,pos,linVel,angle){
 
     b2FixtureDef defFix;
     defFix.density = 1.0f;
@@ -36,14 +36,14 @@ Fragment :: Fragment(b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle, b2Polyg
     defFix.friction = 1.0f;
     defFix.shape = &shape;
     body ->CreateFixture(&defFix);
+    for (int i=0;i<3;i++){
+        colour[i] = col[i]; //set colour from parameter passed array, i.e., same colour as the boulder it spawned off
+    }
 }
 
-//TODO -- OVERHAUL GRAPHICS
+
 void Fragment :: draw(Camera* camera){
-
-    GLfloat col[3] = {0.7,0,0.1};
-    camera->drawB2Polygon(body,&shape,col);
-
+    camera->drawFragment(body, &shape, colour);
 }
 
 

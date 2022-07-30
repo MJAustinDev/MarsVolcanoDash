@@ -29,6 +29,8 @@ SOFTWARE.
 
 #include "gameEntities.h"
 
+#include "visualStructures.h" //contains DrawShape structure
+
 
 /*
 World chunk, contains terrain for player car to drive across
@@ -40,7 +42,7 @@ friend class Node<Chunk>;
 
 private:
 
-    Chunk(b2World* w, int segID, GLfloat x, GLfloat y);
+    Chunk(b2World* w, int segID, float x, float y);
     ~Chunk();
 
     b2Vec2 getPos(){return body->GetPosition();};
@@ -51,12 +53,12 @@ private:
     void defSegment0();
     //TODO -- EXPAND SEGMENTS FOR MORE VARIETY
 
-    void addShape(b2Vec2* points, int num); //adds polygon shape to linked list
+    void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
     void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
 
     b2World* world;
     b2Body* body;
-    LinkedList<b2PolygonShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
+    LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
 
 };
 
