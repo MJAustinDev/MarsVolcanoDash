@@ -26,35 +26,32 @@ SOFTWARE.
 
 #include "manager.h"
 
-
-Manager :: Manager(GLFWwindow* w, Camera* cam) {
+Manager :: Manager(GLFWwindow* w, Camera* cam) : butEasy(0), butNorm(1), butHard(2), butTwoPlay(3), butExit(4), butResume(5), butReturn(6), butScore(7), butWins(8) {
 
     camera = cam;
     window = w;
 
-    float xWidth = 0.3f;
-    GLfloat pos[4] = {-xWidth,0.9,xWidth,0.7};
-    //TODO -- REDFINE COLOUR WITH UNIQUE TEXTURE WITH TEXT
-    GLfloat col[5][3] = {
-    {1,0,1}, //easy's colour
-    {0,1,0}, //normals's colour
-    {0,0,1}, //armageddon's colour
-    {1,0,0}, //two players's colour
-    {1,1,1} //exits's colour
-    };
-    for (int i=0;i<5;i++){
-        Button* but = getButton(i);
-        setButton(but,i,pos,col[i]);
-        pos[1] -= 0.4;
-        pos[3] -= 0.4;
-    }
-    pos[1] = 0.3;
-    pos[3] = 0.1;
-    setButton(&res,5,pos,col[1]);
-    pos[1] = -0.1;
-    pos[3] = -0.3;
-    setButton(&ret,6,pos,col[3]);
+    ButtonDefaults butConfig; //access button configuration values
+    float textCoords[4] = {1, 0, 0, 1}; //texture coordinate bounds
 
+    Button* but;
+    MenuTexture* textPtr;
+
+    //set all 9 menu buttons positions, sizes and primary textures
+    for (int i=0;i<9;i++){
+        but = getButton(i);
+        but->setCoords(butConfig.highlights[i], butConfig.backings[i]);
+        textPtr = new MenuTexture;
+        but->setTexture(textPtr, camera->getTexture(i+10), butConfig.textWorld[i], textCoords);
+        but->textures.addEnd(textPtr);
+    }
+    //add 'Player' to Player X Wins button
+    textPtr = new MenuTexture;
+    butWins.setTexture(textPtr, camera->getTexture(13), butConfig.textWorld[9], butConfig.onlyPlayer);
+    butWins.textures.addEnd(textPtr);
+
+    but = nullptr;
+    textPtr = nullptr;
 }
 
 
@@ -63,6 +60,7 @@ Manager :: ~Manager(){
         delete gameMan;
     }
 }
+
 
 //process events
 void Manager :: process(bool** keys){
@@ -116,7 +114,7 @@ void Manager :: processMenu(bool** keys){
             case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); break;} //exit button kill game loop
         }
         selected = 5; //set selected for in game resume option
-        glClearColor(0.01,0.01,0.1,1.0); //set background to game background
+        glClearColor(0.05,0.01,0.1,1.0); //set background to game background
     }
 
 }
@@ -148,7 +146,9 @@ void Manager :: processGame(bool** keys){
                     delete gameMan;
                     gameMan = nullptr;
                     onMenu = true;
-                    glClearColor(0.5,0.5,0.5,1.0);
+                    glClearColor(0.0f,0.0f,0.0f,1.0f); //set to menu back ground colour
+                    if (scoreReady){clearScoreButton();} //reset score button's extra textures
+                    if (winsReady){clearWinsButton();} //reset wins button's extra textures
                     //don't break as want to execute case 5 code as well
                 }
                 case 5 : {paused = false; *(keys[6]) = false; break;} //resume game
@@ -157,38 +157,91 @@ void Manager :: processGame(bool** keys){
     }
 }
 
-
-//sets button structure values TODO -- GRAPHICS SYSTEM OVERHALL
-void Manager :: setButton(Button* but, int iD, GLfloat* p, GLfloat* c){
-    //position takes form {x1,y1,x2,y2} //top left to bottom right
-    but->id = iD;
-    for (int i=0;i<4;i++){
-        but->pos[i] = p[i];
-    }
-    for (int i=0;i<3;i++){
-        but->col[i] = c[i];
-    }
-
-}
-
 //return's a pointer to a button from its id
 Button* Manager :: getButton(int id){
     switch(id){
-        case 0 : {return &eas;}
-        case 1 : {return &nor;}
-        case 2 : {return &arm;}
-        case 3 : {return &two;}
-        case 4 : {return &ext;}
-        case 5 : {return &res;}
-        case 6 : {return &ret;}
+        case 0 : {return &butEasy;}
+        case 1 : {return &butNorm;}
+        case 2 : {return &butHard;}
+        case 3 : {return &butTwoPlay;}
+        case 4 : {return &butExit;}
+        case 5 : {return &butResume;}
+        case 6 : {return &butReturn;}
+        case 7 : {return &butScore;}
+        case 8 : {return &butWins;}
         default : {return nullptr;}
     }
 }
 
+
 //returns if a button is selected or not, used on current graphics system -- TODO OVERHALL GRAPHICS
 bool Manager :: isSelected(Button* button){
-    return (button->id == selected);
+    return (button->buttonID == selected);
 }
+
+/* sets the texture on the score button to display the players score
+does so by repeatedly adding the final digit to the back of the button space
+and then knocking the position of the next digit along */
+void Manager :: setScoreButton(int points){
+
+    //catch to prevent less than zero scores or the screen being spammed
+    if (points < 0){
+        points = 0;
+    } else if (points > 9999999){
+        points = 9999999;
+    }
+
+    ButtonDefaults butConfig;
+    float textCoords[4] = {1, 0, 0, 1}; //texture coordinate bounds
+    float* worldCoords = butConfig.scoreStart;
+    MenuTexture* textPtr = nullptr;
+
+    do { //do while as at least 1 digit will be printed (0)
+        textPtr = new MenuTexture();
+        //points%10 knocks off all bar the last digit as the rest can be divided by 10
+        butScore.setTexture(textPtr, camera->getTexture((points%10)), worldCoords, textCoords);
+        butScore.textures.addFront(textPtr); //add at front so can track the 'score:' texture by always keeping it at the end
+        points /= 10;
+        worldCoords[1] -= butConfig.scoreSpace;
+        worldCoords[3] -= butConfig.scoreSpace;
+    } while (points!=0);
+
+    textPtr = nullptr;
+    scoreReady = true;
+}
+
+//removes all digit textures from the score button
+void Manager :: clearScoreButton(){
+    while (butScore.textures.first!=butScore.textures.last){
+        butScore.textures.remFront();
+    }
+    scoreReady = false;
+}
+
+//adds the winning players number in the middle of the texture panel
+void Manager :: setWinsButton(bool winPlay1){
+    int winner = 1;
+    if (!winPlay1){
+        winner = 2;
+    }
+    ButtonDefaults butConfig;
+    float textCoords[4] = {1, 0, 0, 1}; //texture coordinate bounds
+
+    MenuTexture* textPtr = new MenuTexture;
+    butWins.setTexture(textPtr, camera->getTexture(winner), butConfig.textWorldNum, textCoords);
+    butWins.textures.addEnd(textPtr);
+
+    textPtr = nullptr;
+    winsReady = true;
+}
+
+//removes the number texture from the win button
+void Manager :: clearWinsButton(){
+    butWins.textures.remEnd();
+    winsReady = false;
+}
+
+
 
 //draws either the menu or the running game
 void Manager :: draw(){
@@ -200,30 +253,41 @@ void Manager :: draw(){
         glViewport(0, 0, pxW, pxH); //recentre screen
         glClear(GL_COLOR_BUFFER_BIT); //clear screen
 
-        if (onMenu){
+        if (onMenu){ //drawing main menu
             //draw all 5 main menu buttons
             for (int i=0;i<5;i++){
                 Button* but = getButton(i);
-                camera->drawButtonIcon(isSelected(but),but->col,but->pos);
+                but->draw(camera, isSelected(but));
             }
-        } else {
+        } else { //drawing gameplay
             if (!dead && !paused){
-                camera->processInput();
+                camera->processInput(); //let camera move if player is not dead and if game is not paused
             }
             gameMan->draw(camera); //draw game world
             if (dead || paused){
                 //TODO -- DRAW BOARDER FOR PAUSE/DEATH MENU
-                camera->drawButtonIcon(isSelected(&ret),ret.col,ret.pos);
-                if (dead) {
-                    //TODO -- DRAW SCORE
-                } else {
-                    camera->drawButtonIcon(isSelected(&res),res.col,res.pos);
+                butReturn.draw(camera, isSelected(&butReturn));
+                if (dead) { //game is over show death screen
+                    if (config.twoPlayer){ //2 player's so display winning player's number
+                        if (!winsReady){
+                            setWinsButton(gameMan->getWinnerP1()); //set up win button's player number
+                        }
+                        butWins.draw(camera, true); //true so will glow
+                    } else { //single player so show score
+                        if (!scoreReady){
+                            setScoreButton((int)(gameMan->getScore()/100.0f)); //set up score button's textures (every 100 meters scores 1 point)
+                        }
+                        butScore.draw(camera, true); //true so will glow
+                    }
+                } else { //game is just paused
+                    butResume.draw(camera, isSelected(&butResume)); //display option to resume the game
                 }
             }
         }
         glfwSwapBuffers(window);
 
         timerDraw = (1.0/60.0) + glfwGetTime(); //aiming for 60 fps
+        camera->updateGlow(); //update glow value
     }
 }
 

@@ -34,15 +34,17 @@ SOFTWARE.
 
 #include "visualStructures.h"
 
-
-class Camera{
+class Camera {
 
 public:
 
-    Camera(GLfloat x, GLfloat y, GLfloat z, bool* keyP, bool* keyM){posX = x; posY = y; zoom = z; keyPlus = keyP; keyMinus = keyM;};
-    ~Camera(){};
+    Camera(float x, float y, float z, bool* keyP, bool* keyM){posX = x; posY = y; zoom = z; keyPlus = keyP; keyMinus = keyM; loadTextures();};
+    ~Camera(){unloadTextures();};
 
-    void drawButtonIcon(bool highlight, GLfloat* col, GLfloat* pos); //TODO --OVERHAUL
+    unsigned int getTexture(int id); //returns the loaded texture number that corresponds to the inputted identifier
+
+    void drawPureRect(float* colour, float coords[4]); //draws a rectangle of form {top, left, bottom, right}
+    void drawPureRectText(float* colour, unsigned int textID, float wCoords[4], float tCoords[4]); //similar to drawPureRect but allows a texture to be drawn instead
 
     void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
     void processInput();
@@ -82,6 +84,10 @@ private:
     void drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape);
     void drawChunkId0(b2Vec2 posBody, b2Vec2* points);
 
+    //attempt to load all text textures into opengl 2D textures
+    void loadTextures();
+    void unloadTextures();
+
 
     GLfloat posX;
     GLfloat posY;
@@ -95,7 +101,17 @@ private:
     float glow = 0.1;
     float glowChange = +0.005;
 
-
+    //contains the numbers of the loaded textures
+    unsigned int texNum[10]; //numbers correspond to index, (0 to 9 => [0] to [9])
+    unsigned int texEasy;
+    unsigned int texNormal;
+    unsigned int texHard;
+    unsigned int texPlayer;
+    unsigned int texExit;
+    unsigned int texResume;
+    unsigned int texReturn;
+    unsigned int texScore;
+    unsigned int texWins;
 
 };
 

@@ -51,9 +51,13 @@
 		<Unit filename="Utility/gameConfig.h" />
 		<Unit filename="Utility/linkedList.h" />
 		<Unit filename="Utility/rangedRandom.h" />
+		<Unit filename="Visuals/button.cpp" />
 		<Unit filename="Visuals/camera.cpp" />
 		<Unit filename="Visuals/camera.h" />
+		<Unit filename="Visuals/drawEntities.cpp" />
+		<Unit filename="Visuals/loadTextures.cpp" />
 		<Unit filename="Visuals/visualStructures.h" />
+		<Unit filename="include/stb_image/stb_image.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

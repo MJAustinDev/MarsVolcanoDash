@@ -29,7 +29,7 @@ SOFTWARE.
 #include <iostream>
 using namespace std;
 
-GameManager :: GameManager(gameConfig* config) {
+GameManager :: GameManager(GameConfig* config) {
 
     //define world
     b2Vec2 gravity(0.0f,-9.81);
@@ -154,7 +154,6 @@ void GameManager :: draw(Camera* camera){
     }
 
     enemies->draw(camera); //draw enemies
-    camera->updateGlow(); //update glow value
 
 }
 

@@ -27,9 +27,72 @@ SOFTWARE.
 #ifndef VISUALSTRUCTURES_H
 #define VISUALSTRUCTURES_H
 
+//Contains information needed to draw textured text onto menu buttons
+struct MenuTexture {
+
+    unsigned int textureID;
+    //coordinates follow pattern of top (+y), left (-x), bottom (-y), right (+x)
+    float worldCoords[4];
+    float textCoords[4];
+
+};
+
+//Contains values for defining menu buttons and textures
+struct ButtonDefaults {
+
+    //glowing border around the buttons
+    float highlights[9][4] = {
+        {0.9f, -0.3f, 0.7f, 0.3f}, //easy
+        {0.5f, -0.3f, 0.3f, 0.3f}, //normal
+        {0.1f, -0.3f, -0.1f, 0.3f}, //hard
+        {-0.3f, -0.3f, -0.5f, 0.3f}, //two player
+        {-0.7f, -0.3f, -0.9f, 0.3f}, //exit
+        {0.5f, -0.5f, 0.3f, 0.5f}, //resume
+        {0.1f, -0.5f, -0.1f, 0.5f}, //return
+        {0.5f, -0.5f, 0.3f, 0.5f}, //score
+        {0.5f, -0.5f, 0.3f, 0.5f} //wins
+    };
+
+    //main backing panel of the buttons
+    float backings[9][4] = {
+        {0.88f, -0.28f, 0.72f, 0.28f}, //easy
+        {0.48f, -0.28f, 0.32f, 0.28f}, //normal
+        {0.08f, -0.28f, -0.08f, 0.28f}, //hard
+        {-0.32f, -0.28f, -0.48f, 0.28f}, //two player
+        {-0.72f, -0.28f, -0.88f, 0.28f}, //exit
+        {0.48f, -0.48f, 0.32f, 0.48f}, //resume
+        {0.08f, -0.48f, -0.08f, 0.48f}, //return
+        {0.48f, -0.48f, 0.32f, 0.48f}, //score
+        {0.48f, -0.48f, 0.32f, 0.48f} //wins
+    };
+
+    //positioning of button's main texture
+    float textWorld[10][4] = {
+        {0.88f, -0.28f, 0.72f, 0.28f}, //easy
+        {0.48f, -0.28f, 0.32f, 0.28f}, //normal
+        {0.08f, -0.28f, -0.08f, 0.28f}, //hard
+        {-0.32f, -0.28f, -0.48f, 0.28f}, //two player
+        {-0.72f, -0.28f, -0.88f, 0.28f}, //exit
+        {0.48f, -0.28f, 0.32f, 0.28f}, //resume
+        {0.08f, -0.28f, -0.08f, 0.28f}, //return
+        {0.48f, -0.48f, 0.32f, 0.08f}, //score
+        {0.48f, -0.02f, 0.32f, 0.30f}, //wins
+        {0.48f, -0.48f, 0.32f, -0.1f} //'player' on player X wins
+    };
+
+    //beginning point for score numbers to exist at
+    float scoreStart[4] = {0.48f, 0.38f, 0.32f, 0.48f};
+    float scoreSpace = 0.08f; //knock by the next digit's position by
+
+    float onlyPlayer[4] = {1, 0.41, 0, 1}; //texture coordinates to get only 'Player' from 'Two Player'
+    float textWorldNum[4] = {0.48f, -0.12f, 0.32f, 0.0f}; //number of winning players texture to world coordinates
+
+
+};
+
 
 //Contains information to draw world chunk shapes
-struct DrawShape{
+struct DrawShape {
 
     b2Vec2 shapePoints[8];
     int pointCount = 0;

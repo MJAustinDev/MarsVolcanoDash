@@ -194,7 +194,7 @@ friend class GameManager;
 
 private:
 
-    EnemyManager(b2World* w, Player** p, gameConfig* cfig);
+    EnemyManager(b2World* w, Player** p, GameConfig* cfig);
     ~EnemyManager();
 
     void attemptSpawn(); //spawn big enemy if correct ticks to live have reached zero
@@ -206,7 +206,7 @@ private:
     template <typename T> void afterProcess(LinkedList<T>* objList);
     template <typename T1, typename T2> void afterProcessBreakable(LinkedList<T1>* bigObjList, LinkedList<T2>* smallObjList);
 
-    gameConfig* config; //game configuration settings pointer, controls size of enemies, their spawn times, etc
+    GameConfig* config; //game configuration settings pointer, controls size of enemies, their spawn times, etc
 
     b2World* world;
     Player** player; //ultimately points to the player in the lead

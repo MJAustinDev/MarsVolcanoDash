@@ -31,16 +31,41 @@ SOFTWARE.
 #include "gameConfig.h"
 #include "gameManagement.h"
 
-struct Button {
+/*
+Buttons allow a user to visually interact with the system,
+displaying menu options or information like score.
+The class is entirely scoped to the Manager which exclusively uses it
+*/
+class Button {
 
-    GLfloat col[3];
-    GLfloat pos[4];
-    int id;
+friend class Manager;
+
+private:
+
+    Button(int id);
+    ~Button();
+
+    void setCoords(float high[4], float bck[4]); //sets the coordinates for the highlight and the main backing panel of the button
+
+    void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords); //used to configure textures that are drawn on the button
+
+    void draw(Camera* camera, bool selected);
+
+    //coordinates follow pattern of top (+y), left (-x), bottom (-y), right (+x)
+    float highlight[4]; //coordinates of highlighted border of button
+    float backing[4]; //coordinates of backing panel of button
+
+    LinkedList<MenuTexture> textures; //contains all the text based textures that the button draws
+
+    int buttonID; //button identifier, used by Manager
+
 };
 
+
+
 /*
-Main manager, controls drawing, menu and game options, and uses the GameManager to set up and run the game
-The way buttons and the graphics system is right now will likely change when I overhaul the graphics
+Main manager, controls drawing, menu and game options,
+and uses the GameManager to set up and run the game
 */
 class Manager{
 
@@ -50,47 +75,59 @@ public:
     Manager(GLFWwindow* w, Camera* cam);
     ~Manager();
 
-    void process(bool** keys);
+    void process(bool** keys); //called to process the game/menu events
     void draw();
 
 private:
 
-    void setButton(Button* but, int iD, GLfloat* p, GLfloat* c);
-    Button* getButton(int id);
+    Button* getButton(int id); //returns position of menu button going of button identifier
 
+    //configure the game modes
     void configEasy();
     void configNormal();
     void configArmageddon();
     void configTwoPlayer();
 
-    void processMenu(bool** keys);
-    void processGame(bool** keys);
+    void processMenu(bool** keys); //run menu control events
+    void processGame(bool** keys); //run game events
 
-    bool isSelected(Button* button);
+    bool isSelected(Button* button); //returns if the button is currently selected or not
     void buttonSelection(bool** keys, int lower, int higher); //handles button selection within given ID range
 
-    int selected = 0;
+    void setScoreButton(int points); //sets textures for score to be visualised
+    void clearScoreButton(); //resets the score button so it is ready to be used again
+    void setWinsButton(bool winPlay1); //sets the X in 'Player X Wins' to the winning player's number
+    void clearWinsButton(); //resets the wins button so it is ready to be used again
 
-    gameConfig config;
-    GameManager* gameMan = nullptr;
-    GLFWwindow* window;
+    int selected = 0; //button identifier of the currently selected button
+
+    GameConfig config; //handles game mode configuration (enemy size, etc)
+    GameManager* gameMan = nullptr; //sets up the game
+    GLFWwindow* window; //pointer to the window
 
     bool onMenu = true;
-    Button eas; //easy
-    Button nor; //normal
-    Button arm; //Armageddon
-    Button two; //two player mode
-    Button ext; //exit game
+    //interactable menu buttons
+    Button butEasy;
+    Button butNorm;
+    Button butHard;
+    Button butTwoPlay;
+    Button butExit;
+    Button butResume;
+    Button butReturn;
+    //visual only menu buttons
+    Button butScore;
+    Button butWins;
+    bool scoreReady = false;
+    bool winsReady = false;
 
     bool paused = false; //game is paused
     bool dead = false; //game is over
-    Button res; //resume
-    Button ret; //return to menu
 
-    double timerGame = 0.0;
-    double timerMenu = 0.0;
-    double timerDraw = 0.0;
-    Camera* camera = nullptr;
+    //game timers
+    double timerGame = 0.0; //process game events
+    double timerMenu = 0.0; //process menu events
+    double timerDraw = 0.0; //draw to screen
+    Camera* camera = nullptr; //points to main camera
 
 };
 

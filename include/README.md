@@ -10,3 +10,4 @@ See the repository's main LICENSE or main README for more information.
 
 - Box2D, website https://box2d.org/
 - GLFW (Version 3.3.7), website https://www.glfw.org/
+- stb_image, github https://github.com/nothings/stb

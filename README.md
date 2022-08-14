@@ -1,8 +1,6 @@
 # Mars Volcano Dash
 
-Simple game I've built using the Box2D physics engine and GLFW. Currently in a WIP stage, but the base mechanics are all working as I intent.
-
-**Game is in its pre-release state, currently compiled stable build is found in the Release directory**
+Simple game I've built using the Box2D physics engine, GLFW and stb_image. Currently in a WIP stage, but the base mechanics and most of the graphics are all working as I intent.
 
 ---
 
@@ -19,8 +17,10 @@ My background is computer science and programming not law, but that's the gist I
 Although I'm not really expecting too many people are going to be making and releasing games based directly off my code anyhow lol
 
 
-**Everything inside of the "include" and "libraries" folders as well as the two copied over DLLs inside of the "Release" folder are not my work.
+**Everything inside of the "include" and "libraries" are not my work.
 And as such are under their corresponding licenses, see below.**
+
+
 
 ### Box2D
 
@@ -43,6 +43,7 @@ Going over the code I can't seem to find any differences so I'm pretty sure the 
 Hence all Box2D header files are either exactly the same as the original or the same as the original with a few #include lines changed.
 
 
+
 ### GLFW
 
 GLFW is licensed under the zlib/libpng license, see here: https://www.glfw.org/license
@@ -52,19 +53,29 @@ I downloaded the 64-bit Windows binaries from the GLFW website, https://www.glfw
 
 Regarding the downloaded binaries,
 I've used the "glfw3.dll" and the "libglfw3dll.a" files found inside of the "lib-mingw-64" folder.
-As well as the header files found inside the "include/GLFW" folder.
+As well as the header files found inside the "include/GLFW" directory.
 Obviously these files are not my work and are under the aforementioned zlib/libpng license,
-with copy write going to Marcus Geelnard and Camilla Löwy.
+with copy right going to Marcus Geelnard and Camilla Löwy.
 
 
-The above Box2D and GLFW licenses are placed inside of this projects LISCENSE.md file with indication to where they apply,
-they can also be found in the directories that they exist as well as in any code taken directly from Box2D or GLFW (i.e., their header files).
+### stb_image
+
+Stb_image can be licensed under two different licenses depending on choice, I've opted to use the Public Domain license.
+
+You can check out the GitHub repo here: https://github.com/nothings/stb
+
+I needed a quick and easy way to load png images hence I've only used the image loader library "stb_image.h".
+Hence I copied the header file off the GitHub repository.
+Obviously this file is Sean T barrett's work and is under the aforementioned Public Domain License.
+
+
+
+**The above Box2D, GLFW and stb_image licenses are placed inside of this projects LISCENSE.md file with indication to where they apply,
+they can also be found in the directories that they exist as well as in any code taken directly from the libraries (i.e., their header files).**
 
 ---
 
 ## Gameplay
-
-**If you just want to play the game then go to the "Release" folder which contains the executable "Mars Volcano Dash.exe".**
 
 Game is not yet complete, at least concerning graphics and content, but it is playable and contains all the underpinning mechanics I want in the final game.
 
@@ -75,34 +86,9 @@ The lava from the eruption is progressively moving towards you while incoming de
 You must navigate the volatile terrain in an attempt to save your life...
 
 
-The final text covered menu buttons are not implemented as I see no point wasting time drawing text with opengl polygons when I'm going to overhaul the graphics system anyhow.
-Hence all menu options are currently coloured boxes with a border that will turn yellow to indicate that it is the current "choose-able" option.
-
 ### Menus
 
 Use W & S to scroll up and down, and Enter to select an option
-
-#### Main menu
-
-Purple ⇒ Easy mode
-
-Green ⇒ Normal mode
-
-Blue ⇒ Armageddon mode
-
-Red ⇒ Two Player mode
-
-White ⇒ Exit
-
-#### Pause menu
-
-Green ⇒ Resume game
-
-Red ⇒ Return to main menu
-
-#### Death Screen
-
-Red ⇒ Return to main menu
 
 
 ### In game controls
@@ -126,11 +112,10 @@ L ⇒ D
 
 ## To come
 
-- Massive graphics overhaul (probably going for a futuristic/vapourwave aesthetic)
-- Text for the menu buttons
+- Some minor graphics updates
 - Terrain Variety
-- Visible Score/Victory screen in two player mode
 - Clean up a few loose ends/unclean code
+- Guides
 
 ---
 
@@ -138,9 +123,8 @@ L ⇒ D
 
 - GameControl, contains files associated with controlling the game either on menu or while running
 - GameEntities, contains files associated with creating, controlling and destroying game entities e.g., player's car, boulders, etc
-- include, contains all the external .h files required to compile the program (Box2D, GLFW)
+- include, contains all the external .h files required to compile the program (Box2D, GLFW, stb_image)
 - libraries, contains the .a and .dll files associated with the external libraries (Box2d, GLFW)
-- Release, contains the compiled game in a playable state with the required DLL
 - Utility, contains basic utility functions/classes that are used throughout the code
 - Visuals, contains files associated with drawing graphics to the screen
 
@@ -150,7 +134,7 @@ L ⇒ D
 ## Final notes
 
 I'm releasing and licensing what I've done under MIT, feel free to do what you like with it.
-**Just be careful when using parts of the program which I haven't built, (Box2D, GLFW) and make sure to reference their licensing properly.**
+**Just be careful when using parts of the program which I haven't built, (Box2D, GLFW, stb_image) and make sure to reference their licensing properly.**
 Other than that I encourage you to play around and modify the likes of the game mode configuration, the players car, or even add in new enemies.
 Do so to your hearts content!
 I've left the CodeBlocks project in the repo that way you should be able to toy around with the code without any knowledge of setting up the compiler/linker

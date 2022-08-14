@@ -26,7 +26,6 @@ SOFTWARE.
 
 #include "camera.h"
 
-//TODO -- OVERHAUL MENU GRAPHICS
 
 //handle camera zoom from user input
 void Camera :: processInput(){
@@ -59,62 +58,40 @@ void Camera :: updateGlow(){
     }
 }
 
-
-//draw boarded rectangle icon to the screen, no zooming/positioning relative to world
-void Camera :: drawButtonIcon(bool highlight, GLfloat* col, GLfloat* pos){
-
-    //TODO -- COMPLETE OVERHALL
-    GLfloat colBoarder[3] = {0.5,0.5,0.5};
-    if (highlight){
-        colBoarder[0] = 1;
-        colBoarder[1] = 1;
-        colBoarder[2] = 0;
-    }
-    GLfloat bW = pos[0] * 0.04;
-    GLfloat bH = pos[1] * 0.02;
-
-    //draw main icon
+//draws a rectangle directly to the screen without scaling (-1 to 1 range directly)
+void Camera :: drawPureRect(float* colour, float coords[4]){ //coords takes form of {top, left, bottom, right}
+    float shade = 1.0f-(0.75f*glow);
+    glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, 1.0f);
     glBegin(GL_POLYGON);
-    glColor3f(col[0], col[1], col[2]);
-    glVertex2f(pos[0]-bW,pos[1]-bH); //top right
-    glVertex2f(pos[2]+bW,pos[1]-bH); //top left
-    glVertex2f(pos[2]+bW,pos[3]+bH); //bottom left
-    glVertex2f(pos[0]-bW,pos[3]+bH); //bottom right
+    glVertex2f(coords[1], coords[0]);
+    glVertex2f(coords[1], coords[2]);
+    glVertex2f(coords[3], coords[2]);
+    glVertex2f(coords[3], coords[0]);
     glEnd();
-
-    //draw boarder
-    glBegin(GL_POLYGON);
-    glColor3f(colBoarder[0], colBoarder[1],colBoarder[2]);
-    glVertex2f(pos[0],pos[1]); //top right
-    glVertex2f(pos[2],pos[1]); //top left
-    glVertex2f(pos[2],pos[1]-bH); //bottom left
-    glVertex2f(pos[0],pos[1]-bH); //bottom right
-    glEnd();
-
-    glBegin(GL_POLYGON);
-    glVertex2f(pos[0],pos[3]);
-    glVertex2f(pos[2],pos[3]);
-    glVertex2f(pos[2],pos[3]+bH);
-    glVertex2f(pos[0],pos[3]+bH);
-    glEnd();
-
-    glBegin(GL_POLYGON);
-    glVertex2f(pos[2],pos[1]-bH); //top right
-    glVertex2f(pos[2]+bW,pos[1]-bH); //top left
-    glVertex2f(pos[2]+bW,pos[3]+bH); //bottom left
-    glVertex2f(pos[2],pos[3]+bH); //bottom right
-    glEnd();
-
-    glBegin(GL_POLYGON);
-    glVertex2f(pos[0],pos[1]-bH); //top right
-    glVertex2f(pos[0]-bW,pos[1]-bH); //top left
-    glVertex2f(pos[0]-bW,pos[3]+bH); //bottom left
-    glVertex2f(pos[0],pos[3]+bH); //bottom right
-    glEnd();
-
 }
 
+void Camera :: drawPureRectText(float* colour, unsigned int textID, float wCoords[4], float tCoords[4]){ //coords takes form of {top, left, bottom, right}
+    if (textID != (unsigned int) -1){ //if texture loaded successfully
+        float shade = 1.0f-(0.75f*glow);
+        glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, 1.0f);
+        glEnable (GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, textID);
+        glBegin(GL_POLYGON);
+        glTexCoord2f(tCoords[1], tCoords[0]);
+        glVertex2f(wCoords[1], wCoords[0]);
 
+        glTexCoord2f(tCoords[1], tCoords[2]);
+        glVertex2f(wCoords[1], wCoords[2]);
+
+        glTexCoord2f(tCoords[3], tCoords[2]);
+        glVertex2f(wCoords[3], wCoords[2]);
+
+        glTexCoord2f(tCoords[3], tCoords[0]);
+        glVertex2f(wCoords[3], wCoords[0]);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+    }
+}
 
 
 //crops up a lot, return b2Vec of world points position relative to camera view
@@ -211,7 +188,7 @@ void Camera :: drawChunkId0(b2Vec2 posBody, b2Vec2* points){
 
     //starting at [1],.. and ending at ...,[0] to save colour changing
     glBegin(GL_POLYGON);
-    glColor4f(baseColour[0]*0.1, baseColour[1]*0.1, baseColour[2]*0.1, 1.0f);
+    glColor4f(0.05f, 0.01f, 0.1f, 1.0f); //back ground colour want to fade into background
     placePoint(posBody, b2Vec2(points[1].x, points[1].y - 15.0f));
     placePoint(posBody, b2Vec2(points[2].x, points[2].y - 15.0f));
     glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, 1.0f);
@@ -236,11 +213,3 @@ void Camera :: drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape){
     glEnd();
 
 }
-
-
-
-
-
-
-
-

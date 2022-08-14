@@ -112,7 +112,7 @@ int main(){
     //define key game objects
     Camera camera(0.0f,0.0f,0.1f,&keyPlus, &keyMinus);
     Manager manager(window,&camera);
-    glClearColor(0.5,0.5,0.5,1.0); //set to menu background colour
+    glClearColor(0.0f,0.0f,0.0f,1.0f); //set to menu background colour
 
     //game loop, runs until glfw is told to kill the window
     while (!glfwWindowShouldClose(window)){

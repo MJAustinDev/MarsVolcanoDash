@@ -69,15 +69,16 @@ Stores game objects and handles all game events
 */
 class GameManager{
 
-//TODO -- POSSIBLY MAKE COMPLETELY PRIVATE AND HAVE AS A FRIEND TO THE MANAGER CLASS
-
 public:
 
-    GameManager(gameConfig* config);
+    GameManager(GameConfig* config);
     ~GameManager();
 
     bool process(bool** keys); //process game events
     void draw(Camera* camera); //draws game objects to screen
+
+    float getScore(){return score;}; //returns the score in form of physical distance travelled
+    bool getWinnerP1(){return (player == playerLead);}; //returns if player 1 is a head of player 2
 
 private:
 

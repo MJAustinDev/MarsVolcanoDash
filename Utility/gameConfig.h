@@ -37,7 +37,7 @@ i.e., [0] => (spawnX = player.x-32), [4] => (spawnX = player.x), [8] => (spawnX 
 
 */
 
-struct gameConfig {
+struct GameConfig {
 
     int spawnTimes[2]; //default minimum spawn time for enemy
     int ttls[2][9]; //ticks to live, counts time for enemy to spawn at given position
