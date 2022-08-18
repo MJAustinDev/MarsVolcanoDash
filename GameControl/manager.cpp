@@ -26,7 +26,10 @@ SOFTWARE.
 
 #include "manager.h"
 
-Manager :: Manager(GLFWwindow* w, Camera* cam) : butEasy(0), butNorm(1), butHard(2), butTwoPlay(3), butExit(4), butResume(5), butReturn(6), butScore(7), butWins(8) {
+Manager :: Manager(GLFWwindow* w, Camera* cam) :
+    butEasy(0), butNorm(1), butHard(2), butTwoPlay(3),
+    butExit(4), butResume(5), butReturn(6), butScore(7),
+    butWins(8), butBoardMenu(9), butBoardGame(10) {
 
     camera = cam;
     window = w;
@@ -36,6 +39,11 @@ Manager :: Manager(GLFWwindow* w, Camera* cam) : butEasy(0), butNorm(1), butHard
 
     Button* but;
     MenuTexture* textPtr;
+    //set background board positions and sizes
+    for (int i=9;i<11;i++){
+        but = getButton(i);
+        but->setCoords(butConfig.highlights[i], butConfig.backings[i]);
+    }
 
     //set all 9 menu buttons positions, sizes and primary textures
     for (int i=0;i<9;i++){
@@ -169,6 +177,8 @@ Button* Manager :: getButton(int id){
         case 6 : {return &butReturn;}
         case 7 : {return &butScore;}
         case 8 : {return &butWins;}
+        case 9 : {return &butBoardMenu;}
+        case 10 : {return &butBoardGame;}
         default : {return nullptr;}
     }
 }
@@ -254,6 +264,7 @@ void Manager :: draw(){
         glClear(GL_COLOR_BUFFER_BIT); //clear screen
 
         if (onMenu){ //drawing main menu
+            butBoardMenu.draw(camera, true); //true so will glow
             //draw all 5 main menu buttons
             for (int i=0;i<5;i++){
                 Button* but = getButton(i);
@@ -265,7 +276,7 @@ void Manager :: draw(){
             }
             gameMan->draw(camera); //draw game world
             if (dead || paused){
-                //TODO -- DRAW BOARDER FOR PAUSE/DEATH MENU
+                butBoardGame.draw(camera, true);
                 butReturn.draw(camera, isSelected(&butReturn));
                 if (dead) { //game is over show death screen
                     if (config.twoPlayer){ //2 player's so display winning player's number

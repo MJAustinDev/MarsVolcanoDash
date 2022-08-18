@@ -119,6 +119,8 @@ private:
     Button butWins;
     bool scoreReady = false;
     bool winsReady = false;
+    Button butBoardMenu; //main menu backing board
+    Button butBoardGame; //gameplay menu backing board
 
     bool paused = false; //game is paused
     bool dead = false; //game is over

@@ -41,7 +41,7 @@ struct MenuTexture {
 struct ButtonDefaults {
 
     //glowing border around the buttons
-    float highlights[9][4] = {
+    float highlights[11][4] = {
         {0.9f, -0.3f, 0.7f, 0.3f}, //easy
         {0.5f, -0.3f, 0.3f, 0.3f}, //normal
         {0.1f, -0.3f, -0.1f, 0.3f}, //hard
@@ -50,11 +50,13 @@ struct ButtonDefaults {
         {0.5f, -0.5f, 0.3f, 0.5f}, //resume
         {0.1f, -0.5f, -0.1f, 0.5f}, //return
         {0.5f, -0.5f, 0.3f, 0.5f}, //score
-        {0.5f, -0.5f, 0.3f, 0.5f} //wins
+        {0.5f, -0.5f, 0.3f, 0.5f}, //wins
+        {0.94f, -0.34f, -0.94f, 0.34f}, //main menu backing board
+        {0.54f,-0.54f,-0.14f,0.54f} //game play menu backing board
     };
 
     //main backing panel of the buttons
-    float backings[9][4] = {
+    float backings[11][4] = {
         {0.88f, -0.28f, 0.72f, 0.28f}, //easy
         {0.48f, -0.28f, 0.32f, 0.28f}, //normal
         {0.08f, -0.28f, -0.08f, 0.28f}, //hard
@@ -63,7 +65,9 @@ struct ButtonDefaults {
         {0.48f, -0.48f, 0.32f, 0.48f}, //resume
         {0.08f, -0.48f, -0.08f, 0.48f}, //return
         {0.48f, -0.48f, 0.32f, 0.48f}, //score
-        {0.48f, -0.48f, 0.32f, 0.48f} //wins
+        {0.48f, -0.48f, 0.32f, 0.48f}, //wins
+        {0.92f, -0.32f, -0.92f, 0.32f}, //main menu backing board
+        {0.52f,-0.52f,-0.12f,0.52f} //game play menu backing board
     };
 
     //positioning of button's main texture
