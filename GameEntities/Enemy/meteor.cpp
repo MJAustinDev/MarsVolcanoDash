@@ -56,7 +56,8 @@ Meteor :: Meteor(b2World* w, b2Vec2 pos, float sizeRand, float maxForce) : BaseB
 }
 
 void Meteor :: draw(Camera* camera){
-    camera->drawMeteor(body,&shape,colour);
+    float glow = camera->getGlow();
+    camera->drawHotball(camera->getCamBodyPos(body), shape.m_radius, colour, 1.0f - glow, 0.5f - (2.0f*glow));
 }
 
 

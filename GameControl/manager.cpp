@@ -123,7 +123,9 @@ void Manager :: processMenu(bool** keys){
         }
         selected = 5; //set selected for in game resume option
         glClearColor(0.05,0.01,0.1,1.0); //set background to game background
+        //TODO -- SET CAMERA ZOOM TO DEFAULT STARTING ZOOM
     }
+    animateBack.process(); //update background animation
 
 }
 
@@ -155,6 +157,7 @@ void Manager :: processGame(bool** keys){
                     gameMan = nullptr;
                     onMenu = true;
                     glClearColor(0.0f,0.0f,0.0f,1.0f); //set to menu back ground colour
+                    //TODO -- SET CAMERA ZOOM FOR MENU
                     if (scoreReady){clearScoreButton();} //reset score button's extra textures
                     if (winsReady){clearWinsButton();} //reset wins button's extra textures
                     //don't break as want to execute case 5 code as well
@@ -264,6 +267,7 @@ void Manager :: draw(){
         glClear(GL_COLOR_BUFFER_BIT); //clear screen
 
         if (onMenu){ //drawing main menu
+            animateBack.draw(camera); //draw back ground
             butBoardMenu.draw(camera, true); //true so will glow
             //draw all 5 main menu buttons
             for (int i=0;i<5;i++){

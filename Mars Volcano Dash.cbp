@@ -56,6 +56,7 @@
 		<Unit filename="Visuals/camera.h" />
 		<Unit filename="Visuals/drawEntities.cpp" />
 		<Unit filename="Visuals/loadTextures.cpp" />
+		<Unit filename="Visuals/menuBackground.cpp" />
 		<Unit filename="Visuals/visualStructures.h" />
 		<Unit filename="include/stb_image/stb_image.h" />
 		<Extensions>

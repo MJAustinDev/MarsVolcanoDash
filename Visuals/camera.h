@@ -34,6 +34,15 @@ SOFTWARE.
 
 #include "visualStructures.h"
 
+//used when drawing boulders and fragments to access the non-centre points from the b2PolygonShape
+inline void forceEdgePoints(b2Vec2* points, b2PolygonShape* shape){
+    if (points[0].x == 0.0f && points[0].x == 0.0f){
+        points[0] = shape->m_vertices[2];
+    } else if (points[1].x == 0.0f && points[1].x == 0.0f){
+        points[1] = shape->m_vertices[2];
+    }
+}
+
 class Camera {
 
 public:
@@ -41,30 +50,14 @@ public:
     Camera(float x, float y, float z, bool* keyP, bool* keyM){posX = x; posY = y; zoom = z; keyPlus = keyP; keyMinus = keyM; loadTextures();};
     ~Camera(){unloadTextures();};
 
+    //getters and setters
+    float getGlow(){return glow;}; //returns the value of glow
     unsigned int getTexture(int id); //returns the loaded texture number that corresponds to the inputted identifier
+    void setCamPos(float x, float y, float z){posX = x; posY = y; zoom = z;};
 
+    //draw using pure opengl coordinates
     void drawPureRect(float* colour, float coords[4]); //draws a rectangle of form {top, left, bottom, right}
     void drawPureRectText(float* colour, unsigned int textID, float wCoords[4], float tCoords[4]); //similar to drawPureRect but allows a texture to be drawn instead
-
-    void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
-    void processInput();
-    void updateGlow();
-
-    //draw player car
-    void drawCarBody(b2Body* body, b2PolygonShape* mainShape, b2PolygonShape* roofShape, float* colour);
-    void drawWheel(b2Body* body, b2CircleShape* shape, float* colour, float baseAngle);
-
-    //draw enemies
-    void drawFireball(b2Body* body, b2CircleShape* shape, float* colour);
-    void drawMeteor(b2Body* body, b2CircleShape* shape, float* colour);
-    void drawFragment(b2Body* body, b2PolygonShape* shape, float* colour);
-    void drawBoulder(b2Body* body, b2PolygonShape** shapes, float* colour);
-
-    //draw terrain and lava
-    void drawChunkShape(b2Body* body, DrawShape* drawShape);
-    void drawLava(float lavaX, float playerY, b2Vec2* baseShape, b2Vec2* edgeShape, b2Vec2* innerShape);
-
-private:
 
     //get main point in world relative to camera position
     b2Vec2 getCamPos(b2Vec2 pos);
@@ -80,6 +73,17 @@ private:
     void drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut); //draws circle with different colours at centre and circumfrence
     void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
 
+    void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
+    void processInput();
+    void updateGlow();
+
+
+    //draw terrain and lava
+    void drawChunkShape(b2Body* body, DrawShape* drawShape);
+    void drawLava(float lavaX, float playerY, b2Vec2* baseShape, b2Vec2* edgeShape, b2Vec2* innerShape);
+
+private:
+
     //draw chunks dependant on identifier
     void drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape);
     void drawChunkId0(b2Vec2 posBody, b2Vec2* points);
@@ -89,9 +93,9 @@ private:
     void unloadTextures();
 
 
-    GLfloat posX;
-    GLfloat posY;
-    GLfloat zoom;
+    float posX;
+    float posY;
+    float zoom;
 
     bool* keyPlus;
     bool* keyMinus;

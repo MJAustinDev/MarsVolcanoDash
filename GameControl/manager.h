@@ -32,6 +32,26 @@ SOFTWARE.
 #include "gameManagement.h"
 
 /*
+
+
+*/
+class MenuBackground {
+
+friend class Manager;
+
+private:
+
+    MenuBackground();
+    ~MenuBackground();
+
+    void process();
+    void draw(Camera* camera);
+
+    //TODO -- USE VISUAL STRUCTURES TO DEFINE DRAW SHAPES
+
+};
+
+/*
 Buttons allow a user to visually interact with the system,
 displaying menu options or information like score.
 The class is entirely scoped to the Manager which exclusively uses it
@@ -124,6 +144,8 @@ private:
 
     bool paused = false; //game is paused
     bool dead = false; //game is over
+
+    MenuBackground animateBack; //main menu's background animation controller
 
     //game timers
     double timerGame = 0.0; //process game events

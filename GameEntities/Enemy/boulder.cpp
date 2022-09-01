@@ -201,12 +201,21 @@ void Boulder :: afterCollide(LinkedList<Fragment>* fragments){
             fragment = nullptr;
         }
     }
-
 }
 
 
 void Boulder :: draw(Camera* camera){
-    camera->drawBoulder(body, shapes, colour);
+    b2Vec2 posBody = camera->getCamBodyPos(body);
+    float angle = body->GetAngle();
+    float shade = 1.0f - (2.0f*camera->getGlow());
+
+    for (int i=0;i<8;i++){
+        if (shapes[i]!=nullptr){
+            b2Vec2 points[2] = {shapes[i]->m_vertices[0], shapes[i]->m_vertices[1]};
+            forceEdgePoints(points, shapes[i]);
+            camera->drawHotFrag(posBody, points, angle, colour, shade, 0.4f); //keep outside looking cold
+        }
+    }
 }
 
 

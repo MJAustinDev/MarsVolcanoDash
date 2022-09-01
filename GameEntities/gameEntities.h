@@ -172,6 +172,7 @@ private:
 
     float colour[3];
     float wheelDrawAng = 0.0f; //angle to draw wheels at (prevent rapid flickering when using real angle)
+    CarDetails detail; //used to draw details on top of the car body
 
     b2Body* mainBody;
     b2Body* wheelBack;

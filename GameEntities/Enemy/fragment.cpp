@@ -43,7 +43,12 @@ Fragment :: Fragment(b2World* w, b2Vec2 pos, b2Vec2 linVel, float angle, b2Polyg
 
 
 void Fragment :: draw(Camera* camera){
-    camera->drawFragment(body, &shape, colour);
+    //camera->drawFragment(body, &shape, colour);
+    b2Vec2 posBody = camera->getCamBodyPos(body);
+    float angle = body->GetAngle();
+    b2Vec2 points[2] = {shape.m_vertices[0], shape.m_vertices[1]};
+    forceEdgePoints(points, &shape);
+    camera->drawHotFrag(posBody, points, angle, colour, 0.4f, 1.0f - (4.0f*camera->getGlow())); //looks like heat has pushed to outside on impact
 }
 
 
