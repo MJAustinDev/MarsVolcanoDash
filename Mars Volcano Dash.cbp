@@ -20,6 +20,7 @@
 					<Add directory="GameEntities" />
 					<Add directory="Utility" />
 					<Add directory="Visuals" />
+					<Add directory="Visuals/Icons" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
