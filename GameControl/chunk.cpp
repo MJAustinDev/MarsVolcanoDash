@@ -148,7 +148,7 @@ void Chunk :: defSegmentStart(){
     //backing of mountain slope
     points[0].Set(-32.0f, 0.0f);
     points[1].Set(-32.0f, 32.0f);
-    points[2].Set(-63.0f, 400.0f);
+    points[2].Set(-100.0f, 400.0f);
     points[3].Set(-200.0f, 400.0f);
     points[4].Set(-200.0f, 0.0f);
     addShape(points, 5, 1); //use backing mountain shading

@@ -119,27 +119,27 @@ struct CarDetails {
         {b2Vec2(-2.92,1.0), b2Vec2(-2.97,0.5), b2Vec2(-2.75,0.7), b2Vec2(-2.70,1.0)}, //top left, bottom left, bottom right, top right
 
         //door handle
-        {b2Vec2(0.0,0.9),b2Vec2(0.0,0.8),b2Vec2(0.4,0.8),b2Vec2(0.5,0.9)}, //top left, bottom left, bottom right, top right
+        {b2Vec2(0.0,0.9),b2Vec2(0.0,0.75),b2Vec2(0.4,0.75),b2Vec2(0.5,0.9)}, //top left, bottom left, bottom right, top right
 
         //door line -- top ridge, mid ridge, bottom ridge
-        {b2Vec2(1.50f,0.9f), b2Vec2(1.45f,1.0f), b2Vec2(1.25,0.65) , b2Vec2(1.30,0.55)}, //forward right, forward left, backward left, backward right
-        {b2Vec2(1.25,0.65) , b2Vec2(1.30,0.55), b2Vec2(0.92,0.50), b2Vec2(0.85,0.58)}, //forward left, forward right, backward right, backward left
-        {b2Vec2(0.92,0.50), b2Vec2(0.85,0.58), b2Vec2(0.67,0.0), b2Vec2(0.75,0.0)}, //forward right, forward left, backward left, backward right
+        {b2Vec2(1.45f,0.85f), b2Vec2(1.4f,1.0f), b2Vec2(1.2,0.75) , b2Vec2(1.25,0.6)}, //forward right, forward left, backward left, backward right
+        {b2Vec2(1.2,0.75) , b2Vec2(1.25,0.6), b2Vec2(0.92,0.50), b2Vec2(0.8,0.58)}, //forward left, forward right, backward right, backward left
+        {b2Vec2(0.92,0.50), b2Vec2(0.8,0.58), b2Vec2(0.6,0.0), b2Vec2(0.75,0.0)}, //forward right, forward left, backward left, backward right
 
         //door back line
-        {b2Vec2(-0.3,1.85), b2Vec2(-0.375,1.85), b2Vec2(-0.375,0), b2Vec2(-0.3,0)}, //top right, top left, bottom left, bottom right
+        {b2Vec2(-0.25,1.85), b2Vec2(-0.4,1.85), b2Vec2(-0.4,0), b2Vec2(-0.25,0)}, //top right, top left, bottom left, bottom right
 
         //front wheel guard -- back guard, mid guard, front guard, front ridge
-        {b2Vec2(2.15,0.60), b2Vec2(2.2,0.7), b2Vec2(1.5,0.7), b2Vec2(1.5,0.60)}, //bottom right, top right, top left, bottom left
-        {b2Vec2(2.7,0.4), b2Vec2(2.65,0.33), b2Vec2(2.15,0.60), b2Vec2(2.2,0.7)}, //top right, bottom right, bottom left, top left
-        {b2Vec2(2.85,0.2), b2Vec2(2.8,0.1), b2Vec2(2.65,0.33), b2Vec2(2.7,0.4)}, //top right, bottom right, bottom left, top left
-        {b2Vec2(3.05f,0.1), b2Vec2(3.05f,0.2), b2Vec2(2.85,0.2), b2Vec2(2.8,0.1)}, //bottom right, top right, top left, bottom left
+        {b2Vec2(2.15,0.60), b2Vec2(2.2,0.8), b2Vec2(1.5,0.8), b2Vec2(1.5,0.65)}, //bottom right, top right, top left, bottom left
+        {b2Vec2(2.7,0.5), b2Vec2(2.65,0.33), b2Vec2(2.15,0.60), b2Vec2(2.2,0.8)}, //top right, bottom right, bottom left, top left
+        {b2Vec2(2.85,0.3), b2Vec2(2.8,0.1), b2Vec2(2.65,0.33), b2Vec2(2.7,0.5)}, //top right, bottom right, bottom left, top left
+        {b2Vec2(3.05f,0.1), b2Vec2(3.05f,0.3), b2Vec2(2.85,0.3), b2Vec2(2.8,0.1)}, //bottom right, top right, top left, bottom left
 
         //rear wheel guard -- front guard, mid guard, back guard, back ridge
-        {b2Vec2(-2.15,0.60), b2Vec2(-2.2,0.7), b2Vec2(-0.5,0.7), b2Vec2(-0.5,0.60)}, //bottom left, top left, top right, bottom right
-        {b2Vec2(-2.7,0.4), b2Vec2(-2.65,0.33), b2Vec2(-2.15,0.60), b2Vec2(-2.2,0.7)}, //top left, bottom left, bottom right, top right
-        {b2Vec2(-2.85,0.2), b2Vec2(-2.8,0.1), b2Vec2(-2.65,0.33), b2Vec2(-2.7,0.4)}, //top left, bottom left, bottom right, top right
-        {b2Vec2(-3.05f,0.1), b2Vec2(-3.05f,0.2), b2Vec2(-2.85,0.2), b2Vec2(-2.8,0.1)}, //bottom left, top left, top right, bottom right
+        {b2Vec2(-2.15,0.60), b2Vec2(-2.2,0.8), b2Vec2(-0.5,0.8), b2Vec2(-0.5,0.60)}, //bottom left, top left, top right, bottom right
+        {b2Vec2(-2.7,0.5), b2Vec2(-2.65,0.33), b2Vec2(-2.15,0.60), b2Vec2(-2.2,0.8)}, //top left, bottom left, bottom right, top right
+        {b2Vec2(-2.85,0.3), b2Vec2(-2.8,0.1), b2Vec2(-2.65,0.33), b2Vec2(-2.7,0.5)}, //top left, bottom left, bottom right, top right
+        {b2Vec2(-3.05f,0.1), b2Vec2(-3.05f,0.3), b2Vec2(-2.85,0.3), b2Vec2(-2.8,0.1)}, //bottom left, top left, top right, bottom right
 
         //bumpers -- rear bumper, mid bumper, front bumper
         {b2Vec2(-3.1f,-0.15f), b2Vec2(-3.15f,-0.4f), b2Vec2(-2.9,-0.4), b2Vec2(-2.8,-0.15)}, //top left, bottom left, bottom right, top right
