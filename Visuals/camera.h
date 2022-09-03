@@ -47,7 +47,7 @@ class Camera {
 
 public:
 
-    Camera(float x, float y, float z, bool* keyP, bool* keyM){posX = x; posY = y; zoom = z; keyPlus = keyP; keyMinus = keyM; loadTextures();};
+    Camera(GLFWwindow* window, float x, float y, float z, bool* keyP, bool* keyM){posX = x; posY = y; zoom = z; keyPlus = keyP; keyMinus = keyM; loadTextures(); setWindowIcon(window);};
     ~Camera(){unloadTextures();};
 
     //getters and setters
@@ -79,12 +79,15 @@ public:
     void updateGlow();
 
 
-
 private:
+
+    //set window icon
+    void setWindowIcon(GLFWwindow* window);
 
     //attempt to load all text textures into opengl 2D textures
     void loadTextures();
     void unloadTextures();
+
 
     void catchZoom(); //locks the zoom level between a fixed range
 

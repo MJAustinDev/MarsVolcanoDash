@@ -10,7 +10,7 @@ SOFTWARE.
 
 */
 
-
+#include "gameIcon.h" //set compiled game icon
 
 #include <time.h>
 #include <iostream>
@@ -87,7 +87,7 @@ int main(){
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window,inputHandler);
+    glfwSetKeyCallback(window, inputHandler);
     glfwSetWindowAspectRatio(window, 4, 3); //force 4 to 3 ratio when not in full screen
     glClearColor(0.0f,0.0f,0.0f,0.0f); //set outside viewport clear colour
 
@@ -111,7 +111,7 @@ int main(){
     keys[11] = &keyK;
 
     //define key game objects
-    Camera camera(0.0f,0.0f,0.1f,&keyPlus, &keyMinus);
+    Camera camera(window, 0.0f,0.0f,0.1f,&keyPlus, &keyMinus);
     Manager manager(window,&camera);
 
     //game loop, runs until glfw is told to kill the window

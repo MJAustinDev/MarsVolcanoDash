@@ -112,3 +112,15 @@ unsigned int Camera :: getTexture(int id){
         default : {return (unsigned int) -1;} //invalid identifier return texture doesn't exist
     }
 }
+
+//set window's icon
+void Camera :: setWindowIcon(GLFWwindow* window){
+
+    stbi_set_flip_vertically_on_load(false);
+
+    GLFWimage icon[1];
+    int chan;
+    icon[0].pixels = stbi_load("./Visuals/Icons/MarsVolcanoDashIcon.png", &icon[0].width, &icon[0].height, &chan, STBI_rgb_alpha);
+    glfwSetWindowIcon(window, 1, icon);
+    stbi_image_free(icon[0].pixels);
+}

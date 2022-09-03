@@ -51,6 +51,10 @@
 		<Unit filename="Utility/gameConfig.h" />
 		<Unit filename="Utility/linkedList.h" />
 		<Unit filename="Utility/rangedRandom.h" />
+		<Unit filename="Visuals/Icons/gameIcon.h" />
+		<Unit filename="Visuals/Icons/gameIcon.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Unit filename="Visuals/button.cpp" />
 		<Unit filename="Visuals/camera.cpp" />
 		<Unit filename="Visuals/camera.h" />
