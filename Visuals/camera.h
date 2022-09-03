@@ -80,7 +80,6 @@ public:
 
     //draw terrain and lava
     void drawChunkShape(b2Body* body, DrawShape* drawShape);
-    void drawLava(float lavaX, float playerY, b2Vec2* baseShape, b2Vec2* edgeShape, b2Vec2* innerShape);
 
 private:
 

@@ -200,7 +200,8 @@ private:
 
     void attemptSpawn(); //spawn big enemy if correct ticks to live have reached zero
     void process(); //process enemy game events
-    void draw(Camera* camera);
+    void drawLava(Camera* camera); //draws the lava quadrilateral
+    void draw(Camera* camera); //draw all enemies to the screen
 
     template <typename T> void spawnBigEnemy(LinkedList<T>* objList, b2Vec2 pos, float sizeRand, float maxForce);
     template <typename T> void processEnemy(LinkedList<T>* objList);
@@ -217,11 +218,11 @@ private:
 
     //lava draw shape coordinates
     //set corner points
-    b2Vec2 lavaShapePoints[4] = {b2Vec2(5.0f, -128.0f), b2Vec2(-5.0f, 128.0f), b2Vec2(-128.0f, 128.0f), b2Vec2(-128.0f, -128.0f)}; //bottom right -> top right -> top left -> bottom left
+    b2Vec2 baseShape[4] = {b2Vec2(5.0f, -128.0f), b2Vec2(-5.0f, 128.0f), b2Vec2(-128.0f, 128.0f), b2Vec2(-128.0f, -128.0f)}; //bottom right -> top right -> top left -> bottom left
     //random edge points
-    b2Vec2 lavaShapeEdge[32]; //0-7 bottom edge, 8-15 right edge, 16-23 top edge, 24-31 left edge
+    b2Vec2 edgeShape[32]; //0-7 bottom edge, 8-15 right edge, 16-23 top edge, 24-31 left edge
     //random internal points
-    b2Vec2 lavaShapeInner[32];
+    b2Vec2 innerShape[32];
 
     //enemies controlled by the enemy manager
     LinkedList<Fireball> fireballs;

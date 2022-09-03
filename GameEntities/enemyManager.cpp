@@ -61,7 +61,7 @@ EnemyManager :: EnemyManager(b2World* w, Player** p, GameConfig* cfig){
     for (int i=0;i<32;i++){
         bool valid = false;
         while (!valid){
-            lavaShapeInner[i].Set(randRanged(-128.0,5.0), randRanged(-128, 128)); //lava point is P
+            innerShape[i].Set(randRanged(-128.0,5.0), randRanged(-128, 128)); //lava point is P
             /*                               B=(-5,128)
             |--------------------------------|\
             |                                | \
@@ -80,17 +80,17 @@ EnemyManager :: EnemyManager(b2World* w, Player** p, GameConfig* cfig){
                                              A=(-5,-128)   C=(5,128)
             if P is behind or on triangle's left edge (P.x<=-5) then P lies inside the main lava rectangle,
             else if (angle ABP is less than or equal to angle ABC) then P is inside the lava front triangle */
-            valid = (lavaShapeInner[i].x <= -5.0f) || (cosignRuleAngle(lavaShapeInner[i]) <= 0.039); //ABC is approx 0.039 radians
+            valid = (innerShape[i].x <= -5.0f) || (cosignRuleAngle(innerShape[i]) <= 0.039); //ABC is approx 0.039 radians
         }
     }
 
     //set random edge draw points for lava polygon
     for (int i=0;i<8;i++){
-        lavaShapeEdge[i].Set(randRanged(-128,5.0),-128); //bottom edge
-        lavaShapeEdge[i+8].x = randRanged(-5,5); //right edge x axis
-        lavaShapeEdge[i+8].y = (-25.6*lavaShapeEdge[i+8].x) + 1; //right edge y axis using y = mx + c, using B and C m = -25.6 and c = 1
-        lavaShapeEdge[i+16].Set(randRanged(-128,-5.0),128); //top edge
-        lavaShapeEdge[i+24].Set(-128, randRanged(-128,128)); //left edge
+        edgeShape[i].Set(randRanged(-128,5.0),-128); //bottom edge
+        edgeShape[i+8].x = randRanged(-5,5); //right edge x axis
+        edgeShape[i+8].y = (-25.6*edgeShape[i+8].x) + 1; //right edge y axis using y = mx + c, using B and C m = -25.6 and c = 1
+        edgeShape[i+16].Set(randRanged(-128,-5.0),128); //top edge
+        edgeShape[i+24].Set(-128, randRanged(-128,128)); //left edge
     }
 }
 
@@ -241,7 +241,64 @@ void EnemyManager :: draw(Camera* camera){
             fragments.cycle->obj->draw(camera);
         } while (fragments.cycleUp());
     }
-
-    //draw lava
-    camera->drawLava(lavaX, (*player)->getPos().y, lavaShapePoints, lavaShapeEdge, lavaShapeInner);
 }
+
+//draws the lava quadrilateral
+void EnemyManager :: drawLava(Camera* camera){
+
+    b2Vec2 posBody = camera->getCamPos(b2Vec2(lavaX, (*player)->getPos().y));
+    float shade = 0.95f-(camera->getGlow());
+    float alphaEdge = 0.11f-(camera->getGlow());
+    float alphaInner = (camera->getGlow())*0.125;
+    float dispPos = (10.0f*(camera->getGlow()));
+    float dispNeg = dispPos*-1;
+    float* dispX = &dispPos;
+    float* dispY = &dispPos;
+
+    //colours are scoped locally so can multiply with shade just once
+    float baseColour[3] = {0.96f*shade, 0.41f*shade, 0.02f*shade};
+    //internal point colours
+    float c1[3] = {0.97f*shade, 0.2f*shade, 0.17f*shade};
+    float c2[3] = {0.95f*shade, 0.95f*shade, 0.09f*shade};
+    float c3[3] = {0.89f*shade, 0.37f*shade, 0.13f*shade};
+    float c4[3] = {1.0f*shade, 0.4f*shade, 0.93f*shade};
+    float* c;
+
+    //draw base shape
+    glBegin(GL_POLYGON);
+    glColor4f(baseColour[0], baseColour[1], baseColour[2],0.90f);
+    for (int i=0;i<4;i++){
+        camera->placePoint(posBody, baseShape[i]);
+    }
+    glEnd();
+
+    //draw inner shading
+    for (int k=0;k<4;k++){ //for each outer point
+        glBegin(GL_POLYGON);
+        glColor4f(baseColour[0], baseColour[1], baseColour[2],0.25f);
+        camera->placePoint(posBody, baseShape[k]);
+        for (int j=0;j<4;j++){ //for each pair of edge points
+            //one edge
+            glColor4f(baseColour[0], baseColour[1], baseColour[2], alphaEdge);
+            camera->placePoint(posBody, edgeShape[j+(k*8)]);
+            for (int i=0;i<8;i++){ //for 8 inner points
+                switch (i%4){ //displacement will in part carry from the previous, so just set the changed axis
+                    case 0 : {c = c1; dispX = &dispPos; break;} //displacement X +, displacement Y +
+                    case 1 : {c = c2; dispY = &dispNeg; break;} //displacement X +, displacement Y -
+                    case 2 : {c = c3; dispX = &dispNeg; break;} //displacement X -, displacement Y -
+                    case 3 : {c = c4; dispY = &dispPos; break;} //displacement X -, displacement Y +
+                }
+                glColor4f(c[0], c[1], c[2], alphaInner);
+                b2Vec2 movePoint = innerShape[i+(j*8)]; //split into 4 chunks each 8 wide
+                movePoint.x+=(*dispX);
+                movePoint.y+=(*dispY);
+                camera->placePoint(posBody, movePoint);
+            }
+            //another edge
+            glColor4f(baseColour[0], baseColour[1], baseColour[2], alphaEdge);
+            camera->placePoint(posBody, edgeShape[j+4]);
+        }
+        glEnd();
+    }
+}
+

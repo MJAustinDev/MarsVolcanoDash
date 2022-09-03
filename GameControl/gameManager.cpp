@@ -147,13 +147,15 @@ void GameManager :: draw(Camera* camera){
         } while (chunks.cycleUp());
     }
 
+    enemies->draw(camera); //draw enemies before player
+
     //draw player/players
     player->draw(camera);
     if (player2!=nullptr){
         player2->draw(camera);
     }
 
-    enemies->draw(camera); //draw enemies
+    enemies->drawLava(camera); //draw lava after player
 
 }
 
