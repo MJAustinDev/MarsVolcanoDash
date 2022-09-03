@@ -122,36 +122,43 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
 //define starting segment -- TODO redesign the volcano edge
 void Chunk :: defSegmentStart(){
 
-    b2Vec2 points[8];
-    points[0].Set(-32,0.0);
-    points[1].Set(-32,-3.0);
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-200,0.0);
+    points[1].Set(-200,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4,0);
+    addShape(points,4,0); //use ground chunk shading
 
-    //TODO -- REDESIGN STARTING MOUNTAIN
+    //start of mountain slope
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-20.0f,0.0f);
     points[2].Set(-25.0f,3.0f);
-    addShape(points,3,-1); //use default shading for now
+    addShape(points,3,-1); //use default shading
 
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-25.0f,3.0f);
     points[2].Set(-30.0f,10.0f);
-    addShape(points,3,-1);
+    addShape(points,3,-1); //use default shading
 
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-30.0f,10.0f);
     points[2].Set(-32.0f,32.0f);
-    addShape(points,3,-1);
+    addShape(points,3,-1); //use default shading
 
+    //backing of mountain slope
+    points[0].Set(-32.0f, 0.0f);
+    points[1].Set(-32.0f, 32.0f);
+    points[2].Set(-63.0f, 400.0f);
+    points[3].Set(-200.0f, 400.0f);
+    points[4].Set(-200.0f, 0.0f);
+    addShape(points, 5, 1); //use backing mountain shading
 }
 
 
 //flat base with randomly assigned rocks
 void Chunk :: defSegment0(){
 
-    b2Vec2 points[8];
+    b2Vec2 points[8]; //main base plate
     points[0].Set(-32,0.0);
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);

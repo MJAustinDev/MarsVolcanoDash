@@ -54,6 +54,7 @@
 		<Unit filename="Visuals/button.cpp" />
 		<Unit filename="Visuals/camera.cpp" />
 		<Unit filename="Visuals/camera.h" />
+		<Unit filename="Visuals/drawChunks.cpp" />
 		<Unit filename="Visuals/loadTextures.cpp" />
 		<Unit filename="Visuals/menuBackground.cpp" />
 		<Unit filename="Visuals/visualColours.h" />

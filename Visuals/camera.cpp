@@ -25,8 +25,6 @@ SOFTWARE.
 */
 
 #include "camera.h"
-#include "visualColours.h"
-
 
 //handle camera zoom from user input
 void Camera :: processInput(){
@@ -38,13 +36,24 @@ void Camera :: processInput(){
     if (*(keyMinus)){
         zoom = zoom - 0.001;
     }
+    catchZoom();
+}
 
-    //TODO -- DECIDE BETTER ZOOM OUT CAP
-    if (zoom<0.001){
-        zoom = 0.001;
+void Camera :: setCamPos(float x, float y, float z){
+    posX = x;
+    posY = y;
+    zoom = z;
+    catchZoom();
+}
+
+void Camera :: catchZoom(){
+    if (zoom<0.00799998){
+        zoom = 0.00799998;
+        return; //no point bothering with the below as it is now false
     }
-    //TODO -- DECIDE AND IMPLEMENT A MAX ZOOM IN CAP
-
+    if (zoom>0.1){
+        zoom = 0.1;
+    }
 }
 
 
@@ -163,55 +172,4 @@ void Camera :: drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* c
         placeRotatePoint(posBody,points[0],angle);
         placeRotatePoint(posBody,points[1],angle);
     glEnd();
-}
-
-
-
-//TODO -- in future if file exceeds reasonable lines of code, send over to new chunks drawing .cpp file
-void Camera :: drawChunkShape(b2Body* body, DrawShape* drawShape){
-
-    b2Vec2 posBody = getCamBodyPos(body);
-
-    switch (drawShape->drawId) {
-        case 0 : {drawChunkId0(posBody, drawShape->shapePoints); break;} //basic ground chunk shape
-        default : {drawDefaultChunkShape(posBody, drawShape);} //default shape shading
-    }
-}
-
-//basic ground chunk
-void Camera :: drawChunkId0(b2Vec2 posBody, b2Vec2* points){
-
-    //order of points in b2Vec2 array, top left -> bottom left -> bottom right -> top right
-
-    //colour should be scoped locally to allow for design changes in specific terrain
-    float baseColour[3] = COLOUR_DEFAULT_GROUND;
-    float shade = 1.0f-glow;
-
-    //starting at [1],.. and ending at ...,[0] to save colour changing
-    float underCol[4] = COLOUR_BACK_GAME; //colour underneath the terrain
-    glBegin(GL_POLYGON);
-        glColor4f(underCol[0], underCol[1], underCol[2], underCol[3]);
-        placePoint(posBody, b2Vec2(points[1].x, points[1].y - 15.0f));
-        placePoint(posBody, b2Vec2(points[2].x, points[2].y - 15.0f));
-        glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, 1.0f);
-        placePoint(posBody, points[3]);
-        placePoint(posBody, points[0]);
-    glEnd();
-
-}
-
-//solid fills in the chunk shape with glow
-void Camera :: drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape){
-
-    //colour should be scoped locally to allow for design changes in specific terrain
-    float baseColour[3] = COLOUR_DEFAULT_GROUND;
-    float shade = 1.0f-glow;
-
-    glBegin(GL_POLYGON);
-        glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade,1.0f);
-        for (int i=0;i<drawShape->pointCount;i++){
-            placePoint(posBody, drawShape->shapePoints[i]);
-        }
-    glEnd();
-
 }

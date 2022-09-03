@@ -53,7 +53,7 @@ public:
     //getters and setters
     float getGlow(){return glow;}; //returns the value of glow
     unsigned int getTexture(int id); //returns the loaded texture number that corresponds to the inputted identifier
-    void setCamPos(float x, float y, float z){posX = x; posY = y; zoom = z;};
+    void setCamPos(float x, float y, float z); //resets the camera position
 
     //draw using pure opengl coordinates
     void drawPureRect(float* colour, float coords[4]); //draws a rectangle of form {top, left, bottom, right}
@@ -72,24 +72,21 @@ public:
     void drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle); //draw b2PolygonShape from body position and angle
     void drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut); //draws circle with different colours at centre and circumfrence
     void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
+    void drawChunkShape(b2Body* body, DrawShape* drawShape); //draw terrain shapes
 
     void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
     void processInput();
     void updateGlow();
 
 
-    //draw terrain and lava
-    void drawChunkShape(b2Body* body, DrawShape* drawShape);
 
 private:
-
-    //draw chunks dependant on identifier
-    void drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape);
-    void drawChunkId0(b2Vec2 posBody, b2Vec2* points);
 
     //attempt to load all text textures into opengl 2D textures
     void loadTextures();
     void unloadTextures();
+
+    void catchZoom(); //locks the zoom level between a fixed range
 
 
     float posX;
