@@ -122,7 +122,7 @@ void Manager :: processMenu(bool** keys){
             case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); break;} //exit button kill game loop
         }
         selected = 5; //set selected for in game resume option
-        glClearColor(0.05,0.01,0.1,1.0); //set background to game background
+        colBack = colBackGame; //set background colour to game background colour
         //TODO -- SET CAMERA ZOOM TO DEFAULT STARTING ZOOM
     }
     animateBack.process(); //update background animation
@@ -156,7 +156,7 @@ void Manager :: processGame(bool** keys){
                     delete gameMan;
                     gameMan = nullptr;
                     onMenu = true;
-                    glClearColor(0.0f,0.0f,0.0f,1.0f); //set to menu back ground colour
+                    colBack = colBackMenu; //set to menu background colour
                     //TODO -- SET CAMERA ZOOM FOR MENU
                     if (scoreReady){clearScoreButton();} //reset score button's extra textures
                     if (winsReady){clearWinsButton();} //reset wins button's extra textures
@@ -264,7 +264,12 @@ void Manager :: draw(){
         int pxH;
         glfwGetFramebufferSize(window, &pxW, &pxH); //get screen size
         glViewport(0, 0, pxW, pxH); //recentre screen
-        glClear(GL_COLOR_BUFFER_BIT); //clear screen
+        if (glfwGetWindowAttrib(window, GLFW_MAXIMIZED)){
+            glClear(GL_COLOR_BUFFER_BIT); //clear total screen
+            glViewport((pxW/2)-640,(pxH/2)-480, 1280, 960);
+        }
+        float drawView[4] = {1.0f,-1.0f,-1.0f,1.0f};
+        camera->drawPureRect(colBack, drawView); //clears the view port to the given background colour
 
         if (onMenu){ //drawing main menu
             animateBack.draw(camera); //draw back ground

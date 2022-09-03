@@ -68,7 +68,6 @@ static void inputHandler(GLFWwindow* window, int key, int scancode, int action, 
 
 }
 
-
 int main(){
 
     srand(time(NULL));
@@ -89,6 +88,8 @@ int main(){
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window,inputHandler);
+    glfwSetWindowAspectRatio(window, 4, 3); //force 4 to 3 ratio when not in full screen
+    glClearColor(0.0f,0.0f,0.0f,0.0f); //set outside viewport clear colour
 
     //set blending function for transparency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -112,7 +113,6 @@ int main(){
     //define key game objects
     Camera camera(0.0f,0.0f,0.1f,&keyPlus, &keyMinus);
     Manager manager(window,&camera);
-    glClearColor(0.0f,0.0f,0.0f,1.0f); //set to menu background colour
 
     //game loop, runs until glfw is told to kill the window
     while (!glfwWindowShouldClose(window)){

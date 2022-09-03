@@ -25,6 +25,7 @@ SOFTWARE.
 */
 
 #include "camera.h"
+#include "visualColours.h"
 
 
 //handle camera zoom from user input
@@ -63,10 +64,10 @@ void Camera :: drawPureRect(float* colour, float coords[4]){ //coords takes form
     float shade = 1.0f-(0.75f*glow);
     glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, 1.0f);
     glBegin(GL_POLYGON);
-    glVertex2f(coords[1], coords[0]);
-    glVertex2f(coords[1], coords[2]);
-    glVertex2f(coords[3], coords[2]);
-    glVertex2f(coords[3], coords[0]);
+        glVertex2f(coords[1], coords[0]);
+        glVertex2f(coords[1], coords[2]);
+        glVertex2f(coords[3], coords[2]);
+        glVertex2f(coords[3], coords[0]);
     glEnd();
 }
 
@@ -75,19 +76,19 @@ void Camera :: drawPureRectText(float* colour, unsigned int textID, float wCoord
         float shade = 1.0f-(0.75f*glow);
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, 1.0f);
         glEnable (GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, textID);
-        glBegin(GL_POLYGON);
-        glTexCoord2f(tCoords[1], tCoords[0]);
-        glVertex2f(wCoords[1], wCoords[0]);
+            glBindTexture(GL_TEXTURE_2D, textID);
+            glBegin(GL_POLYGON);
+            glTexCoord2f(tCoords[1], tCoords[0]);
+            glVertex2f(wCoords[1], wCoords[0]);
 
-        glTexCoord2f(tCoords[1], tCoords[2]);
-        glVertex2f(wCoords[1], wCoords[2]);
+            glTexCoord2f(tCoords[1], tCoords[2]);
+            glVertex2f(wCoords[1], wCoords[2]);
 
-        glTexCoord2f(tCoords[3], tCoords[2]);
-        glVertex2f(wCoords[3], wCoords[2]);
+            glTexCoord2f(tCoords[3], tCoords[2]);
+            glVertex2f(wCoords[3], wCoords[2]);
 
-        glTexCoord2f(tCoords[3], tCoords[0]);
-        glVertex2f(wCoords[3], wCoords[0]);
+            glTexCoord2f(tCoords[3], tCoords[0]);
+            glVertex2f(wCoords[3], wCoords[0]);
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
@@ -135,9 +136,9 @@ void Camera :: placeCirclePoints(int res, int lower, int upper, b2Vec2 posBody, 
 void Camera :: drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle){
 
     glBegin(GL_POLYGON);
-    for (int i=0;i<shape->m_count;i++){
-        placeRotatePoint(posBody,shape->m_vertices[i],angle);
-    }
+        for (int i=0;i<shape->m_count;i++){
+            placeRotatePoint(posBody,shape->m_vertices[i],angle);
+        }
     glEnd();
 
 }
@@ -146,21 +147,21 @@ void Camera :: drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float a
 void Camera :: drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut){
     int res = 36; //number of connected points on the circumference, i.e., how circle-y the ball should be
     glBegin(GL_POLYGON);
-    glColor4f(colour[0]*glowCen,colour[1]*glowCen,colour[2]*glowCen,1.0f);
-    placePoint(posBody, b2Vec2(0.0f,0.0f));
-    glColor4f(colour[0]*glowOut,colour[1]*glowOut,colour[2]*glowOut,1.0f);
-    placeCirclePoints(res,0,res+1,posBody,radius,0.0f); //+1 as have to fit the same final point on circumference again
+        glColor4f(colour[0]*glowCen,colour[1]*glowCen,colour[2]*glowCen,1.0f);
+        placePoint(posBody, b2Vec2(0.0f,0.0f));
+        glColor4f(colour[0]*glowOut,colour[1]*glowOut,colour[2]*glowOut,1.0f);
+        placeCirclePoints(res,0,res+1,posBody,radius,0.0f); //+1 as have to fit the same final point on circumference again
     glEnd();
 }
 
 //draws triangle with different shaded edge points and centre point(0.0, 0.0)
 void Camera :: drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut){
     glBegin(GL_POLYGON);
-    glColor4f(colour[0]*glowCen,colour[1]*glowCen,colour[2]*glowCen,1.0f);
-    placeRotatePoint(posBody,b2Vec2(0.0f,0.0f),angle);
-    glColor4f(colour[0]*glowOut,colour[1]*glowOut,colour[2]*glowOut,1.0f);
-    placeRotatePoint(posBody,points[0],angle);
-    placeRotatePoint(posBody,points[1],angle);
+        glColor4f(colour[0]*glowCen,colour[1]*glowCen,colour[2]*glowCen,1.0f);
+        placeRotatePoint(posBody,b2Vec2(0.0f,0.0f),angle);
+        glColor4f(colour[0]*glowOut,colour[1]*glowOut,colour[2]*glowOut,1.0f);
+        placeRotatePoint(posBody,points[0],angle);
+        placeRotatePoint(posBody,points[1],angle);
     glEnd();
 }
 
@@ -183,17 +184,18 @@ void Camera :: drawChunkId0(b2Vec2 posBody, b2Vec2* points){
     //order of points in b2Vec2 array, top left -> bottom left -> bottom right -> top right
 
     //colour should be scoped locally to allow for design changes in specific terrain
-    float baseColour[3] = {0.73f,0.0f,0.0f};
+    float baseColour[3] = COLOUR_DEFAULT_GROUND;
     float shade = 1.0f-glow;
 
     //starting at [1],.. and ending at ...,[0] to save colour changing
+    float underCol[4] = COLOUR_BACK_GAME; //colour underneath the terrain
     glBegin(GL_POLYGON);
-    glColor4f(0.05f, 0.01f, 0.1f, 1.0f); //back ground colour want to fade into background
-    placePoint(posBody, b2Vec2(points[1].x, points[1].y - 15.0f));
-    placePoint(posBody, b2Vec2(points[2].x, points[2].y - 15.0f));
-    glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, 1.0f);
-    placePoint(posBody, points[3]);
-    placePoint(posBody, points[0]);
+        glColor4f(underCol[0], underCol[1], underCol[2], underCol[3]);
+        placePoint(posBody, b2Vec2(points[1].x, points[1].y - 15.0f));
+        placePoint(posBody, b2Vec2(points[2].x, points[2].y - 15.0f));
+        glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, 1.0f);
+        placePoint(posBody, points[3]);
+        placePoint(posBody, points[0]);
     glEnd();
 
 }
@@ -202,14 +204,14 @@ void Camera :: drawChunkId0(b2Vec2 posBody, b2Vec2* points){
 void Camera :: drawDefaultChunkShape(b2Vec2 posBody, DrawShape* drawShape){
 
     //colour should be scoped locally to allow for design changes in specific terrain
-    float baseColour[3] = {0.73f,0.0f,0.0f};
+    float baseColour[3] = COLOUR_DEFAULT_GROUND;
     float shade = 1.0f-glow;
 
     glBegin(GL_POLYGON);
-    glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade,1.0f);
-    for (int i=0;i<drawShape->pointCount;i++){
-        placePoint(posBody, drawShape->shapePoints[i]);
-    }
+        glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade,1.0f);
+        for (int i=0;i<drawShape->pointCount;i++){
+            placePoint(posBody, drawShape->shapePoints[i]);
+        }
     glEnd();
 
 }

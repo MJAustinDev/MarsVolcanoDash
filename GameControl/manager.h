@@ -31,6 +31,8 @@ SOFTWARE.
 #include "gameConfig.h"
 #include "gameManagement.h"
 
+#include "visualColours.h"
+
 /*
 
 
@@ -152,6 +154,11 @@ private:
     double timerMenu = 0.0; //process menu events
     double timerDraw = 0.0; //draw to screen
     Camera* camera = nullptr; //points to main camera
+
+    //vars to set the background colour
+    float colBackMenu[4] = COLOUR_BACK_MENU;
+    float colBackGame[4] = COLOUR_BACK_GAME;
+    float* colBack = colBackMenu;
 
 };
 
