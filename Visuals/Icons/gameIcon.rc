@@ -1,0 +1,4 @@
+
+#include "gameIcon.h"
+
+gameIconID ICON "./Visuals/Icons/MarsVolcanoDashIcon.ico"
