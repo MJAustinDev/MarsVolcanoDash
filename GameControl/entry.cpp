@@ -34,7 +34,6 @@ bool keyI = false;
 bool keyK = false;
 
 
-
 void errorHandler(int error, const char* description) {
     cout << "Error: " << error << endl << "Description: " << description << endl;
 }
@@ -68,6 +67,25 @@ static void inputHandler(GLFWwindow* window, int key, int scancode, int action, 
 
 }
 
+//adjusts the viewport so aspect ratio is maintained
+void sizeHandler(GLFWwindow* window, int width, int height){
+    float vpX, vpY, vpW, vpH;
+    if (width < height){
+        float stretch = width/1280.0f;
+        vpX = 0.0f;
+        vpY = (height-(960*stretch))/2.0f;
+        vpW = width;
+        vpH = height*stretch;
+    } else {
+        float stretch = height/960.0f;
+        vpX = (width-(1280*stretch))/2.0f;
+        vpY = 0.0f;
+        vpW = 1280*stretch;
+        vpH = height;
+    }
+    glViewport(vpX, vpY, vpW, vpH);
+}
+
 int main(){
 
     srand(time(NULL));
@@ -88,8 +106,8 @@ int main(){
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, inputHandler);
-    glfwSetWindowAspectRatio(window, 4, 3); //force 4 to 3 ratio when not in full screen
-    glClearColor(0.0f,0.0f,0.0f,0.0f); //set outside viewport clear colour
+    glfwSetWindowSizeCallback(window, sizeHandler);
+    glClearColor(0.0f,0.0f,0.0f,1.0f); //set outside viewport clear colour
 
     //set blending function for transparency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -111,8 +129,8 @@ int main(){
     keys[11] = &keyK;
 
     //define key game objects
-    Camera camera(window, 0.0f,0.0f,0.1f,&keyPlus, &keyMinus);
-    Manager manager(window,&camera);
+    Camera camera(window, 0.0f, 0.0f, 0.1f, &keyPlus, &keyMinus);
+    Manager manager(window, &camera);
 
     //game loop, runs until glfw is told to kill the window
     while (!glfwWindowShouldClose(window)){

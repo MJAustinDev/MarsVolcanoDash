@@ -260,14 +260,9 @@ void Manager :: clearWinsButton(){
 void Manager :: draw(){
 
     if (timerDraw < glfwGetTime()) {
-        int pxW;
-        int pxH;
-        glfwGetFramebufferSize(window, &pxW, &pxH); //get screen size
-        glViewport(0, 0, pxW, pxH); //recentre screen
-        if (glfwGetWindowAttrib(window, GLFW_MAXIMIZED)){
-            glClear(GL_COLOR_BUFFER_BIT); //clear total screen
-            glViewport((pxW/2)-640,(pxH/2)-480, 1280, 960);
-        }
+
+        //clear screen and viewport
+        glClear(GL_COLOR_BUFFER_BIT); //clear total screen creating black space behind the view port
         float drawView[4] = {1.0f,-1.0f,-1.0f,1.0f};
         camera->drawPureRect(colBack, drawView); //clears the view port to the given background colour
 
