@@ -42,10 +42,10 @@ void Camera :: processInput(){
 void Camera :: setCamPos(float x, float y, float z){
     posX = x;
     posY = y;
-    zoom = z;
-    catchZoom();
+    zoom = z; //dont want to catch so that it can be used on the main menu
 }
 
+//catches zoom for game play view
 void Camera :: catchZoom(){
     if (zoom<0.00799998){
         zoom = 0.00799998;

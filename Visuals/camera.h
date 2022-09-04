@@ -36,9 +36,9 @@ SOFTWARE.
 
 //used when drawing boulders and fragments to access the non-centre points from the b2PolygonShape
 inline void forceEdgePoints(b2Vec2* points, b2PolygonShape* shape){
-    if (points[0].x == 0.0f && points[0].x == 0.0f){
+    if (points[0].x == 0.0f && points[0].y == 0.0f){
         points[0] = shape->m_vertices[2];
-    } else if (points[1].x == 0.0f && points[1].x == 0.0f){
+    } else if (points[1].x == 0.0f && points[1].y == 0.0f){
         points[1] = shape->m_vertices[2];
     }
 }

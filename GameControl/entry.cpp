@@ -129,7 +129,7 @@ int main(){
     keys[11] = &keyK;
 
     //define key game objects
-    Camera camera(window, 0.0f, 0.0f, 0.1f, &keyPlus, &keyMinus);
+    Camera camera(window, 0.0f, 0.0f, 1.0f, &keyPlus, &keyMinus);
     Manager manager(window, &camera);
 
     //game loop, runs until glfw is told to kill the window

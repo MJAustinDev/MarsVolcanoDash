@@ -27,8 +27,7 @@ SOFTWARE.
 
 #include "gameEntities.h"
 
-#include <iostream>
-using namespace std;
+#include "visualColours.h"
 
 //Pythagorean theorem for displacement between 2 points
 float pointDistance(b2Vec2 a, b2Vec2 b){
@@ -255,14 +254,27 @@ void EnemyManager :: drawLava(Camera* camera){
     float* dispX = &dispPos;
     float* dispY = &dispPos;
 
-    //colours are scoped locally so can multiply with shade just once
-    float baseColour[3] = {0.96f*shade, 0.41f*shade, 0.02f*shade};
+    //set up used colours
+    float baseColour[4] = COLOUR_LAVA_0;
     //internal point colours
-    float c1[3] = {0.97f*shade, 0.2f*shade, 0.17f*shade};
-    float c2[3] = {0.95f*shade, 0.95f*shade, 0.09f*shade};
-    float c3[3] = {0.89f*shade, 0.37f*shade, 0.13f*shade};
-    float c4[3] = {1.0f*shade, 0.4f*shade, 0.93f*shade};
+    float c1[4] = COLOUR_LAVA_1;
+    float c2[4] = COLOUR_LAVA_2;
+    float c3[4] = COLOUR_LAVA_3;
+    float c4[4] = COLOUR_LAVA_4;
     float* c;
+    //shade all colours once then reuse later
+    for (int i=0;i<5;i++){
+        switch(i){
+            case 0 : {c = baseColour; break;}
+            case 1 : {c = c1; break;}
+            case 2 : {c = c2; break;}
+            case 3 : {c = c3; break;}
+            case 4 : {c = c4; break;}
+        }
+        for (int j=0;j<3;j++){
+            c[j] *= shade;
+        }
+    }
 
     //draw base shape
     glBegin(GL_POLYGON);

@@ -157,7 +157,7 @@ void Manager :: processGame(bool** keys){
                     gameMan = nullptr;
                     onMenu = true;
                     colBack = colBackMenu; //set to menu background colour
-                    //TODO -- SET CAMERA ZOOM FOR MENU
+                    camera->setCamPos(0.0f, 0.0f, 1.0f); //set camera position and zoom for the main menu
                     if (scoreReady){clearScoreButton();} //reset score button's extra textures
                     if (winsReady){clearWinsButton();} //reset wins button's extra textures
                     //don't break as want to execute case 5 code as well
@@ -263,8 +263,8 @@ void Manager :: draw(){
 
         //clear screen and viewport
         glClear(GL_COLOR_BUFFER_BIT); //clear total screen creating black space behind the view port
-        float drawView[4] = {1.0f,-1.0f,-1.0f,1.0f};
-        camera->drawPureRect(colBack, drawView); //clears the view port to the given background colour
+        float viewport[4] = {1.0f,-1.0f,-1.0f,1.0f};
+        camera->drawPureRect(colBack, viewport); //clears the view port to the given background colour
 
         if (onMenu){ //drawing main menu
             animateBack.draw(camera); //draw back ground

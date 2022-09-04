@@ -49,7 +49,17 @@ private:
     void process();
     void draw(Camera* camera);
 
-    //TODO -- USE VISUAL STRUCTURES TO DEFINE DRAW SHAPES
+    void defShapeMountain();
+    void defShapeLavaFlow();
+
+    //
+    b2PolygonShape mountains[4];
+    float mountCol[4][4] = {COLOUR_BLOOD_RED, COLOUR_DEFAULT_GROUND, COLOUR_DEFAULT_GROUND, COLOUR_LAVA_1};
+
+    b2PolygonShape lavaFlow[3];
+    float lavaFlCol[3][4] = {COLOUR_LAVA_0, COLOUR_LAVA_0, COLOUR_LAVA_0};
+
+
 
 };
 
