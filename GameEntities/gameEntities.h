@@ -46,7 +46,7 @@ protected:
     ~BaseEnemy();
     void process();
 
-    float colour[3];
+    float colour[4];
     int ttl;
     bool terminate = false;
     b2World* world;
@@ -173,7 +173,7 @@ private:
     void processInput(bool keyW, bool keyS, bool keyA, bool keyD);
     void draw(Camera* camera);
 
-    float colour[3];
+    float colour[4];
     float wheelDrawAng = 0.0f; //angle to draw wheels at (prevent rapid flickering when using real angle)
     CarDetails detail; //used to draw details on top of the car body
 

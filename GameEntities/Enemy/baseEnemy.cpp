@@ -26,6 +26,7 @@ SOFTWARE.
 
 
 #include "gameEntities.h"
+#include "visualColours.h"
 
 //base constructor
 BaseEnemy :: BaseEnemy(int ticks, b2World* w, b2Vec2 pos, b2Vec2 linVel,float angle){
@@ -52,25 +53,20 @@ void BaseEnemy :: process(){
     }
 };
 
-
 //breakable enemy constructor
 BaseBreakableEnemy :: BaseBreakableEnemy(int ticks, b2World* w, b2Vec2 pos, int numSen) : BaseEnemy(ticks,w,pos){
     numSensors = numSen;
     sensors = new b2Fixture*[numSensors];
     //set colour randomly
+    float colPur[4] = COLOUR_PURPLE;
+    float colOrg[4] = COLOUR_ORANGE;
+    float* rndColour = nullptr;
     switch (randModRanged(2)){
-        case 0 : { //purple
-            colour[0] = 0.69f;
-            colour[1] = 0.14f;
-            colour[2] = 1.0f;
-            break;
-        }
-        case 1 : { //orange
-            colour[0] = 1.0f;
-            colour[1] = 0.55f;
-            colour[2] = 0.15;
-            break;
-        }
+        case 0 : { rndColour = colPur; break; }
+        case 1 : {rndColour = colOrg; break; }
+    }
+    for (int i=0;i<3;i++){
+        colour[i] = rndColour[i];
     }
 };
 

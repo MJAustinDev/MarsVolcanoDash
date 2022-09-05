@@ -25,6 +25,7 @@ SOFTWARE.
 */
 
 #include "camera.h"
+#include "visualColours.h"
 
 //handle camera zoom from user input
 void Camera :: processInput(){
@@ -87,18 +88,18 @@ void Camera :: drawPureRectText(float* colour, unsigned int textID, float wCoord
         glEnable (GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, textID);
             glBegin(GL_POLYGON);
-            glTexCoord2f(tCoords[1], tCoords[0]);
-            glVertex2f(wCoords[1], wCoords[0]);
+                glTexCoord2f(tCoords[1], tCoords[0]);
+                glVertex2f(wCoords[1], wCoords[0]);
 
-            glTexCoord2f(tCoords[1], tCoords[2]);
-            glVertex2f(wCoords[1], wCoords[2]);
+                glTexCoord2f(tCoords[1], tCoords[2]);
+                glVertex2f(wCoords[1], wCoords[2]);
 
-            glTexCoord2f(tCoords[3], tCoords[2]);
-            glVertex2f(wCoords[3], wCoords[2]);
+                glTexCoord2f(tCoords[3], tCoords[2]);
+                glVertex2f(wCoords[3], wCoords[2]);
 
-            glTexCoord2f(tCoords[3], tCoords[0]);
-            glVertex2f(wCoords[3], wCoords[0]);
-        glEnd();
+                glTexCoord2f(tCoords[3], tCoords[0]);
+                glVertex2f(wCoords[3], wCoords[0]);
+            glEnd();
         glDisable(GL_TEXTURE_2D);
     }
 }
@@ -172,4 +173,39 @@ void Camera :: drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* c
         placeRotatePoint(posBody,points[0],angle);
         placeRotatePoint(posBody,points[1],angle);
     glEnd();
+}
+
+//covers the screen in a moving dust transparent storm
+void Camera :: drawDust(){
+    unsigned int texID = getTexture(19);
+    if (19 != (unsigned int)-1){ //if texture hasn't been found don't attempt to draw
+        float shade = 1.0f-(0.75f*glow);
+        float colour[4] = COLOUR_BLOOD_RED;
+        glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.2);
+
+        dustShift += 0.0085f;
+        if (dustShift>0.5f){
+            dustShift = 0.0f;
+        }
+
+        glEnable (GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, texID);
+            for (int i=0;i<5;i++){ //repeat for 5 times to cover the total span of 4 when dustShift is not zero
+                float xShift = (i*0.5) - dustShift;
+                glBegin(GL_POLYGON);
+                    glTexCoord2f(0, 0); //bottom left
+                    glVertex2f(-1 + xShift, -1);
+
+                    glTexCoord2f(1, 0); //bottom right
+                    glVertex2f(-0.5+xShift, -1);
+
+                    glTexCoord2f(1, 1); //top right
+                    glVertex2f(-0.5+xShift,1);
+
+                    glTexCoord2f(0, 1); //top left
+                    glVertex2f(-1+xShift, 1);
+                glEnd();
+            }
+        glDisable(GL_TEXTURE_2D);
+    }
 }

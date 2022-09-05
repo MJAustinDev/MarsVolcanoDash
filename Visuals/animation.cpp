@@ -114,6 +114,9 @@ void Animation :: draw(Camera* camera){
             camera->placePoint(posBody, b2Vec2(burstSide[i].x, burstSide[i].y + burstShift));
         glEnd();
     }
+
+    //draw dust storm over animation
+    camera->drawDust();
 }
 
 //sets mountain range shapes

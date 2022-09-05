@@ -164,11 +164,11 @@ void Player :: draw(Camera* camera){
     //draw car details
     for (int j=0;j<19;j++){
         glBegin(GL_POLYGON);
-        for (int i=0;i<4;i++){
-            float shade = (detail.colour[j][i]-glow); //workout glow-shade of point
-            glColor4f(colour[0]*shade,colour[1]*shade,colour[2]*shade,1.0f);
-            camera->placeRotatePoint(posBody,detail.points[j][i],angle);
-        }
+            for (int i=0;i<4;i++){
+                float shade = (detail.colour[j][i]-glow); //workout glow-shade of point
+                glColor4f(colour[0]*shade,colour[1]*shade,colour[2]*shade,1.0f);
+                camera->placeRotatePoint(posBody,detail.points[j][i],angle);
+            }
         glEnd();
     }
 
@@ -183,41 +183,39 @@ void Player :: draw(Camera* camera){
 
         //outer tyre
         glBegin(GL_POLYGON);
-        glColor4f(colShade[0], colShade[1], colShade[2], 1.0f);
-        camera->placeCirclePoints(res, 0, res, posBody, radius, wheelDrawAng);
+            glColor4f(colShade[0], colShade[1], colShade[2], 1.0f);
+            camera->placeCirclePoints(res, 0, res, posBody, radius, wheelDrawAng);
         glEnd();
 
         //inner ring
         radius -= 0.2;
         glBegin(GL_POLYGON);
-        glColor4f(colour[0]*0.1, colour[1]*0.1, colour[2]*0.1, 1.0f);
-        camera->placeCirclePoints(res, 0, res, posBody, radius, wheelDrawAng);
+            glColor4f(colour[0]*0.1, colour[1]*0.1, colour[2]*0.1, 1.0f);
+            camera->placeCirclePoints(res, 0, res, posBody, radius, wheelDrawAng);
         glEnd();
 
         //draw wheel hub
         //right hub section
         b2Vec2 pos(0.0f,-0.2f);
         glBegin(GL_POLYGON);
-        glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
-        camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw bottom hub point
-        glColor4f(colShade[0], colShade[1], colShade[2], 1.0f); //set to rim colour
-        camera->placeCirclePoints(res,-4,5,posBody,radius,wheelDrawAng); //draw rim points
-        glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
-        pos.y *= -1; //flip y to top hub point
-        camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw top hub point
+            glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
+            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw bottom hub point
+            glColor4f(colShade[0], colShade[1], colShade[2], 1.0f); //set to rim colour
+            camera->placeCirclePoints(res,-4,5,posBody,radius,wheelDrawAng); //draw rim points
+            glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
+            pos.y *= -1; //flip y to top hub point
+            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw top hub point
         glEnd();
 
         //left hub section
         glBegin(GL_POLYGON);
-        camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw top hub point
-        glColor4f(colShade[0], colShade[1], colShade[2], 1.0f); //set to rim colour
-        camera->placeCirclePoints(res,14,23,posBody,radius,wheelDrawAng); //draw rim points
-        pos.y *= -1; //flip y to bottom hub point
-        glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
-        camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw bottom hub point
+            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw top hub point
+            glColor4f(colShade[0], colShade[1], colShade[2], 1.0f); //set to rim colour
+            camera->placeCirclePoints(res,14,23,posBody,radius,wheelDrawAng); //draw rim points
+            pos.y *= -1; //flip y to bottom hub point
+            glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
+            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw bottom hub point
         glEnd();
-
         posBody = camera->getCamBodyPos(wheelBack);
     }
-
 }

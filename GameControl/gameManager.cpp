@@ -26,8 +26,7 @@ SOFTWARE.
 
 #include "gameManagement.h"
 
-#include <iostream>
-using namespace std;
+#include "visualColours.h"
 
 GameManager :: GameManager(GameConfig* config) {
 
@@ -43,10 +42,10 @@ GameManager :: GameManager(GameConfig* config) {
     addChunk(0);
 
     //define player
-    GLfloat colour1[3] = {0.69,0.14,1.0}; //purple
-    player = new Player(world,colour1);
+    float colour[4] = COLOUR_PURPLE;
+    player = new Player(world, colour);
     if (config->twoPlayer){
-        GLfloat colour2[3] = {1.0,0.55,0.15}; //orange
+        float colour2[4] = COLOUR_ORANGE;
         player2 = new Player(world,colour2);
     } else {
         player2 = nullptr;
@@ -140,14 +139,15 @@ void GameManager :: processChunkRemoval() {
 //draw world and game objects to the screen
 void GameManager :: draw(Camera* camera){
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
+
+    enemies->draw(camera); //draw enemies before player and terrain
+
     //draw terrain
     if (chunks.resetCycle()){
         do {
             chunks.cycle->obj->draw(camera);
         } while (chunks.cycleUp());
     }
-
-    enemies->draw(camera); //draw enemies before player
 
     //draw player/players
     player->draw(camera);
@@ -156,6 +156,8 @@ void GameManager :: draw(Camera* camera){
     }
 
     enemies->drawLava(camera); //draw lava after player
+
+    camera->drawDust();
 
 }
 

@@ -74,6 +74,9 @@ public:
     void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
     void drawChunkShape(b2Body* body, DrawShape* drawShape); //draw terrain shapes
 
+    //draws martian dust over viewport
+    void drawDust();
+
     void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
     void processInput();
     void updateGlow();
@@ -99,10 +102,9 @@ private:
     bool* keyPlus;
     bool* keyMinus;
 
-    CarDetails carDetail;
-
-    float glow = 0.1;
+    float glow = 0.1; //shifts up and down between a range
     float glowChange = +0.005;
+    float dustShift = 0.0f; //shifts up then resets
 
     //contains the numbers of the loaded textures
     unsigned int texNum[10]; //numbers correspond to index, (0 to 9 => [0] to [9])
@@ -115,6 +117,7 @@ private:
     unsigned int texReturn;
     unsigned int texScore;
     unsigned int texWins;
+    unsigned int texDust;
 
 };
 

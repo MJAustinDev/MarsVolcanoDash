@@ -65,6 +65,7 @@ void Camera :: loadTextures(){
     texReturn = loadTexture("./Visuals/Textures/return.png");
     texScore = loadTexture("./Visuals/Textures/score.png");
     texWins = loadTexture("./Visuals/Textures/wins.png");
+    texDust = loadTexture("./Visuals/Textures/dust.png");
 
     //numbers
     char numPath[] = "./Visuals/Textures/numX.png";
@@ -108,6 +109,7 @@ unsigned int Camera :: getTexture(int id){
         case 16 : {return texReturn;}
         case 17 : {return texScore;}
         case 18 : {return texWins;}
+        case 19 : {return texDust;}
 
         default : {return (unsigned int) -1;} //invalid identifier return texture doesn't exist
     }
