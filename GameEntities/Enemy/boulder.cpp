@@ -146,7 +146,7 @@ bool Boulder :: defineShapes(float* mags, float* angs, int valid){
         x2 = mags[i+1] * cos(angs[i+1]);
         y2 = mags[i+1] * sin(angs[i+1]);
         //if angle between ith and i+1th point is acute
-        if ((angs[i]-angs[i+1]) < M_PI){
+        if ((angs[i+1]-angs[i]) < M_PI){
             //if points are not on the same line, then make a box2d polygon shape
             if (!(approxEqual(angs[i],angs[i+1])) && !(approxEqual(M_PI+angs[i],angs[i+1]))){
                 points[1].Set(x1,y1); //want CCW winding of points, hence [1] is point 1, and [2] is point 2

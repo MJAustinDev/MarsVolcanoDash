@@ -31,37 +31,7 @@ SOFTWARE.
 #include "gameConfig.h"
 #include "gameManagement.h"
 
-#include "visualColours.h"
-
-/*
-
-
-*/
-class MenuBackground {
-
-friend class Manager;
-
-private:
-
-    MenuBackground();
-    ~MenuBackground();
-
-    void process();
-    void draw(Camera* camera);
-
-    void defShapeMountain();
-    void defShapeLavaFlow();
-
-    //
-    b2PolygonShape mountains[4];
-    float mountCol[4][4] = {COLOUR_BLOOD_RED, COLOUR_DEFAULT_GROUND, COLOUR_DEFAULT_GROUND, COLOUR_LAVA_1};
-
-    b2PolygonShape lavaFlow[3];
-    float lavaFlCol[3][4] = {COLOUR_LAVA_0, COLOUR_LAVA_0, COLOUR_LAVA_0};
-
-
-
-};
+#include "animation.h"
 
 /*
 Buttons allow a user to visually interact with the system,
@@ -157,7 +127,7 @@ private:
     bool paused = false; //game is paused
     bool dead = false; //game is over
 
-    MenuBackground animateBack; //main menu's background animation controller
+    Animation animateBack; //main menu's background animation controller
 
     //game timers
     double timerGame = 0.0; //process game events

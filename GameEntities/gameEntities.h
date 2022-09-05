@@ -134,12 +134,15 @@ class Boulder : BaseBreakableEnemy{
 friend class EnemyManager;
 friend class Node<Boulder>;
 
+public:
+    //static and public so it can be used by menu animation, is safe to be public as it only modifies the passed parameters
+    static void insertSortPoints(float* mags, float* angs); //order points via insertion sort
+
 private:
 
     Boulder(b2World* w, b2Vec2 pos, float sizeRand, float maxForce);
     ~Boulder(); //involves extra steps
 
-    void insertSortPoints(float* mags, float* angs); //order points via insertion sort
     int overWriteEqual(float* mags, float* angs); //remove equal points by overwriting and then ignoring them
     bool defineShapes(float* mags, float* angs, int valid); //attempt to build the bolder's shapes
     void setDefaultShapes(float sizeRand); //if random shapes fail then create default shape

@@ -56,12 +56,13 @@
 		<Unit filename="Visuals/Icons/gameIcon.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="Visuals/animation.cpp" />
+		<Unit filename="Visuals/animation.h" />
 		<Unit filename="Visuals/button.cpp" />
 		<Unit filename="Visuals/camera.cpp" />
 		<Unit filename="Visuals/camera.h" />
 		<Unit filename="Visuals/drawChunks.cpp" />
 		<Unit filename="Visuals/loadTextures.cpp" />
-		<Unit filename="Visuals/menuBackground.cpp" />
 		<Unit filename="Visuals/visualColours.h" />
 		<Unit filename="Visuals/visualStructures.h" />
 		<Unit filename="include/stb_image/stb_image.h" />

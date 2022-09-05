@@ -2,7 +2,7 @@
 #define VISUALCOLOURS_H
 
 
-#define COLOUR_BACK_MENU {0.01f, 0.0f, 0.0f, 1.0f}
+#define COLOUR_BACK_MENU {0.05f, 0.0f, 0.0f, 1.0f}
 
 #define COLOUR_BACK_GAME {0.15f, 0.001f, 0.1f, 1.0f}
 
@@ -15,5 +15,9 @@
 #define COLOUR_LAVA_2 {0.95f, 0.95f, 0.09f, 1.0f}
 #define COLOUR_LAVA_3 {0.89f, 0.37f, 0.13f, 1.0f}
 #define COLOUR_LAVA_4 {1.0f, 0.4f, 0.93f, 1.0f}
+
+#define COLOUR_PURPLE {0.69f, 0.14f, 1.0f, 1.0f}
+
+#define COLOUR_ORANGE {1.0f, 0.55f, 0.15f, 1.0f}
 
 #endif
