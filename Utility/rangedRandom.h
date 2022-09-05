@@ -28,7 +28,7 @@ SOFTWARE.
 #define RANGEDRANDOM_H
 
 /*
-Same code of random numbers either between 0 and 1 or a minimum and maximum range are used a lot in the code,
+Same code involving random numbers are used a lot in the code,
 so making callable functions helps keep the files size down and easier to maintain.
 */
 
@@ -43,6 +43,14 @@ inline float randRanged(float low, float high){
 
 inline int randModRanged(int high){
     return (rand()%high);
+}
+
+inline int randNegPos(){
+    if (randModRanged(2) == 0){
+        return 1;
+    } else {
+        return -1;
+    }
 }
 
 #endif

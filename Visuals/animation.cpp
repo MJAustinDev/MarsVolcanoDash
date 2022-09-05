@@ -9,6 +9,11 @@ Animation :: Animation (){
 
     defShapeLavaFlow(); //set lava flow shapes
 
+    //set up lava burst's random points
+    for (int i=0;i<16;i++){
+        burstRnd[i].Set(randRanged(-0.90f, -0.55f), randRanged(0.21f, 0.6f));
+    }
+
     for (int i=0;i<5;i++){
         resetMeteor(i); //set all meteor settings randomly
     }
@@ -38,7 +43,7 @@ void Animation  :: process(){
     //update boulder positions
     for (int i=0;i<11;i++){
         moveItem(&(bouldPos[i]), bouldVel[i], bouldDir[i]);
-        bouldAng[i] += 0.02f;
+        bouldAng[i] += (0.02f * bouldRotDir[i]);
         if (bouldPos[i].y < -1.5){
             resetBoulder(i);
         }
@@ -52,24 +57,30 @@ void Animation :: draw(Camera* camera){
     float* colour;
     float glow = camera->getGlow();
     float shade = 1.0f - glow;
+    float heatShade = 0.7 - (2.0f*glow);
 
     //draw meteors
     for (int i=0;i<5;i++){
         colour = meteorCol[i];
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
-        camera->drawHotball(meteorPos[i], meteorRad[i], colour, shade, 0.7 - (2.0f*glow));
+        camera->drawHotball(meteorPos[i], meteorRad[i], colour, shade, heatShade);
     }
+
+    //draw far back most mountain behind the boulders
+    colour = mountCol[0];
+    glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
+    camera->drawB2PolygonShape(posBody, &(mountains[0]), 0.0f);
 
     //draw boulders
     for (int i=0;i<11;i++){
         colour = bouldCol[i];
         for (int j=0;j<8;j++){
-            camera->drawHotFrag(bouldPos[i], fragments[i][j], bouldAng[i], colour, shade, 0.7f - (2.0f*glow));
+            camera->drawHotFrag(bouldPos[i], fragments[i][j], bouldAng[i], colour, shade, heatShade);
         }
     }
 
-    //draw mountain range
-    for (int i=0;i<4;i++){
+    //draw the rest of the mountain range
+    for (int i=1;i<4;i++){
         colour = mountCol[i];
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
         camera->drawB2PolygonShape(posBody, &(mountains[i]), 0.0f);
@@ -83,9 +94,26 @@ void Animation :: draw(Camera* camera){
     }
 
     //draw volcano burst
-    //REUSE SAME METHOD AS LAVA QUAD
+    float burstShift = glow * 0.2f;
+    for (int i=0;i<16;i++){
+        colour = burstCol[1 + (i%4)];
+        glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.2f);
+        glBegin(GL_POLYGON);
+            camera->placePoint(posBody, burstBase[0]);
+            camera->placePoint(posBody, burstBase[1]);
+            camera->placePoint(posBody, b2Vec2(burstRnd[i].x , burstRnd[i].y + burstShift));
+        glEnd();
+    }
 
-
+    colour = burstCol[0];
+    glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.4f);
+    for (int i=0;i<2;i++){
+        glBegin(GL_POLYGON);
+            camera->placePoint(posBody, burstBase[0]);
+            camera->placePoint(posBody, burstBase[1]);
+            camera->placePoint(posBody, b2Vec2(burstSide[i].x, burstSide[i].y + burstShift));
+        glEnd();
+    }
 }
 
 //sets mountain range shapes
@@ -118,7 +146,6 @@ void Animation  :: defShapeMountain(){
     points[2].Set(0.65f, -0.81f);
     points[3].Set(0.23f, -1.0f);
     mountains[3].Set(points, 4);
-
 }
 
 //sets lava flow shapes
@@ -144,7 +171,6 @@ void Animation :: defShapeLavaFlow(){
     points[2].Set(-0.65f, -1.0f);
     points[3].Set(-0.05f, -1.0f);
     lavaFlow[2].Set(points,4);
-
 }
 
 //randomly configures a given meteor
@@ -163,6 +189,7 @@ void Animation :: resetBoulder(int i){
     bouldAng[i] = randRanged(0.0f, 2.0f*M_PI); //starting angle
     bouldDir[i] = randRanged(4.45f, 4.9f); //direction
     bouldVel[i] = randRanged(0.006f, 0.015f); //velocity
+    bouldRotDir[i] = (float) randNegPos(); //rotational direction either -1 or 1
 
     //pick 8 points randomly
     float mags[8];
@@ -193,5 +220,4 @@ void Animation :: resetBoulder(int i){
         fragments[i][7][0].Set(0.0f, 0.0f);
         fragments[i][7][1].Set(0.0f, 0.0f);
     }
-
 }
