@@ -36,10 +36,9 @@ GameManager :: GameManager(GameConfig* config) {
 
     //add terrain to world TODO -- ADJUST START SET UP PROPERLY
     addChunk(-1); //starting chunk
-    addChunk(0);
-    addChunk(0);
-    addChunk(0);
-    addChunk(0);
+    addChunk(-2); //flat platform
+    addChunk(-2); //flat platform
+    addChunk(-2); //flat platform
 
     //define player
     float colour[4] = COLOUR_PURPLE;
@@ -75,7 +74,7 @@ void GameManager :: addChunk(int chunkID){
     chunks.addEnd(chunk); //add to the linked list
     //update next chunk position
     nextChunkX += 64.0f;
-    //TODO -- SWITCH CASE ON ID THAT EFFECT Y POSITION
+    nextChunkY += chunk->changeY;
     chunk = nullptr; //clear pointer, chunk is stored in the linked list
 
 }
@@ -111,8 +110,7 @@ bool GameManager :: process(bool** keys){
 void GameManager :: processChunkAddition() {
     //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
     while (nextChunkX<=playerLead->getPos().x+256){
-        //TODO -- RANDOMISE CHUNK TYPES
-        addChunk(0);
+        addChunk(randModRanged(6));
     }
 
 }

@@ -49,9 +49,14 @@ private:
 
     void draw(Camera* camera); //draw each shape attached to main body
 
+    void defSegmentDefault();
     void defSegmentStart();
     void defSegment0();
-    //TODO -- EXPAND SEGMENTS FOR MORE VARIETY
+    void defSegment1();
+    void defSegment2();
+    void defSegment3();
+    void defSegment4();
+    void defSegment5();
 
     void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
     void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
@@ -59,6 +64,7 @@ private:
     b2World* world;
     b2Body* body;
     LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
+    float changeY = 0.0f;
 
 };
 

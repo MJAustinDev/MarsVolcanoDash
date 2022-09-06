@@ -40,6 +40,13 @@ Chunk :: Chunk(b2World* w, int segID, GLfloat x, GLfloat y){
     switch(segID){
         case -1 : {defSegmentStart(); break;}
         case 0 : {defSegment0(); break;}
+        case 1 : {defSegment1(); break;}
+        case 2 : {defSegment2(); break;}
+        case 3 : {defSegment3(); break;}
+        case 4 : {defSegment4(); break;}
+        case 5 : {defSegment5(); break;}
+
+        default : {defSegmentDefault();}
     }
 }
 
@@ -86,37 +93,32 @@ mag - passed as maximum magnitude that points of the rock should reach off the g
 void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
 
     //increase all magnitudes randomly
-    for (int i=2;i<num;i++){
-        mag[i] = randRanged(minMag,mag[i]);
+    for (int i=0;i<num;i++){
+        if (mag[i] != 0.0f){
+            mag[i] = randRanged(minMag,mag[i]);
+        }
     }
 
     //breaking down into segments so concave shapes can be draw as multiple convex without having to program triangle splitting on the graphics front
-
-    //generate first triangle of rock
     b2Vec2 points[8];
-    points[0].Set(x,y[0]);
-    points[1].Set(x+2,y[1]);
-    points[2].Set(x+2,y[num-1] + mag[num-1]);
-    addShape(points,3,-1);
-
-    //generate each rock segment
-    int i=num-1;
-    x += 2;
-    while (i>2){
-        points[0].Set(x,y[i]);
-        points[1].Set(x+2,y[i-1]);
-        points[2].Set(x+2,y[i-1] + mag[i-1]);
-        points[3].Set(x,y[i] + mag[i]);
-        addShape(points,4,-1);
-        i--;
-        x +=2;
+    for (int i=0;i<num-1;i++){
+        points[0].Set(x, y[i]);
+        points[1].Set(x+2, y[i+1]);
+        points[2].Set(x+2, y[i+1] + mag[i+1]);
+        points[3].Set(x, y[i] + mag[i]);
+        addShape(points, 4, 2);
+        x+=2;
     }
+}
 
-    //generate last triangle
-    points[0].Set(x,y[i]);
-    points[1].Set(x+2,y[1]);
-    points[2].Set(x,y[i]+mag[i]);
-    addShape(points,3,-1);
+//just a flat platform used when invalid numbers are entered as segment identifier
+void Chunk :: defSegmentDefault(){
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-32,0.0);
+    points[1].Set(-32,-3.0);
+    points[2].Set(32,-3.0);
+    points[3].Set(32,0.0);
+    addShape(points,4,0);
 }
 
 //define starting segment -- TODO redesign the volcano edge
@@ -166,11 +168,133 @@ void Chunk :: defSegment0(){
     addShape(points,4,0);
 
     float x = -32;
-    float y[8] = {0,0,0,0,0,0,0,0};
-    float mag[8] = {0,0,1,1,1.1,1,1,1};
+    float y[9] = {0,0,0,0,0,0,0,0,0};
+    for (int i=0;i<4;i++){
+        float mag[9] = {0,1,1,1,1,1,1,1,0};
+        addRock(x,y,9,0.2,mag);
+        x += 16;
+    }
+}
+
+//downward slope
+void Chunk :: defSegment1(){
+
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-32,0.0);
+    points[1].Set(-32,-3.0);
+    points[2].Set(32,-19.0);
+    points[3].Set(32,-16.0);
+    addShape(points,4,0);
+
+    float x = -32;
+    float y[9] = {0, -0.5, -1, -1.5, -2, -2.5, -3, -3.5, -4};
+    for (int i=0;i<4;i++){
+        float mag[9] = {0,1,1,1,1,1,1,1,0};
+        addRock(x,y,9,0.2,mag);
+        x += 16;
+        for (int j=0;j<9;j++){
+            y[j] -= 4;
+        }
+    }
+    changeY = -16;
+}
+
+//upward slope
+void Chunk :: defSegment2(){
+
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-32,0.0);
+    points[1].Set(-32,-3.0);
+    points[2].Set(32,13.0);
+    points[3].Set(32,16.0);
+    addShape(points,4,0);
+
+    float x = -32;
+    float y[9] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4};
+    for (int i=0;i<4;i++){
+        float mag[9] = {0,1,1,1,1,1,1,1,0};
+        addRock(x,y,9,0.2,mag);
+        x += 16;
+        for (int j=0;j<9;j++){
+            y[j] += 4;
+        }
+    }
+    changeY = 16;
+}
+
+//greater downward slope with more ragid rocks
+void Chunk :: defSegment3(){
+
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-32,0.0);
+    points[1].Set(-32,-3.0);
+    points[2].Set(32,-35.0);
+    points[3].Set(32,-32.0);
+    addShape(points,4,0);
+
+    float x = -32;
+    float y[9] = {0, -1, -2, -3, -4, -5, -6, -7, -8};
+    for (int i=0;i<4;i++){
+        float mag[9] = {0,1,2,3,2,3,2,1,0};
+        addRock(x,y,9,0.2,mag);
+        x += 16;
+        for (int j=0;j<9;j++){
+            y[j] -= 8;
+        }
+    }
+    changeY = -32;
+}
+
+//flat base with more raged randomly assigned rocks
+void Chunk :: defSegment4(){
+
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-32,0.0);
+    points[1].Set(-32,-3.0);
+    points[2].Set(32,-3.0);
+    points[3].Set(32,0.0);
+    addShape(points,4,0);
+
+    float x = -32;
+    float y[9] = {0,0,0,0,0,0,0,0,0};
 
     for (int i=0;i<4;i++){
-        addRock(x,y,8,0.2,mag);
-        x = x + 16;
+        float mag[9] = {0,2,4,1,3,1,4,2,0};
+        addRock(x,y,9,0.2,mag);
+        x += 16;
     }
+}
+
+//ramp with a pit
+void Chunk :: defSegment5(){
+
+    b2Vec2 points[8]; //main base plate
+    points[0].Set(-32,0.0);
+    points[1].Set(-32,-3.0);
+    points[2].Set(32,-3.0);
+    points[3].Set(32,0.0);
+    addShape(points,4,0);
+
+    //ramp up
+    points[1].Set(0.0f, 10.0f);
+    points[2].Set(0.0f, 0.0f);
+    addShape(points, 3, -1);
+    float y1[17] = {0, 0.625, 1.25, 1.875, 2.5, 3.125, 3.75, 4.375, 5, 5.625, 6.25, 6.875, 7.5, 8.125, 8.75, 9.375, 10};
+    float mag1[17] = {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+    addRock(-32.0f, y1, 17, 0.2f, mag1);
+
+    //rocks in the gap
+    float y2[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    float mag2[9] = {5,4,3,2,1,1,1,2,3};
+    addRock(0.0f, y2, 9, 0.2f, mag2);
+
+    //down ramp
+    points[0].Set(16, 6.0f);
+    points[1].Set(16.0f, 0.0f);
+    points[2].Set(32.0f, 0.0f);
+    addShape(points, 3, -1);
+    float y3[9] = {6, 5.25, 4.5, 3.75, 3, 2.25, 1.5, 0.75, 0};
+    float mag3[9] = {0,1,1,1,1,1,1,1,0};
+    addRock(16.0f, y3, 9, 0.2f, mag3);
+
 }

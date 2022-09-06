@@ -65,6 +65,23 @@ void drawChunkId1(Camera* camera, b2Vec2 posBody, b2Vec2* points){
 
 }
 
+//semi transparent overlay for surface rocks
+void drawChunkId2(Camera* camera, b2Vec2 posBody, b2Vec2* points) {
+    float shade = 1.0f - camera->getGlow();
+    float baseColour[4] = COLOUR_DEFAULT_GROUND;
+    float surfColour[4] = COLOUR_BLOOD_RED;
+    glBegin(GL_POLYGON);
+        glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, 0.6f);
+        camera->placePoint(posBody, points[0]); //0 and 1 are on the ground
+        camera->placePoint(posBody, points[1]);
+        shade -= 0.1f;
+        glColor4f(surfColour[0]*shade, surfColour[1]*shade, surfColour[2]*shade, 0.2f);
+        camera->placePoint(posBody, points[2]); //2 and 3 are in the air
+        camera->placePoint(posBody, points[3]);
+    glEnd();
+
+}
+
 
 
 
@@ -76,6 +93,7 @@ void Camera :: drawChunkShape(b2Body* body, DrawShape* drawShape){
     switch (drawShape->drawId) {
         case 0 : {drawChunkId0(this, posBody, drawShape->shapePoints); break;} //basic ground chunk shape
         case 1 : {drawChunkId1(this, posBody, drawShape->shapePoints); break;} //mountain backing chunk shape
+        case 2 : {drawDefaultChunkShape(this, posBody, drawShape); drawChunkId2(this, posBody, drawShape->shapePoints); break;} //surface rock shape
         default : {drawDefaultChunkShape(this, posBody, drawShape);} //default shape shading
     }
 }
