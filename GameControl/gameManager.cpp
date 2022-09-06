@@ -80,12 +80,12 @@ void GameManager :: addChunk(int chunkID){
 }
 
 //handle game events
-bool GameManager :: process(bool** keys){
+bool GameManager :: process(bool* keys){
     //handle user input
-    player->processInput(*(keys[2]), *(keys[3]), *(keys[0]), *(keys[1]));
+    player->processInput(keys[2], keys[3], keys[0], keys[1]);
     score = player->getPos().x;
     if (player2!=nullptr){
-        player2->processInput(*(keys[10]), *(keys[11]), *(keys[8]), *(keys[9]));
+        player2->processInput(keys[10], keys[11], keys[8], keys[9]);
         if (score > player2->getPos().x){
             score = player2->getPos().x;
             playerLead = player; //player 1 is in the lead

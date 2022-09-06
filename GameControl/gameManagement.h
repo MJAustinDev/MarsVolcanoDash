@@ -80,7 +80,7 @@ public:
     GameManager(GameConfig* config);
     ~GameManager();
 
-    bool process(bool** keys); //process game events
+    bool process(bool* keys); //process game events
     void draw(Camera* camera); //draws game objects to screen
 
     float getScore(){return score;}; //returns the score in form of physical distance travelled

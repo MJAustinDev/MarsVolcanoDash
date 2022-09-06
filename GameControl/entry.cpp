@@ -13,58 +13,38 @@ SOFTWARE.
 #include "gameIcon.h" //set compiled game icon
 
 #include <time.h>
-#include <iostream>
-using namespace std;
-
 #include "manager.h" //further includes the likes of box2d, glfw3, etc
 
+// A[0], D[1], W[2], S[3], +[4], -[5], ENTER[6], ESC[7], J[8], L[9], I[10], K[11]
+bool keys[12] = {false, false, false, false, false, false, false, false, false, false, false, false};
 
-//TODO -- CLEAN INTO MORE CONSISE SYSTEM -- not priority
-bool keyD = false;
-bool keyA = false;
-bool keyW = false;
-bool keyS = false;
-bool keyPlus = false;
-bool keyMinus = false;
-bool keyEnter = false;
-bool keyEsc = false;
-bool keyL = false;
-bool keyJ = false;
-bool keyI = false;
-bool keyK = false;
-
-
-void errorHandler(int error, const char* description) {
-    cout << "Error: " << error << endl << "Description: " << description << endl;
-}
-
-bool setKeyBool(int action, bool prev){
+//sets key variable if pressed/released
+void setKey(int i, int action){
     if (action == GLFW_PRESS){
-        return true;
-    } else if (action == GLFW_RELEASE) {
-        return false;
-    } else {
-        return prev;
+        keys[i] = true;
+    } else if (action == GLFW_RELEASE){
+        keys[i] = false;
     }
 }
 
 static void inputHandler(GLFWwindow* window, int key, int scancode, int action, int mods) {
-
+    int i;
     switch(key){
-        case GLFW_KEY_EQUAL : {keyPlus = setKeyBool(action,keyPlus); break;}
-        case GLFW_KEY_MINUS : {keyMinus = setKeyBool(action,keyMinus); break;}
-        case GLFW_KEY_W : {keyW = setKeyBool(action,keyW); break;}
-        case GLFW_KEY_S : {keyS = setKeyBool(action,keyS); break;}
-        case GLFW_KEY_A : {keyA = setKeyBool(action,keyA); break;}
-        case GLFW_KEY_D : {keyD = setKeyBool(action,keyD); break;}
-        case GLFW_KEY_ENTER : {keyEnter = setKeyBool(action,keyEnter); break;}
-        case GLFW_KEY_ESCAPE : {keyEsc = setKeyBool(action,keyEsc); break;}
-        case GLFW_KEY_I : {keyI = setKeyBool(action,keyI); break;}
-        case GLFW_KEY_K : {keyK = setKeyBool(action,keyK); break;}
-        case GLFW_KEY_J : {keyJ = setKeyBool(action,keyJ); break;}
-        case GLFW_KEY_L : {keyL = setKeyBool(action,keyL); break;}
+        case GLFW_KEY_A : {i = 0; break;}
+        case GLFW_KEY_D : {i = 1; break;}
+        case GLFW_KEY_W : {i = 2; break;}
+        case GLFW_KEY_S : {i = 3; break;}
+        case GLFW_KEY_EQUAL : {i = 4; break;}
+        case GLFW_KEY_MINUS : {i = 5; break;}
+        case GLFW_KEY_ENTER : {i = 6; break;}
+        case GLFW_KEY_ESCAPE : {i = 7; break;}
+        case GLFW_KEY_J : {i = 8; break;}
+        case GLFW_KEY_L : {i = 9; break;}
+        case GLFW_KEY_I : {i = 10; break;}
+        case GLFW_KEY_K : {i = 11; break;}
+        default : {return; } //return as don't want to set key
     }
-
+    setKey(i, action);
 }
 
 //adjusts the viewport so aspect ratio is maintained
@@ -94,11 +74,7 @@ int main(){
         return -1;// Initialization failed
     }
 
-
-    //set error call back
-    glfwSetErrorCallback(errorHandler);
-
-    GLFWwindow* window = glfwCreateWindow(1280, 960, "Mars Volcano Dash", NULL, NULL); //TODO -- CONFIGURE SIZE AND FINAL NAME -- not priority
+    GLFWwindow* window = glfwCreateWindow(1280, 960, "Mars Volcano Dash", NULL, NULL);
     if (!window){
         glfwTerminate(); //terminate glfw before exiting
         return -1; //window creation failed
@@ -113,23 +89,8 @@ int main(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    //TODO -- CONFIGRE BETTER POSITION/METHOD
-    bool** keys = new bool*[12];
-    keys[0] = &keyA;
-    keys[1] = &keyD;
-    keys[2] = &keyW;
-    keys[3] = &keyS;
-    keys[4] = &keyPlus;
-    keys[5] = &keyMinus;
-    keys[6] = &keyEnter;
-    keys[7] = &keyEsc;
-    keys[8] = &keyJ;
-    keys[9] = &keyL;
-    keys[10] = &keyI;
-    keys[11] = &keyK;
-
     //define key game objects
-    Camera camera(window, 0.0f, 0.0f, 1.0f, &keyPlus, &keyMinus);
+    Camera camera(window, 0.0f, 0.0f, 1.0f, &(keys[4]), &(keys[5])); //give camera access to + and - keys
     Manager manager(window, &camera);
 
     //game loop, runs until glfw is told to kill the window
@@ -141,8 +102,6 @@ int main(){
 
         glfwPollEvents(); //glfw hands events/user input
     }
-
-    delete[] keys; //TODO -- CONFIGRE BETTER POSITION/METHOD
 
     return 0;
 }

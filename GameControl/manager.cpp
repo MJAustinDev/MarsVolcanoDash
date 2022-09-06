@@ -71,7 +71,7 @@ Manager :: ~Manager(){
 
 
 //process events
-void Manager :: process(bool** keys){
+void Manager :: process(bool* keys){
 
     if (onMenu && (timerMenu < glfwGetTime())) {
         processMenu(keys); //process main menu activity
@@ -84,17 +84,17 @@ void Manager :: process(bool** keys){
 }
 
 //handle menu button selection
-void Manager :: buttonSelection(bool** keys, int lower, int higher){
+void Manager :: buttonSelection(bool* keys, int lower, int higher){
 
     //W is pressed -- cycle upwards
-    if (*(keys[2])){
+    if (keys[2]){
         selected--;
-        *(keys[2]) = false; //prevent button selection from cycling uncontrollably
+        keys[2] = false; //prevent button selection from cycling uncontrollably
     }
     //S is pressed -- cycle downwards
-    if (*(keys[3])){
+    if (keys[3]){
         selected++;
-        *(keys[3]) = false; //prevent button selection from cycling uncontrollably
+        keys[3] = false; //prevent button selection from cycling uncontrollably
     }
 
     //catch selected
@@ -108,12 +108,12 @@ void Manager :: buttonSelection(bool** keys, int lower, int higher){
 }
 
 //process events when on main menu
-void Manager :: processMenu(bool** keys){
+void Manager :: processMenu(bool* keys){
 
     buttonSelection(keys, 0, 4); //let user scan up/down the options
 
     //ENTER is pressed -- user has selected an option
-    if (*(keys[6])){
+    if (keys[6]){
         switch(selected){
             case 0 : {configEasy(); break;}
             case 1 : {configNormal(); break;}
@@ -131,13 +131,13 @@ void Manager :: processMenu(bool** keys){
 
 
 //process events when game is running
-void Manager :: processGame(bool** keys){
+void Manager :: processGame(bool* keys){
 
     //game is not over and not paused
     if (!dead && !paused){
         dead = gameMan->process(keys);
         //ESCAPE is pressed -- user has paused game
-         if (*(keys[7])){
+         if (keys[7]){
             paused = true;
          }
     } else {
@@ -148,7 +148,7 @@ void Manager :: processGame(bool** keys){
             buttonSelection(keys, 5, 6); //resume and return to menu are valid options
         }
         //ENTER is pressed -- user has selected an option
-        if (*(keys[6])){
+        if (keys[6]){
             switch (selected) {
                 case 6 : { //return to main menu
                     dead = false;
@@ -162,7 +162,7 @@ void Manager :: processGame(bool** keys){
                     if (winsReady){clearWinsButton();} //reset wins button's extra textures
                     //don't break as want to execute case 5 code as well
                 }
-                case 5 : {paused = false; *(keys[6]) = false; break;} //resume game
+                case 5 : {paused = false; keys[6] = false; break;} //resume game
             }
         }
     }

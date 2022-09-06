@@ -77,7 +77,7 @@ public:
     Manager(GLFWwindow* w, Camera* cam);
     ~Manager();
 
-    void process(bool** keys); //called to process the game/menu events
+    void process(bool* keys); //called to process the game/menu events
     void draw();
 
 private:
@@ -90,11 +90,11 @@ private:
     void configArmageddon();
     void configTwoPlayer();
 
-    void processMenu(bool** keys); //run menu control events
-    void processGame(bool** keys); //run game events
+    void processMenu(bool* keys); //run menu control events
+    void processGame(bool* keys); //run game events
 
     bool isSelected(Button* button); //returns if the button is currently selected or not
-    void buttonSelection(bool** keys, int lower, int higher); //handles button selection within given ID range
+    void buttonSelection(bool* keys, int lower, int higher); //handles button selection within given ID range
 
     void setScoreButton(int points); //sets textures for score to be visualised
     void clearScoreButton(); //resets the score button so it is ready to be used again
