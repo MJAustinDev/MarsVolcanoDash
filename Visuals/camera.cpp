@@ -29,17 +29,18 @@ SOFTWARE.
 
 //handle camera zoom from user input
 void Camera :: processInput(){
-
+    //PLUS  is pressed -- zoom in
     if (*(keyPlus)){
         zoom = zoom + 0.001;
     }
-
+    //MINUS is pressed -- zoom out
     if (*(keyMinus)){
         zoom = zoom - 0.001;
     }
     catchZoom();
 }
 
+//set camera position and zoom
 void Camera :: setCamPos(float x, float y, float z){
     posX = x;
     posY = y;
@@ -57,7 +58,7 @@ void Camera :: catchZoom(){
     }
 }
 
-
+//shift glow value up/down within the range of 0.0 to 0.1
 void Camera :: updateGlow(){
     glow += glowChange;
     if (glow < 0.0f){
@@ -81,6 +82,7 @@ void Camera :: drawPureRect(float* colour, float coords[4]){ //coords takes form
     glEnd();
 }
 
+//draws a texture within a given rectangular range
 void Camera :: drawPureRectText(float* colour, unsigned int textID, float wCoords[4], float tCoords[4]){ //coords takes form of {top, left, bottom, right}
     if (textID != (unsigned int) -1){ //if texture loaded successfully
         float shade = 1.0f-(0.75f*glow);
@@ -107,10 +109,10 @@ void Camera :: drawPureRectText(float* colour, unsigned int textID, float wCoord
 
 //crops up a lot, return b2Vec of world points position relative to camera view
 b2Vec2 Camera :: getCamPos(b2Vec2 pos){
-    pos.x -=posX;
-    pos.y -=posY;
-    pos.x *=zoom;
-    pos.y *=zoom;
+    pos.x -= posX;
+    pos.y -= posY;
+    pos.x *= zoom;
+    pos.y *= zoom;
     return pos;
 }
 
@@ -119,13 +121,14 @@ b2Vec2 Camera :: getCamBodyPos(b2Body* body){
     return getCamPos(body->GetPosition()); //position of main body on camera
 }
 
-
+//place a opengl point in the world view given a rotation
 void Camera :: placeRotatePoint(b2Vec2 posBody, b2Vec2 pos, float angle){
     //x' = posBody.x + (((pos.x*cos(angle))+(pos.y*-sin(angle)))*zoom); //rotate, scale, then translate
     //y' = posBody.y + (((pos.y*cos(angle))+(temp*sin(angle)))*zoom);
-    glVertex2f(posBody.x+(((pos.x*cos(angle))+(pos.y*-sin(angle)))*zoom),posBody.y+(((pos.y*cos(angle))+(pos.x*sin(angle)))*zoom));
+    glVertex2f(posBody.x + (((pos.x*cos(angle)) + (pos.y*-sin(angle)))*zoom), posBody.y + (((pos.y*cos(angle)) + (pos.x*sin(angle)))*zoom));
 }
 
+//place a opengl point in the world view
 void Camera :: placePoint(b2Vec2 posBody, b2Vec2 pos){
     glVertex2f(posBody.x+(pos.x*zoom),posBody.y+(pos.y*zoom)); //scale then translate
 }
@@ -134,10 +137,10 @@ void Camera :: placePoint(b2Vec2 posBody, b2Vec2 pos){
 void Camera :: placeCirclePoints(int res, int lower, int upper, b2Vec2 posBody, float radius, float baseAngle){
 
     float angle;
+    float zr = zoom*radius; //zoom-radius save re-calulating
     for (int i=lower;i<upper;i++){
         angle = i*((2*M_PI)/(GLfloat)res) + baseAngle;
-        float zr = zoom*radius; //zoom-radius save re-calulating
-        glVertex2f(posBody.x + (zr*cos(angle)),posBody.y + (zr*sin(angle)));
+        glVertex2f(posBody.x + (zr*cos(angle)), posBody.y + (zr*sin(angle)));
     }
 
 }
@@ -175,7 +178,7 @@ void Camera :: drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* c
     glEnd();
 }
 
-//covers the screen in a moving dust transparent storm
+//covers the screen in a moving transparent dust storm
 void Camera :: drawDust(){
     unsigned int texID = getTexture(19);
     if (19 != (unsigned int)-1){ //if texture hasn't been found don't attempt to draw
@@ -183,6 +186,7 @@ void Camera :: drawDust(){
         float colour[4] = COLOUR_BLOOD_RED;
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.2);
 
+        //move dust storm
         dustShift += 0.0085f;
         if (dustShift>0.5f){
             dustShift = 0.0f;

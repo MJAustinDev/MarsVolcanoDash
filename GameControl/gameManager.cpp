@@ -34,7 +34,7 @@ GameManager :: GameManager(GameConfig* config) {
     b2Vec2 gravity(0.0f,-9.81);
     world = new b2World(gravity);
 
-    //add terrain to world TODO -- ADJUST START SET UP PROPERLY
+    //add terrain to world
     addChunk(-1); //starting chunk
     addChunk(-2); //flat platform
     addChunk(-2); //flat platform
@@ -45,14 +45,14 @@ GameManager :: GameManager(GameConfig* config) {
     player = new Player(world, colour);
     if (config->twoPlayer){
         float colour2[4] = COLOUR_ORANGE;
-        player2 = new Player(world,colour2);
+        player2 = new Player(world, colour2);
     } else {
         player2 = nullptr;
     }
     playerLead = player;
 
     //define enemy controller
-    enemies = new EnemyManager(world,&playerLead,config);
+    enemies = new EnemyManager(world, &playerLead, config);
 
 }
 
@@ -70,7 +70,7 @@ GameManager :: ~GameManager() {
 //adds new chunk to the linked list, handles memory allocation and pointers
 void GameManager :: addChunk(int chunkID){
 
-    Chunk* chunk = new Chunk(world,chunkID,nextChunkX,nextChunkY); //define chunk in memory
+    Chunk* chunk = new Chunk(world, chunkID, nextChunkX, nextChunkY); //define chunk in memory
     chunks.addEnd(chunk); //add to the linked list
     //update next chunk position
     nextChunkX += 64.0f;
@@ -100,7 +100,7 @@ bool GameManager :: process(bool* keys){
     processChunkRemoval(); //remove old chunks if needed
 
     //check if game is over
-    if (score < enemies->lavaX-2.5){
+    if (score < (enemies->lavaX - 2.5)){ //while in  game score is viewed as players x position
         return true;
     }
     return false;
@@ -112,12 +112,11 @@ void GameManager :: processChunkAddition() {
     while (nextChunkX<=playerLead->getPos().x+256){
         addChunk(randModRanged(6));
     }
-
 }
 
 //removes chunks if they are 128 meters behind the lava
 void GameManager :: processChunkRemoval() {
-    //safety catch, but chunks should never be empty
+    //safety catch, but chunks should never be empty (needed in very early testing stages, but you cant die being too careful)
     if (chunks.first!=nullptr){
         bool repeat = true;
         //remove chunks from the front of the linked list until no chunks are behind the lava

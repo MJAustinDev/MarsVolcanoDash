@@ -104,7 +104,6 @@ void Manager :: buttonSelection(bool* keys, int lower, int higher){
     if (selected > higher){
         selected = lower;
     }
-
 }
 
 //process events when on main menu
@@ -123,7 +122,7 @@ void Manager :: processMenu(bool* keys){
         }
         selected = 5; //set selected for in game resume option
         colBack = colBackGame; //set background colour to game background colour
-        //TODO -- SET CAMERA ZOOM TO DEFAULT STARTING ZOOM
+        camera->setCamPos(0.0f, 0.0f, 0.05f); //focus camera with default in game zoom
     }
     animateBack.process(); //update background animation
 
@@ -187,7 +186,7 @@ Button* Manager :: getButton(int id){
 }
 
 
-//returns if a button is selected or not, used on current graphics system -- TODO OVERHALL GRAPHICS
+//returns if a button is selected or not, used on current graphics system
 bool Manager :: isSelected(Button* button){
     return (button->buttonID == selected);
 }
@@ -214,7 +213,7 @@ void Manager :: setScoreButton(int points){
         //points%10 knocks off all bar the last digit as the rest can be divided by 10
         butScore.setTexture(textPtr, camera->getTexture((points%10)), worldCoords, textCoords);
         butScore.textures.addFront(textPtr); //add at front so can track the 'score:' texture by always keeping it at the end
-        points /= 10;
+        points /= 10; //shift score down a decimal place
         worldCoords[1] -= butConfig.scoreSpace;
         worldCoords[3] -= butConfig.scoreSpace;
     } while (points!=0);
@@ -225,7 +224,7 @@ void Manager :: setScoreButton(int points){
 
 //removes all digit textures from the score button
 void Manager :: clearScoreButton(){
-    while (butScore.textures.first!=butScore.textures.last){
+    while (butScore.textures.first!=butScore.textures.last){ //while other textures than 'Scores: ' exist in the linked list
         butScore.textures.remFront();
     }
     scoreReady = false;
@@ -255,7 +254,6 @@ void Manager :: clearWinsButton(){
 }
 
 
-
 //draws either the menu or the running game
 void Manager :: draw(){
 
@@ -267,7 +265,7 @@ void Manager :: draw(){
         camera->drawPureRect(colBack, viewport); //clears the view port to the given background colour
 
         if (onMenu){ //drawing main menu
-            animateBack.draw(camera); //draw back ground
+            animateBack.draw(camera); //draw back ground splash animation
             butBoardMenu.draw(camera, true); //true so will glow
             //draw all 5 main menu buttons
             for (int i=0;i<5;i++){
@@ -280,10 +278,10 @@ void Manager :: draw(){
             }
             gameMan->draw(camera); //draw game world
             if (dead || paused){
-                butBoardGame.draw(camera, true);
+                butBoardGame.draw(camera, true); //draw backing panel of pause/death menu
                 butReturn.draw(camera, isSelected(&butReturn));
                 if (dead) { //game is over show death screen
-                    if (config.twoPlayer){ //2 player's so display winning player's number
+                    if (config.twoPlayer){ //2 players so display winning player's number
                         if (!winsReady){
                             setWinsButton(gameMan->getWinnerP1()); //set up win button's player number
                         }

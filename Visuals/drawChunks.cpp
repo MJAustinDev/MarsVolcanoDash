@@ -1,3 +1,29 @@
+/*
+
+MIT License
+
+Copyright (c) 2022 Matthew James Austin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
 
 #include "camera.h"
 
@@ -57,7 +83,7 @@ void drawChunkId1(Camera* camera, b2Vec2 posBody, b2Vec2* points){
         camera->placePoint(posBody, points[0]);
         camera->placePoint(posBody, points[1]);
 
-        //set all unconnected points to the darker colour
+        //set all unconnected (top) points to the darker colour
         glColor4f(underCol[0]*shade, underCol[1]*shade, underCol[2]*shade, underCol[3]);
         camera->placePoint(posBody, points[2]);
         camera->placePoint(posBody, points[3]);
@@ -82,10 +108,7 @@ void drawChunkId2(Camera* camera, b2Vec2 posBody, b2Vec2* points) {
 
 }
 
-
-
-
-
+//switch based method for drawing chunk shapes
 void Camera :: drawChunkShape(b2Body* body, DrawShape* drawShape){
 
     b2Vec2 posBody = getCamBodyPos(body);

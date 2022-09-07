@@ -45,6 +45,7 @@ struct GameConfig {
     float maxSizes[2]; //maximum size that is used to create enemy
     float forces[2]; //initial force applied to enemy when spawned in
     bool twoPlayer; //if game mode has 2 players or not
+    float lavaSpeed; //how fast the lava moves when in range of the player
 
 };
 

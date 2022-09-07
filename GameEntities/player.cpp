@@ -31,8 +31,8 @@ SOFTWARE.
 Player :: Player(b2World* world, float* col){
 
     //default spawn point
-    float x = 0;
-    float y = 20;
+    float x = 0.0f;
+    float y = 5.0f;
     //set base colour
     for (int i=0;i<3;i++){
         colour[i] = col[i];
@@ -88,7 +88,7 @@ Player :: Player(b2World* world, float* col){
     wheelFront->CreateFixture(&defFix);
 
     //define wheel joints
-    b2Vec2 axis(0.0f,1.0f); //axis of wheel suspention
+    b2Vec2 axis(0.0f,1.0f); //axis of wheel suspension
     b2WheelJointDef defJoint;
     defJoint.Initialize(mainBody,wheelBack,wheelBack->GetPosition(),axis);
     defJoint.collideConnected = false;
@@ -111,7 +111,11 @@ Player :: Player(b2World* world, float* col){
 }
 
 Player :: ~Player(){
-    //no dynamically stored objects as of yet
+    /*
+    No dynamically stored objects to destroy, main and wheel bodies are destroyed by the b2World being destroyed.
+    As the cars are only created once and destroyed with the world anyhow,
+    there's no point storing a pointer to the world and attempting to remove the bodies here
+    */
 }
 
 //process user input
@@ -174,16 +178,15 @@ void Player :: draw(Camera* camera){
 
     //draw both wheels over main body
     posBody = camera->getCamBodyPos(wheelFront);
+    int res = 36; //resolution, how circle-y the circle should look
+    float shadeWheel = 1.0f - glow;
+    float colWheel[3] = {colour[0]*shadeWheel, colour[1]*shadeWheel, colour[2]* shadeWheel}; //save re-calulating it each time the colour is reset
     for (int w=0;w<2;w++){
         //draw wheel
-        int res = 36; //resolution, how circle-y the circle should look
         float radius = wheelShape.m_radius;
-        float shade = 1.0f - glow;
-        float colShade[3] = {colour[0]*shade, colour[1]*shade, colour[2]* shade}; //save re-calulating it each time the colour is reset
-
         //outer tyre
         glBegin(GL_POLYGON);
-            glColor4f(colShade[0], colShade[1], colShade[2], 1.0f);
+            glColor4f(colWheel[0], colWheel[1], colWheel[2], 1.0f);
             camera->placeCirclePoints(res, 0, res, posBody, radius, wheelDrawAng);
         glEnd();
 
@@ -198,23 +201,23 @@ void Player :: draw(Camera* camera){
         //right hub section
         b2Vec2 pos(0.0f,-0.2f);
         glBegin(GL_POLYGON);
-            glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
-            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw bottom hub point
-            glColor4f(colShade[0], colShade[1], colShade[2], 1.0f); //set to rim colour
-            camera->placeCirclePoints(res,-4,5,posBody,radius,wheelDrawAng); //draw rim points
-            glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
+            glColor4f(colWheel[0], colWheel[1], colWheel[2], 0.5f); //set to hub colour
+            camera->placeRotatePoint(posBody, pos, wheelDrawAng); //draw bottom hub point
+            glColor4f(colWheel[0], colWheel[1], colWheel[2], 1.0f); //set to rim colour
+            camera->placeCirclePoints(res, -4, 5, posBody, radius, wheelDrawAng); //draw rim points
+            glColor4f(colWheel[0], colWheel[1], colWheel[2], 0.5f); //set to hub colour
             pos.y *= -1; //flip y to top hub point
-            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw top hub point
+            camera->placeRotatePoint(posBody, pos, wheelDrawAng); //draw top hub point
         glEnd();
 
         //left hub section
         glBegin(GL_POLYGON);
-            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw top hub point
-            glColor4f(colShade[0], colShade[1], colShade[2], 1.0f); //set to rim colour
-            camera->placeCirclePoints(res,14,23,posBody,radius,wheelDrawAng); //draw rim points
+            camera->placeRotatePoint(posBody, pos, wheelDrawAng); //draw top hub point
+            glColor4f(colWheel[0], colWheel[1], colWheel[2], 1.0f); //set to rim colour
+            camera->placeCirclePoints(res, 14, 23, posBody, radius, wheelDrawAng); //draw rim points
             pos.y *= -1; //flip y to bottom hub point
-            glColor4f(colShade[0], colShade[1], colShade[2], 0.5f); //set to hub colour
-            camera->placeRotatePoint(posBody,pos,wheelDrawAng); //draw bottom hub point
+            glColor4f(colWheel[0], colWheel[1], colWheel[2], 0.5f); //set to hub colour
+            camera->placeRotatePoint(posBody, pos, wheelDrawAng); //draw bottom hub point
         glEnd();
         posBody = camera->getCamBodyPos(wheelBack);
     }

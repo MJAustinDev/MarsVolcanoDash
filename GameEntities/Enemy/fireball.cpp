@@ -42,6 +42,7 @@ Fireball :: Fireball(b2World* w, b2Vec2 pos, b2Vec2 linVel, float s, b2Vec2 forc
 
 }
 
+//draw fireball to the viewport
 void Fireball :: draw(Camera* camera){
     float glow = camera->getGlow();
     camera->drawHotball(camera->getCamBodyPos(body), shape.m_radius, colour,(2.0f*glow), 1.0f - glow);

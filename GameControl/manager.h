@@ -33,11 +33,9 @@ SOFTWARE.
 
 #include "animation.h"
 
-/*
-Buttons allow a user to visually interact with the system,
+/* Buttons allow a user to visually interact with the system,
 displaying menu options or information like score.
-The class is entirely scoped to the Manager which exclusively uses it
-*/
+The class is entirely scoped to the Manager which exclusively uses it */
 class Button {
 
 friend class Manager;
@@ -65,12 +63,9 @@ private:
 
 
 
-/*
-Main manager, controls drawing, menu and game options,
-and uses the GameManager to set up and run the game
-*/
+/* Main manager, controls drawing, menu and game options,
+and uses the GameManager to set up and run the game */
 class Manager{
-
 
 public:
 
@@ -78,13 +73,13 @@ public:
     ~Manager();
 
     void process(bool* keys); //called to process the game/menu events
-    void draw();
+    void draw(); //draw game/menu to viewport
 
 private:
 
     Button* getButton(int id); //returns position of menu button going of button identifier
 
-    //configure the game modes
+    //configure the game's mode
     void configEasy();
     void configNormal();
     void configArmageddon();

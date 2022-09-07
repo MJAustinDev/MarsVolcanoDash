@@ -56,6 +56,7 @@ void Manager :: configEasy(){
         config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
         config.spawns[1][i] = 96;
     }
+    config.lavaSpeed = 0.1f;
 
     gameMan = new GameManager(&config);
     onMenu = false;
@@ -81,6 +82,7 @@ void Manager :: configNormal(){
         config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
         config.spawns[1][i] = 96;
     }
+    config.lavaSpeed = 0.15f;
 
     gameMan = new GameManager(&config);
     onMenu = false;
@@ -107,6 +109,7 @@ void Manager :: configArmageddon(){
         config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
         config.spawns[1][i] = 64;
     }
+    config.lavaSpeed = 0.2f;
 
     gameMan = new GameManager(&config);
     onMenu = false;
@@ -131,6 +134,7 @@ void Manager :: configTwoPlayer() {
         config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
         config.spawns[1][i] = 96;
     }
+    config.lavaSpeed = 0.05f;
 
     gameMan = new GameManager(&config);
     onMenu = false;

@@ -27,6 +27,7 @@ void setKey(int i, int action){
     }
 }
 
+//handle user key input
 static void inputHandler(GLFWwindow* window, int key, int scancode, int action, int mods) {
     int i;
     switch(key){
@@ -42,7 +43,7 @@ static void inputHandler(GLFWwindow* window, int key, int scancode, int action, 
         case GLFW_KEY_L : {i = 9; break;}
         case GLFW_KEY_I : {i = 10; break;}
         case GLFW_KEY_K : {i = 11; break;}
-        default : {return; } //return as don't want to set key
+        default : {return; } //return as don't want to set any key
     }
     setKey(i, action);
 }

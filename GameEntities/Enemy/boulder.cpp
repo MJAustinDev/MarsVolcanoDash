@@ -43,15 +43,18 @@ bool approxEqual(float a, float b){
 
 Boulder :: Boulder(b2World* w, b2Vec2 pos, float sizeRand, float maxForce) : BaseBreakableEnemy(400,w,pos,8){
 
-    float minSize = 1.0;
+    //force a minimum, maximum size
+    if (sizeRand<1.2f){
+        sizeRand = 1.2f;
+    }
 
     float angs[8];
     float mags[8];
 
     //generate points
     for (int i=0;i<8;i++){
-        angs[i] = randRanged(0.0,M_PI+M_PI-0.02); //ranged from 0 to (2pi - 1 degree)
-        mags[i] = randRanged(minSize,sizeRand); //ranged from 1 meter to parameter passed limit
+        angs[i] = randRanged(0.0, M_PI+M_PI-0.02); //ranged from 0 to (2pi - 1 degree)
+        mags[i] = randRanged(1.0f, sizeRand); //ranged from 1 meter to parameter passed limit
     }
 
     insertSortPoints(mags,angs); //order points via insertion sort (smallest angle then smallest magnitude)
@@ -65,7 +68,7 @@ Boulder :: Boulder(b2World* w, b2Vec2 pos, float sizeRand, float maxForce) : Bas
 
     b2FixtureDef defFix;
     defFix.friction = 1.0f;
-    defFix.density = 5.0f;
+    defFix.density = 3.0f;
     for (int i=0;i<8;i++){
         if (shapes[i]!=nullptr){
             defFix.shape = shapes[i];
@@ -83,7 +86,9 @@ Boulder :: Boulder(b2World* w, b2Vec2 pos, float sizeRand, float maxForce) : Bas
 
 Boulder :: ~Boulder(){
     for (int i=0;i<8;i++){
-        delete shapes[i];
+        if (shapes[i]!=nullptr){
+            delete shapes[i];
+        }
     }
 }
 
@@ -203,7 +208,7 @@ void Boulder :: afterCollide(LinkedList<Fragment>* fragments){
     }
 }
 
-
+//draws boulder to the viewport
 void Boulder :: draw(Camera* camera){
     b2Vec2 posBody = camera->getCamBodyPos(body);
     float angle = body->GetAngle();

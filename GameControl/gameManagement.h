@@ -29,12 +29,11 @@ SOFTWARE.
 
 #include "gameEntities.h"
 
-#include "visualStructures.h" //contains DrawShape structure
+#include "visualStructures.h" //contains the DrawShape structure
 
 
-/*
-World chunk, contains terrain for player car to drive across
-*/
+
+//world chunk, contains terrain for player car to drive across
 class Chunk{
 
 friend class GameManager;
@@ -49,6 +48,7 @@ private:
 
     void draw(Camera* camera); //draw each shape attached to main body
 
+    //define what the world chunk should be
     void defSegmentDefault();
     void defSegmentStart();
     void defSegment0();
@@ -69,10 +69,7 @@ private:
 };
 
 
-
-/*
-Stores game objects and handles all game events
-*/
+//stores game objects and handles all game events
 class GameManager{
 
 public:

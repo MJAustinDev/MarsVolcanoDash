@@ -44,11 +44,11 @@ protected:
     BaseEnemy(int ticks, b2World* w, b2Vec2 pos): BaseEnemy(ticks,w,pos,b2Vec2(0.0f,0.0f),0.0f) {}; //send over just position
 
     ~BaseEnemy();
-    void process();
+    void process(); //process game events for base enemy object
 
-    float colour[4];
-    int ttl;
-    bool terminate = false;
+    float colour[4]; //object's colour
+    int ttl; //ticks to live
+    bool terminate = false; //if zero ttl then object can be destroyed
     b2World* world;
     b2Body* body;
 
@@ -62,14 +62,13 @@ protected:
     BaseBreakableEnemy(int ticks, b2World* w, b2Vec2 pos, int numSen);
     ~BaseBreakableEnemy();
 
-    void process();
+    void process(); //process game events for breakable base enemy object
 
-    bool collided = false;
+    bool collided = false; //if object has collided or not
     int numSensors;
     b2Fixture** sensors;
 
 };
-
 
 
 //third size of meteor, fired off centrally outwards
@@ -89,7 +88,6 @@ private:
     b2CircleShape shape;
 
 };
-
 
 //on contact explodes into smaller fireballs, is a circle
 class Meteor : BaseBreakableEnemy{
@@ -126,8 +124,6 @@ private:
 
 };
 
-
-
 //on contact breaks into fragments, is a combination of polygons similar to a boxcar body. See: http://boxcar2d.com/about.html
 class Boulder : BaseBreakableEnemy{
 
@@ -151,7 +147,7 @@ private:
     void draw(Camera* camera);
 
     //points revolving around a centre 0,0... angle and mag from
-    b2PolygonShape* shapes[8] = {nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr};
+    b2PolygonShape* shapes[8] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
 };
 
@@ -161,7 +157,6 @@ class Player {
 
 friend class GameManager;
 friend class EnemyManager;
-
 
 private:
 

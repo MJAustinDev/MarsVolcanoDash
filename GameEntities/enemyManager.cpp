@@ -50,11 +50,10 @@ EnemyManager :: EnemyManager(b2World* w, Player** p, GameConfig* cfig){
 
     world = w;
     player = p;
-
-    //TODO -- ADD LAVA SPEED TO CONFIG -- not priority
-    lavaSpeed = 0.1f;
-    lavaX = (*player)->getPos().x - 128;
     config = cfig;
+
+    lavaX = (*player)->getPos().x - 128;
+    lavaSpeed = config->lavaSpeed;
 
     //set random draw points inside of lava polygon
     for (int i=0;i<32;i++){
@@ -131,7 +130,7 @@ void EnemyManager :: attemptSpawn(){
             config->ttls[j][i] --; //lower ticks to live
             //if should spawn or not
             if (config->ttls[j][i] <= 0){
-                config->ttls[j][i] = randRanged(config->spawnTimes[j],4.0f*config->spawnTimes[j]); //reset ttl
+                config->ttls[j][i] = randRanged(config->spawnTimes[j], 4.0f*config->spawnTimes[j]); //reset ttl
                 pos.y = (*player)->getPos().y + config->spawns[j][i]; //get world y position relative to player
                 //switch for potential future enemy types
                 switch (j){
@@ -158,8 +157,8 @@ void EnemyManager :: process(){
     //process ticks to live and "break-ability"
     afterProcess(&fireballs);
     afterProcess(&fragments);
-    afterProcessBreakable(&meteors,&fireballs);
-    afterProcessBreakable(&boulders,&fragments);
+    afterProcessBreakable(&meteors, &fireballs);
+    afterProcessBreakable(&boulders, &fragments);
 
     //handle lava movement
     if (lavaX < (*player)->getPos().x -128){
@@ -278,38 +277,38 @@ void EnemyManager :: drawLava(Camera* camera){
 
     //draw base shape
     glBegin(GL_POLYGON);
-    glColor4f(baseColour[0], baseColour[1], baseColour[2],0.90f);
-    for (int i=0;i<4;i++){
-        camera->placePoint(posBody, baseShape[i]);
-    }
+        glColor4f(baseColour[0], baseColour[1], baseColour[2],0.90f);
+        for (int i=0;i<4;i++){
+            camera->placePoint(posBody, baseShape[i]);
+        }
     glEnd();
 
     //draw inner shading
     for (int k=0;k<4;k++){ //for each outer point
         glBegin(GL_POLYGON);
-        glColor4f(baseColour[0], baseColour[1], baseColour[2],0.25f);
-        camera->placePoint(posBody, baseShape[k]);
-        for (int j=0;j<4;j++){ //for each pair of edge points
-            //one edge
-            glColor4f(baseColour[0], baseColour[1], baseColour[2], alphaEdge);
-            camera->placePoint(posBody, edgeShape[j+(k*8)]);
-            for (int i=0;i<8;i++){ //for 8 inner points
-                switch (i%4){ //displacement will in part carry from the previous, so just set the changed axis
-                    case 0 : {c = c1; dispX = &dispPos; break;} //displacement X +, displacement Y +
-                    case 1 : {c = c2; dispY = &dispNeg; break;} //displacement X +, displacement Y -
-                    case 2 : {c = c3; dispX = &dispNeg; break;} //displacement X -, displacement Y -
-                    case 3 : {c = c4; dispY = &dispPos; break;} //displacement X -, displacement Y +
+            glColor4f(baseColour[0], baseColour[1], baseColour[2],0.25f);
+            camera->placePoint(posBody, baseShape[k]);
+            for (int j=0;j<4;j++){ //for each pair of edge points
+                //one edge
+                glColor4f(baseColour[0], baseColour[1], baseColour[2], alphaEdge);
+                camera->placePoint(posBody, edgeShape[j+(k*8)]);
+                for (int i=0;i<8;i++){ //for 8 inner points
+                    switch (i%4){ //displacement will in part carry from the previous, so just set the changed axis
+                        case 0 : {c = c1; dispX = &dispPos; break;} //displacement X +, displacement Y +
+                        case 1 : {c = c2; dispY = &dispNeg; break;} //displacement X +, displacement Y -
+                        case 2 : {c = c3; dispX = &dispNeg; break;} //displacement X -, displacement Y -
+                        case 3 : {c = c4; dispY = &dispPos; break;} //displacement X -, displacement Y +
+                    }
+                    glColor4f(c[0], c[1], c[2], alphaInner);
+                    b2Vec2 movePoint = innerShape[i+(j*8)]; //split into 4 chunks each 8 wide
+                    movePoint.x+=(*dispX);
+                    movePoint.y+=(*dispY);
+                    camera->placePoint(posBody, movePoint);
                 }
-                glColor4f(c[0], c[1], c[2], alphaInner);
-                b2Vec2 movePoint = innerShape[i+(j*8)]; //split into 4 chunks each 8 wide
-                movePoint.x+=(*dispX);
-                movePoint.y+=(*dispY);
-                camera->placePoint(posBody, movePoint);
+                //another edge
+                glColor4f(baseColour[0], baseColour[1], baseColour[2], alphaEdge);
+                camera->placePoint(posBody, edgeShape[j+4]);
             }
-            //another edge
-            glColor4f(baseColour[0], baseColour[1], baseColour[2], alphaEdge);
-            camera->placePoint(posBody, edgeShape[j+4]);
-        }
         glEnd();
     }
 }

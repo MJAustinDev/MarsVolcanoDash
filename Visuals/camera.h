@@ -43,6 +43,7 @@ inline void forceEdgePoints(b2Vec2* points, b2PolygonShape* shape){
     }
 }
 
+//main class that draws to the viewport
 class Camera {
 
 public:
@@ -74,12 +75,12 @@ public:
     void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
     void drawChunkShape(b2Body* body, DrawShape* drawShape); //draw terrain shapes
 
-    //draws martian dust over viewport
+    //draws martian dust over the viewport
     void drawDust();
 
-    void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;};
-    void processInput();
-    void updateGlow();
+    void centreCam(b2Vec2 vec){posX = vec.x; posY = vec.y;}; //centres the camera around a given b2Vec2 coordinate
+    void processInput(); //allows for zoom to be modified by the player
+    void updateGlow(); //shifts the glow value along within it's given range
 
 
 private:
@@ -91,14 +92,14 @@ private:
     void loadTextures();
     void unloadTextures();
 
-
     void catchZoom(); //locks the zoom level between a fixed range
 
-
+    //camera drawing to viewport vars
     float posX;
     float posY;
     float zoom;
 
+    //user input keys
     bool* keyPlus;
     bool* keyMinus;
 

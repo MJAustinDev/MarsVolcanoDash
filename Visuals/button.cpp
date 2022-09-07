@@ -53,14 +53,14 @@ void Button :: setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, flo
     }
 }
 
-
+//draws button to the screen including textures
 void Button :: draw(Camera* camera, bool selected){
     //set button's draw colours
-    float colour[3] = {0.69f, 0.14f, 1.0f};
-    float backColour[3] = {0.69f*0.3, 0.14f*0.3, 0.3f};
+    float colour[4] = COLOUR_PURPLE;
+    float backColour[4] = COLOUR_PURPLE_BUTTON;
     if (!selected) {
         for (int i=0;i<3;i++){
-            colour[i] *= 0.5f;
+            colour[i] *= 0.5f; //dull main colour if not selected
         }
     }
 
@@ -76,5 +76,3 @@ void Button :: draw(Camera* camera, bool selected){
         } while (textures.cycleUp());
     }
 }
-
-

@@ -27,71 +27,66 @@ SOFTWARE.
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-//TODO convert functionality into .cpp file
 
+template <class T> class LinkedList; //so Node<T> can have a friend relationship with LinkedList<T>
 
-template <class T>
-class LinkedList;
-
-
-
+//Linked List Node
 template <class T>
 class Node {
 
 friend class LinkedList<T>;
 
 public:
-    T* obj;
+    T* obj; //public so object can be accessed outside of the Linked List
 
 private:
-    Node(T* o){ obj = o; prev = nullptr; next = nullptr;};
-    Node(T* o, Node<T>* p, Node<T>* n){
-        obj = o;
-        prev = p;
-        next = n;
-        if (prev!=nullptr){
+
+    Node(T* o){ obj = o;}; //base constructor, prev and next are nullptrs (e.g. first item in the list)
+    Node(T* o, Node<T>* p, Node<T>* n) : Node(o) {
+        if (p != nullptr){
+            prev = p;
             prev->next = this;
         }
-        if (next!=nullptr){
+        if (n != nullptr){
+            next = n;
             next->prev = this;
         }
     };
-
+    //destructor, fixes linked list positioning automatically
     ~Node(){
-        if (prev!=nullptr){
-            prev->next = next;
+        if (prev != nullptr){
+            prev->next = next; //if not the first then set prev node to point at the next node
         }
-        if (next!=nullptr){
-            next->prev = prev;
+        if (next != nullptr){
+            next->prev = prev; //if not the last then set next node to point at the prev node
         }
-        delete obj;
+        delete obj; //dynamic memory clear up
         prev = nullptr;
         next = nullptr;
+        obj = nullptr;
     };
 
-    Node* prev;
-    Node* next;
-
-
+    Node* prev = nullptr; //ptr to the previous node in the linked list
+    Node* next = nullptr; //ptr to the next node in the linked list
 
 };
 
-
+//Linked List data structure
 template <class T>
 class LinkedList {
 
 public:
 
-    LinkedList(){first = nullptr; last = nullptr; cycle = nullptr;};
-    ~LinkedList(){
+    LinkedList(){first = nullptr; last = nullptr; cycle = nullptr;}; //initialise as an empty linked list
+    ~LinkedList(){ //remove all items when list is destroyed
         while(first!=nullptr){
             remFront();
         }
     };
-
+    //adds a new object to the front of the list
     void addFront(T* obj){
         //if list is empty
-        if(first==nullptr){
+        if(first == nullptr){
             first = new Node<T>(obj);
             last = first;
         } else {
@@ -99,9 +94,10 @@ public:
         }
     };
 
+    //adds a new object to the back of the list
     void addEnd(T* obj){
         //if list is empty
-        if(last==nullptr){
+        if(last == nullptr){
             last = new Node<T>(obj);
             first = last;
         } else {
@@ -109,14 +105,14 @@ public:
         }
     };
 
+    //removes the first object
     void remFront(){
         //if list is not empty
-        if (first!=nullptr){
+        if (first != nullptr){
             //if not the only item left
             if (first!=last){
                 first = first->next; //set 2nd item to 1st
                 delete first->prev; //delete original 1st item
-                first->prev = nullptr; //set prev pointer on new 1st to null
             } else {
                 delete first; //delete item
                 first = nullptr; //set both first and last to null as list is empty
@@ -125,14 +121,15 @@ public:
         }
     }
 
+    //removes the last object
     void remEnd(){
         //if list is not empty
-        if (last!=nullptr){
+        if (last != nullptr){
             //if not the only item left
             if (last!=first){
                 last = last->prev; //set 2nd to last item to last
                 delete last->next; //delete original last item
-                last->next = nullptr; //set next pointer on new last to null
+                //last->next = nullptr; //set next pointer on new last to null
             } else {
                 delete last; //delete item
                 last = nullptr; //set both first and last to null as list is empty
@@ -141,47 +138,46 @@ public:
         }
     }
 
-    bool remAtNode(Node<T>* node){
-        if (node==first){
+    //removes a given node
+    void remAtNode(Node<T>* node){
+        if (node == first){
             remFront();
-            return true;
-        } else if(node==last){
+        } else if(node == last){
             remEnd();
-            return true;
         } else {
             delete node;
             node = nullptr;
-            return true;
         }
-        return false;
     }
 
+    //removes the currently cycled object
     void remCycle(){
-        if (cycle!=nullptr){
-            if (cycle==first){
+        if (cycle != nullptr){
+            if (cycle == first){
                 remFront();
-            } else if (cycle==last){
+            } else if (cycle == last){
                 remEnd();
             } else {
                 cycle = cycle->prev;
                 delete cycle->next;
             }
         }
-
     }
 
-    bool resetCycle(){cycle = first; return (cycle!=nullptr);}
+    //resets the cycle to the front of the list, returns true if the list isn't empty
+    bool resetCycle(){cycle = first; return (cycle != nullptr);}
 
+    //pushes the cycle along the list by 1 iteration, returns true until the last item has been processed
     bool cycleUp(){
-        if (cycle!=nullptr){
+        if (cycle != nullptr){
             cycle = cycle->next;
         }
-        return (cycle!=nullptr);
+        return (cycle != nullptr);
     }
 
-    Node<T>* first;
-    Node<T>* last;
-    Node<T>* cycle;
+    Node<T>* first; //start node of the linked list
+    Node<T>* last; //end node of the linked list
+    Node<T>* cycle; //node ptr used to access items within the linked list
 
 };
 
