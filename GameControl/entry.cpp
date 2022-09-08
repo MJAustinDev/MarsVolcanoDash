@@ -67,6 +67,15 @@ void sizeHandler(GLFWwindow* window, int width, int height){
     glViewport(vpX, vpY, vpW, vpH);
 }
 
+//used at start to guarantee the viewport's aspect ratio
+void forceRatio(GLFWwindow* window){
+    int w;
+    int h;
+    glfwGetWindowSize(window, &w, &h);
+    sizeHandler(window, w, h);
+    glfwPollEvents();
+}
+
 int main(){
 
     srand(time(NULL));
@@ -75,7 +84,9 @@ int main(){
         return -1;// Initialization failed
     }
 
-    GLFWwindow* window = glfwCreateWindow(1280, 960, "Mars Volcano Dash", NULL, NULL);
+    glfwWindowHint(GLFW_MAXIMIZED, 1); //attempt to start with a maximised window
+    GLFWwindow* window = glfwCreateWindow(640, 480, "Mars Volcano Dash", NULL, NULL);
+
     if (!window){
         glfwTerminate(); //terminate glfw before exiting
         return -1; //window creation failed
@@ -93,6 +104,9 @@ int main(){
     //define key game objects
     Camera camera(window, 0.0f, 0.0f, 1.0f, &(keys[4]), &(keys[5])); //give camera access to + and - keys
     Manager manager(window, &camera);
+
+    //force screen size to be in ratio
+    forceRatio(window);
 
     //game loop, runs until glfw is told to kill the window
     while (!glfwWindowShouldClose(window)){
