@@ -23,9 +23,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libraries/libRecompileBox2d.a" />
 					<Add library="libraries/libglfw3dll.a" />
 					<Add library="opengl32" />
+					<Add library="libraries/libRecompileBox2d.a" />
 					<Add directory="libraries" />
 				</Linker>
 			</Target>
