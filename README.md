@@ -1,14 +1,17 @@
-# Mars Volcano Dash <img src="RepoResources/Images/Big%20Icon.png" width="48"/>
+# <img src="RepoResources/Images/Big%20Icon.png" width="48"/> Mars Volcano Dash
 
 An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 
-<img src="RepoResources/Images/ScreenCap1.png" width=98%/>
+<img src="RepoResources/Images/ScreenCap1.png" width=100%/>
 <div>
-<img src="RepoResources/Images/ScreenCap2.png" width=48%/>
-<img src="RepoResources/Images/ScreenCap3.png" width=48%/>
+<img src="RepoResources/Images/ScreenCap2.png" width=48% align="left" />
+<img src="RepoResources/Images/ScreenCap3.png" width=48% align="right" />
 </div>
 
+&nbsp;
+
 ---
+
 
 ## Gameplay
 
@@ -141,7 +144,7 @@ Other than that I encourage you to play around and modify the likes of the game 
 Do so to your hearts content!
 I've left the CodeBlocks project in the repo that way you should be able to toy around with the code without any knowledge of setting up the compiler/linker.
 
-**Just note any modifications that you make, you are making of your own accord and at your own risk, and I will not be held responsible (Basically the bold section of the MIT lisence that I'm lisencing my work under, see below)**
+**Just note any modifications that you make, you are making of your own accord and at your own risk, and I will not be held responsible (Basically the bold section of the MIT license that I'm licensing my work under, see below)**
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
