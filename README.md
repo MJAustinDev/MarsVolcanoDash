@@ -3,12 +3,10 @@
 An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 
 <img src="RepoResources/Images/ScreenCap1.png" width=100%/>
-<div>
-<img src="RepoResources/Images/ScreenCap2.png" width=48% align="left" />
-<img src="RepoResources/Images/ScreenCap3.png" width=48% align="right" />
+<div align="center">
+<img src="RepoResources/Images/ScreenCap2.png" width=49.6% />
+<img src="RepoResources/Images/ScreenCap3.png" width=49.6% />
 </div>
-
-&nbsp;
 
 ---
 
