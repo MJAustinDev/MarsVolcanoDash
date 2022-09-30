@@ -1,6 +1,12 @@
-# Mars Volcano Dash ![](Visuals/Icons/MarsVolcanoDashIcon.png)
+# Mars Volcano Dash <img src="RepoResources/Images/Big%20Icon.png" width="48"/>
 
 An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
+
+<img src="RepoResources/Images/ScreenCap1.png" width=98%/>
+<div>
+<img src="RepoResources/Images/ScreenCap2.png" width=48%/>
+<img src="RepoResources/Images/ScreenCap3.png" width=48%/>
+</div>
 
 ---
 
@@ -55,6 +61,7 @@ L ⇒ D
 - GameEntities, files associated with creating, controlling and destroying game entities e.g., player's car, boulders, etc
 - include, all the external .h files required to compile the program (Box2D, GLFW, stb_image)
 - libraries, the .a and .dll files associated with the external libraries (Box2d, GLFW)
+- RepoResources, FAQs, Guides, and Images to make the repository look nice
 - Utility, basic utility functions/classes that are used throughout the code
 - Visuals, files associated with drawing graphics to the screen
 
@@ -128,18 +135,22 @@ they can also be found in the directories where their corresponding files exist 
 
 ## Final notes
 
-I'm releasing and licensing what I've done under MIT, feel free to do what you like with it.
+I'm releasing and licensing what I've done under MIT, feel free to do what you like with it (as long as you follow the license's terms).
 **Just be careful when using parts of the program which I haven't built, (Box2D, GLFW, stb_image) and make sure to reference their licensing properly.**
 Other than that I encourage you to play around and modify the likes of the game mode configuration, the players car, or even add in new enemies.
 Do so to your hearts content!
-I've left the CodeBlocks project in the repo that way you should be able to toy around with the code without any knowledge of setting up the compiler/linker
+I've left the CodeBlocks project in the repo that way you should be able to toy around with the code without any knowledge of setting up the compiler/linker.
 
-A final thanks to my friend Mike for the idea of a chasing game when I asked for possible ideas for physics engine based games!
+**Just note any modifications that you make, you are making of your own accord and at your own risk, and I will not be held responsible (Basically the bold section of the MIT lisence that I'm lisencing my work under, see below)**
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
-
-
-
-
-
+On a final note I'd like to thank my friend Mike for the idea of a chasing game when I asked for possible ideas for physics engine based games!
 
