@@ -216,7 +216,7 @@ private:
 
     //lava draw shape coordinates
     //set corner points
-    b2Vec2 baseShape[4] = {b2Vec2(5.0f, -128.0f), b2Vec2(-5.0f, 128.0f), b2Vec2(-128.0f, 128.0f), b2Vec2(-128.0f, -128.0f)}; //bottom right -> top right -> top left -> bottom left
+    b2Vec2 baseShape[4] = {b2Vec2(5.0f, -128.0f), b2Vec2(-35.0f, 128.0f), b2Vec2(-128.0f, 128.0f), b2Vec2(-128.0f, -128.0f)}; //bottom right -> top right -> top left -> bottom left
     //random edge points
     b2Vec2 edgeShape[32]; //0-7 bottom edge, 8-15 right edge, 16-23 top edge, 24-31 left edge
     //random internal points

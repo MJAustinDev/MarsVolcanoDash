@@ -184,7 +184,7 @@ void Camera :: drawDust(){
     if (19 != (unsigned int)-1){ //if texture hasn't been found don't attempt to draw
         float shade = 1.0f-(0.75f*glow);
         float colour[4] = COLOUR_BLOOD_RED;
-        glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.2);
+        glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.3);
 
         //move dust storm
         dustShift += 0.0085f;

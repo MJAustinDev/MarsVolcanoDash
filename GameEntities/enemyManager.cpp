@@ -39,9 +39,9 @@ float pointDistance(b2Vec2 a, b2Vec2 b){
 //law of cosigns to return angle of point against front triangle of lava shape
 float cosignRuleAngle(b2Vec2 pos){
 
-    float a = pointDistance(b2Vec2(-5,128), pos); //top left point of triangle to position
+    float a = pointDistance(b2Vec2(-35,128), pos); //top left point of triangle to position
     //b = 256 and is right hand span of the triangle
-    float c = pointDistance(b2Vec2(-5,-128), pos); //bottom left point of triangle to position
+    float c = pointDistance(b2Vec2(-35,-128), pos); //bottom left point of triangle to position
     return acos(((c*c) - (65536) - (a*a)) / (-512*a)); //law of cosigns rearranged to get angle from all 3 sides, with b filled in as it's constant
 
 }
@@ -60,7 +60,7 @@ EnemyManager :: EnemyManager(b2World* w, Player** p, GameConfig* cfig){
         bool valid = false;
         while (!valid){
             innerShape[i].Set(randRanged(-128.0,5.0), randRanged(-128, 128)); //lava point is P
-            /*                               B=(-5,128)
+            /*                               B=(-35,128)
             |--------------------------------|\
             |                                | \
             |                                |  \
@@ -75,19 +75,19 @@ EnemyManager :: EnemyManager(b2World* w, Player** p, GameConfig* cfig){
             |                                |           \
             |                                |            \
             |--------------------------------|-------------|
-                                             A=(-5,-128)   C=(5,128)
+                                             A=(-35,-128)   C=(5,128)
             if P is behind or on triangle's left edge (P.x<=-5) then P lies inside the main lava rectangle,
             else if (angle ABP is less than or equal to angle ABC) then P is inside the lava front triangle */
-            valid = (innerShape[i].x <= -5.0f) || (cosignRuleAngle(innerShape[i]) <= 0.039); //ABC is approx 0.039 radians
+            valid = (innerShape[i].x <= -35.0f) || (cosignRuleAngle(innerShape[i]) <= 0.15); //ABC is approx 0.15 radians
         }
     }
 
     //set random edge draw points for lava polygon
     for (int i=0;i<8;i++){
         edgeShape[i].Set(randRanged(-128,5.0),-128); //bottom edge
-        edgeShape[i+8].x = randRanged(-5,5); //right edge x axis
-        edgeShape[i+8].y = (-25.6*edgeShape[i+8].x) + 1; //right edge y axis using y = mx + c, using B and C m = -25.6 and c = 1
-        edgeShape[i+16].Set(randRanged(-128,-5.0),128); //top edge
+        edgeShape[i+8].x = randRanged(-35,5); //right edge x axis
+        edgeShape[i+8].y = (-6.4*edgeShape[i+8].x) -96;//right edge y axis using y = mx + c, using B and C m = -6.4 and c = -96
+        edgeShape[i+16].Set(randRanged(-128,-35.0),128); //top edge
         edgeShape[i+24].Set(-128, randRanged(-128,128)); //left edge
     }
 }

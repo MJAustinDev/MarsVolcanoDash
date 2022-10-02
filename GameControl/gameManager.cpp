@@ -100,7 +100,7 @@ bool GameManager :: process(bool* keys){
     processChunkRemoval(); //remove old chunks if needed
 
     //check if game is over
-    if (score < (enemies->lavaX - 2.5)){ //while in  game score is viewed as players x position
+    if (score < (enemies->lavaX - 18.5f)){ //while in  game score is viewed as players x position
         return true;
     }
     return false;
@@ -139,23 +139,21 @@ void GameManager :: draw(Camera* camera){
 
     enemies->draw(camera); //draw enemies before player and terrain
 
+    //draw player/players
+    player->draw(camera);
+    if (player2!=nullptr){
+        player2->draw(camera);
+    }
+    enemies->drawLava(camera); //draw lava after player
+
+    camera->drawDust(); //draw dust storm over all entities and lava
+
     //draw terrain
     if (chunks.resetCycle()){
         do {
             chunks.cycle->obj->draw(camera);
         } while (chunks.cycleUp());
     }
-
-    //draw player/players
-    player->draw(camera);
-    if (player2!=nullptr){
-        player2->draw(camera);
-    }
-
-    enemies->drawLava(camera); //draw lava after player
-
-    camera->drawDust();
-
 }
 
 

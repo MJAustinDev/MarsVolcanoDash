@@ -56,12 +56,19 @@ void drawChunkId0(Camera* camera, b2Vec2 posBody, b2Vec2* points){
     //starting at [1],.. and ending at ...,[0] to save colour changing
     float underCol[4] = COLOUR_BACK_GAME; //colour underneath the terrain
     glBegin(GL_POLYGON);
-        glColor4f(underCol[0], underCol[1], underCol[2], underCol[3]);
-        camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 35.0f));
-        camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 35.0f));
         glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, baseColour[3]);
         camera->placePoint(posBody, points[3]);
         camera->placePoint(posBody, points[0]);
+        glColor4f(underCol[0], underCol[1], underCol[2], underCol[3]);
+        camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 35.0f));
+        camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 35.0f));
+    glEnd();
+    //draw solid dark background fill under terrain
+    glBegin(GL_POLYGON);
+        camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 35.0f));
+        camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 35.0f));
+        camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 200.0f));
+        camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 200.0f));
     glEnd();
 
 }
