@@ -82,7 +82,7 @@ private:
     //configure the game's mode
     void configEasy();
     void configNormal();
-    void configArmageddon();
+    void configHard();
     void configTwoPlayer();
 
     void processMenu(bool* keys); //run menu control events

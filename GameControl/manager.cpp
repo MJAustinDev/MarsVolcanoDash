@@ -116,7 +116,7 @@ void Manager :: processMenu(bool* keys){
         switch(selected){
             case 0 : {configEasy(); break;}
             case 1 : {configNormal(); break;}
-            case 2 : {configArmageddon(); break;}
+            case 2 : {configHard(); break;}
             case 3 : {configTwoPlayer(); break;}
             case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); break;} //exit button kill game loop
         }

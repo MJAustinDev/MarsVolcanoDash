@@ -89,8 +89,8 @@ void Manager :: configNormal(){
 
 }
 
-//configure Armageddon mode's settings
-void Manager :: configArmageddon(){
+//configure hard mode's settings
+void Manager :: configHard(){
 
     config.twoPlayer = false;
 
@@ -107,7 +107,7 @@ void Manager :: configArmageddon(){
         config.ttls[0][i] = randRanged(config.spawnTimes[0],(4*config.spawnTimes[0]));
         config.spawns[0][i] = 96;
         config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
-        config.spawns[1][i] = 64;
+        config.spawns[1][i] = 80;
     }
     config.lavaSpeed = 0.2f;
 
