@@ -22,7 +22,7 @@ it made more sense to use the same method rather than dealing with more unnecess
 
 ## Why provide PNG images for textures rather than encode/compress them?
 
-Again this project was more about learning the basics of opengl (for future more ambitious game projects),
+Again this project was more about learning the basics of opengl for future more ambitious game projects,
 as such I didn't want to spend too much time on loading in textures.
 Hence, I used 'stb_image' as it allowed me to easily load in textures without a restrictive license.
 

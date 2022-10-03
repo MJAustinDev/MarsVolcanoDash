@@ -13,7 +13,8 @@ An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 
 ## Gameplay
 
-You work for a mining company that operates on the surface of Mars, for your work you drive an armoured pickup truck that you use to transport mined materials.
+You work for a mining company that operates on the surface of Mars.
+For your work you drive an armoured pickup truck that you use to transport mined materials.
 A volcano has just erupted near your current position, sending massive boulders and meteors into the sky as well as molten lava across the Martian surface.
 Your vehicle is armoured and can withstand the force from incoming debris, however you cannot survive being completely submerged in lava.
 The lava from the eruption is progressively moving towards you while incoming debris from the eruption is falling down and littering your path!
@@ -58,13 +59,13 @@ L ⇒ D
 
 ## Repository break down
 
-- GameControl, files associated with controlling the game either on menu or while running
-- GameEntities, files associated with creating, controlling and destroying game entities e.g., player's car, boulders, etc
-- include, all the external .h files required to compile the program (Box2D, GLFW, stb_image)
-- libraries, the .a and .dll files associated with the external libraries (Box2d, GLFW)
-- RepoResources, FAQs, Guides, and Images to make the repository look nice
-- Utility, basic utility functions/classes that are used throughout the code
-- Visuals, files associated with drawing graphics to the screen
+- **GameControl,** files associated with controlling the game either on menu or while running
+- **GameEntities,** files associated with creating, controlling and destroying game entities e.g., player's car, boulders, etc
+- **include,** all the external .h files required to compile the program (Box2D, GLFW, stb_image)
+- **libraries,** the .a and .dll files associated with the external libraries (Box2d, GLFW)
+- **RepoResources,** FAQs, Guides, and Images to make the repository look nice
+- **Utility,** basic utility functions/classes that are used throughout the code
+- **Visuals,** files associated with drawing graphics to the screen
 
 
 ---
@@ -119,17 +120,17 @@ with copy right going to Marcus Geelnard and Camilla Löwy.
 
 ### stb_image
 
-Stb_image can be licensed under two different licenses depending on choice, I've opted to use the Public Domain license.
+stb_image can be licensed under two different licenses depending on choice, I've opted to use the Public Domain license.
 
 You can check out the GitHub repo here: https://github.com/nothings/stb
 
 I needed a quick and easy way to load png images hence I've only used the image loader library "stb_image.h".
 Hence I copied the header file off the GitHub repository.
-Obviously this file is Sean T barrett's work and is under the aforementioned Public Domain License.
+Obviously this file is Sean T Barrett's work and is under the aforementioned Public Domain License.
 
 
 
-**The above Box2D, GLFW and stb_image licenses are placed inside of this projects LISCENSE.md file with indication to where they apply,
+**The above Box2D, GLFW and stb_image licenses are placed inside of this projects LICENSE.md file with indication to where they apply,
 they can also be found in the directories where their corresponding files exist as well as in any code taken directly from the libraries (i.e., their header files).**
 
 ---

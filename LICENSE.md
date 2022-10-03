@@ -9,14 +9,11 @@ The license can also be found in comment form at the top of my files.
 This license applies to all .cpp and .h files within these directories and their sub-directories:
 - GameControl/
 - GameEntities/
-- GameEntities/Enemy/
 - Utility/
 - Visuals/
 
 The only exceptions are the file GameControl/entry.cpp, Visuals/Icons/gameIcon.h and Visuals/Icons/gameIcon.rc.
-This is because I don't see any point attempting to copyright the entry point file as it's a basic gameloop similar to any other GLFW application.
-And I don't see any point attempting to copyright two very small single files which only set the applications icon,
-hence only the capitalised section of the license applies all 3 of these files.
+For these three files only the capitalised section of the license applies.
 
 
 
