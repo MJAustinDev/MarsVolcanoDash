@@ -49,8 +49,8 @@ void Camera :: setCamPos(float x, float y, float z){
 
 //catches zoom for game play view
 void Camera :: catchZoom(){
-    if (zoom<0.00799998){
-        zoom = 0.00799998;
+    if (zoom<0.016){
+        zoom = 0.016;
         return; //no point bothering with the below as it is now false
     }
     if (zoom>0.1){
