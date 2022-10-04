@@ -67,8 +67,8 @@ void drawChunkId0(Camera* camera, b2Vec2 posBody, b2Vec2* points){
     glBegin(GL_POLYGON);
         camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 35.0f));
         camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 35.0f));
-        camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 200.0f));
-        camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 200.0f));
+        camera->placePoint(posBody, b2Vec2(points[2].x, points[2].y - 100.0f));
+        camera->placePoint(posBody, b2Vec2(points[1].x, points[1].y - 100.0f));
     glEnd();
 
 }
