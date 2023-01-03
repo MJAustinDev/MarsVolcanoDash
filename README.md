@@ -1,59 +1,19 @@
-# <img src="RepoResources/Images/Big%20Icon.png" width="48"/> Mars Volcano Dash
+# <img src="RepoResources/Images/Big%20Icon.png" width="48"/> Development Working Branch
 
-An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
-
-<img src="RepoResources/Images/ScreenCap1.png" width=100%/>
-<div align="center">
-<img src="RepoResources/Images/ScreenCap2.png" width=49.6% />
-<img src="RepoResources/Images/ScreenCap3.png" width=49.6% />
-</div>
+Replaced the gameplay stuff with a todo list \& keeping all the license info/final notes 
 
 ---
 
 
-## Gameplay
+## TODO 
 
-You work for a mining company that operates on the surface of Mars.
-For your work you drive an armoured pickup truck that you use to transport mined materials.
-A volcano has just erupted near your current position, sending massive boulders and meteors into the sky as well as molten lava across the Martian surface.
-Your vehicle is armoured and can withstand the force from incoming debris, however you cannot survive being completely submerged in lava.
-The lava from the eruption is progressively moving towards you while incoming debris from the eruption is falling down and littering your path!
-You must navigate the volatile terrain in an attempt to save your life...
-
-
-### Menu Controls
-
-Use W & S to scroll up and down, and Enter to select an option
-
-
-### Gameplay Controls
-
-Escape ⇒ Pauses the game
-
-\+ / \- ⇒ Zoom camera in / out
-
-W ⇒ Forwards (right along the track)
-
-S ⇒ Backwards (left along the track)
-
-A ⇒ Apply force to tilt car CCW
-
-D ⇒ Apply force to tilt car CW
-
-Player 2 controls are the same but with the following mappings (basically moving WASD along your keyboard to IJKL)
-
-I ⇒ W,
-K ⇒ S,
-J ⇒ A,
-L ⇒ D
-
----
-
-## To come
-
-- A few small graphics updates
-- Gameplay guide
-- Modification Guides (easy ways to modifiy the gamemodes, enemies, etc)
+- Background decorations (code/images) (verify)
+- Foreground decorations (code/images) (verify)
+- Two player split screen (code) (verify)
+- Distance Markers (code) (verify)
+- Halloween easter egg (easter-ween???) (code/images) (verify)
+- Christmas easter egg (code/images) (verify)
+- Easter easter egg??? (probs not lol) (code/images) (verify)
 
 ---
 
