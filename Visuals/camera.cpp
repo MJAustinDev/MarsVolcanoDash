@@ -178,6 +178,27 @@ void Camera :: drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* c
     glEnd();
 }
 
+//draws a texture within a 4 sided b2 polygon shape
+void Camera :: drawTextB2Polygone(unsigned int id, b2Vec2 tCoords[4], b2Vec2 posBody, b2PolygonShape* shape, float angle){
+
+    //catch invalid texture or shape count
+    if ((id == (unsigned int)-1) || (shape->m_count != 4)){return;}
+
+    glEnable(GL_TEXTURE_2D); //start texture
+        glBindTexture(GL_TEXTURE_2D, id);
+        glBegin(GL_POLYGON);
+
+            for (int i=0;i<shape->m_count;i++){
+                glTexCoord2f(tCoords[i].x, tCoords[i].y); //set coordinate relative to texture
+                placeRotatePoint(posBody,shape->m_vertices[i],angle); //place point in world
+            }
+
+        glEnd();
+
+    glDisable(GL_TEXTURE_2D); //end texture
+
+}
+
 //covers the screen in a moving transparent dust storm
 void Camera :: drawDust(){
     unsigned int texID = getTexture(19);

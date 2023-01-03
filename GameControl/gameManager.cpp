@@ -57,8 +57,10 @@ GameManager :: GameManager(GameConfig* config) {
 }
 
 GameManager :: ~GameManager() {
-
-    while (chunks.first!=nullptr){
+    while(backDecs.first != nullptr){
+        backDecs.remFront();
+    }
+    while (chunks.first != nullptr){
         chunks.remFront(); //have to destroy via linked list to prevent world attempting to delete bodies multiple times
     }
     delete enemies;
@@ -138,6 +140,11 @@ void GameManager :: draw(Camera* camera){
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
 
     //draw background decorations
+    if (backDecs.resetCycle()){
+        do {
+            backDecs.cycle->obj->draw(camera);
+        } while(backDecs.cycleUp());
+    }
 
     enemies->draw(camera); //draw enemies before player and terrain
 

@@ -74,6 +74,7 @@ public:
     void drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut); //draws circle with different colours at centre and circumfrence
     void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
     void drawChunkShape(b2Body* body, DrawShape* drawShape); //draw terrain shapes
+    void drawTextB2Polygone(unsigned int id, b2Vec2 tCoords[4], b2Vec2 posBody, b2PolygonShape* shape, float angle); //draws a texture given a 4 pointed polygon and texture id
 
     //draws martian dust over the viewport
     void drawDust();

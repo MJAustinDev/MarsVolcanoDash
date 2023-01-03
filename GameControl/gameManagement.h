@@ -31,7 +31,7 @@ SOFTWARE.
 
 #include "visualStructures.h" //contains the DrawShape structure
 
-
+#include <decoration.h>
 
 //world chunk, contains terrain for player car to drive across
 class Chunk{
@@ -90,6 +90,7 @@ private:
     void processChunkRemoval(); //removes terrain if behind lava
 
     LinkedList<Chunk> chunks; //stores terrain chunks in linked list
+    LinkedList<Decoration> backDecs; //stores background decorations in a linked list
 
     float nextChunkX = 0.0f; //x position of the next chunk to be added
     float nextChunkY = 0.0f; //y position of the next chunk to be added
