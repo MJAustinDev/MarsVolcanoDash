@@ -137,6 +137,8 @@ void GameManager :: processChunkRemoval() {
 void GameManager :: draw(Camera* camera){
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
 
+    //draw background decorations
+
     enemies->draw(camera); //draw enemies before player and terrain
 
     //draw player/players
@@ -151,7 +153,7 @@ void GameManager :: draw(Camera* camera){
     //draw terrain
     if (chunks.resetCycle()){
         do {
-            chunks.cycle->obj->draw(camera);
+            chunks.cycle->obj->draw(camera); //MAYBE -- DRAW FOREGROUND DECORATIONS (in-front of player decore)
         } while (chunks.cycleUp());
     }
 }
