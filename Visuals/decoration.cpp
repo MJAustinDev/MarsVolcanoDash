@@ -29,15 +29,42 @@ SOFTWARE.
 //set decoration zero (currently just test asset, will be changed later)
 void Decoration :: setID0(){
 
-    b2PolygonShape shape;
+    b2PolygonShape* shape = new b2PolygonShape;
     b2Vec2 points[8];
-    points[0].Set(-1.5f, 0.0f);
-    points[1].Set(1.5f, 0.0f);
-    points[2].Set(1.0f, 1.5f);
-    points[3].Set(-1.0f, 1.5f);
-
-    shape.Set(points, 4);
+    points[0].Set(-3.5f, 0.0f);
+    points[1].Set(3.5f, 0.0f);
+    points[2].Set(3.0f, 3.5f);
+    points[3].Set(-3.0f, 3.5f);
+    shape->Set(points, 4);
     addShape(shape);
+    shape = nullptr;
+
+    shape = new b2PolygonShape;
+    points[0].Set(-3.0f, 3.5f);
+    points[1].Set(3.0f, 3.5f);
+    points[2].Set(3.0f, 16.5f);
+    points[3].Set(-3.0f, 16.5f);
+    shape->Set(points, 4);
+    addShape(shape);
+    shape = nullptr;
+
+    shape = new b2PolygonShape;
+    points[0].Set(-3.0f, 16.5f);
+    points[1].Set(3.0f, 16.5f);
+    points[2].Set(2.0f, 18.0f);
+    shape->Set(points, 3);
+    addShape(shape);
+    shape = nullptr;
+
+    //adds a number 7 to it
+    b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
+    b2PolygonShape tShape;
+    points[0].Set(-2.5f, 4.0f);
+    points[1].Set(2.5f, 4.0f);
+    points[2].Set(2.5f, 12.0f);
+    points[3].Set(-2.5f, 12.0f);
+    tShape.Set(points, 4);
+    addTexture(18, tCoords, tShape);
 
 }
 

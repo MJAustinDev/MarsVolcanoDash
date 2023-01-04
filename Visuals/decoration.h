@@ -74,8 +74,8 @@ private:
     LinkedList<TextShape> tShapes;
 
     //adds shape to the linked list assume (0, 0) is the very top centre of the base
-    void addShape(b2PolygonShape shape){
-        shapes.addEnd( new b2PolygonShape(shape));
+    void addShape(b2PolygonShape* shape){
+        shapes.addEnd(shape);
     };
     // add new texture
     void addTexture(unsigned int id, b2Vec2 tCoords[4], b2PolygonShape shape){
@@ -96,10 +96,10 @@ public:
         float colOrg[4] = COLOUR_ORANGE;
         float* rndColour = nullptr;
         switch (randModRanged(2)){
-            case 0 : {rndColour = colPur; break; }
-            case 1 : {rndColour = colOrg; break; }
+            case 0 : {rndColour = &colPur[0]; break; }
+            case 1 : {rndColour = &colOrg[0]; break; }
         }
-        for (int i=0;i<3;i++){
+        for (int i=0;i<4;i++){
             colour[i] = rndColour[i];
         }
 
@@ -133,7 +133,8 @@ public:
         }
 
         //draw all textures
-        glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, colour[3]*0.9);
+        glow += 0.35;
+        glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, 1.0f);
         if(tShapes.resetCycle()){
             do {
                 TextShape* ptr = tShapes.cycle->obj;

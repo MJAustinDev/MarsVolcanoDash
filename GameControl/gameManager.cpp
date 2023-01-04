@@ -72,6 +72,10 @@ GameManager :: ~GameManager() {
 //adds new chunk to the linked list, handles memory allocation and pointers
 void GameManager :: addChunk(int chunkID){
 
+    //TEMP TESTING LOCATION -- TODO LINK TO CHUNKS
+    Decoration* d = new Decoration(0, b2Vec2(nextChunkX+1.0f, nextChunkY+0.0f));
+    backDecs.addEnd(d);
+
     Chunk* chunk = new Chunk(world, chunkID, nextChunkX, nextChunkY); //define chunk in memory
     chunks.addEnd(chunk); //add to the linked list
     //update next chunk position
