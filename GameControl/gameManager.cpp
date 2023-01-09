@@ -57,9 +57,6 @@ GameManager :: GameManager(GameConfig* config) {
 }
 
 GameManager :: ~GameManager() {
-    while(backDecs.first != nullptr){
-        backDecs.remFront();
-    }
     while (chunks.first != nullptr){
         chunks.remFront(); //have to destroy via linked list to prevent world attempting to delete bodies multiple times
     }
@@ -71,10 +68,6 @@ GameManager :: ~GameManager() {
 
 //adds new chunk to the linked list, handles memory allocation and pointers
 void GameManager :: addChunk(int chunkID){
-
-    //TEMP TESTING LOCATION -- TODO LINK TO CHUNKS
-    Decoration* d = new Decoration(0, b2Vec2(nextChunkX+1.0f, nextChunkY+0.0f));
-    backDecs.addEnd(d);
 
     Chunk* chunk = new Chunk(world, chunkID, nextChunkX, nextChunkY); //define chunk in memory
     chunks.addEnd(chunk); //add to the linked list
@@ -144,10 +137,10 @@ void GameManager :: draw(Camera* camera){
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
 
     //draw background decorations
-    if (backDecs.resetCycle()){
+    if (chunks.resetCycle()){
         do {
-            backDecs.cycle->obj->draw(camera);
-        } while(backDecs.cycleUp());
+            chunks.cycle->obj->drawBackDecs(camera);
+        } while(chunks.cycleUp());
     }
 
     enemies->draw(camera); //draw enemies before player and terrain
@@ -157,14 +150,22 @@ void GameManager :: draw(Camera* camera){
     if (player2!=nullptr){
         player2->draw(camera);
     }
-    enemies->drawLava(camera); //draw lava after player
+
+    //draw foreground decoration
+    if (chunks.resetCycle()){
+        do {
+            chunks.cycle->obj->drawForeDecs(camera);
+        } while (chunks.cycleUp());
+    }
+
+    enemies->drawLava(camera); //draw lava after player and foreground decorations
 
     camera->drawDust(); //draw dust storm over all entities and lava
 
     //draw terrain
     if (chunks.resetCycle()){
         do {
-            chunks.cycle->obj->draw(camera); //MAYBE -- DRAW FOREGROUND DECORATIONS (in-front of player decore)
+            chunks.cycle->obj->draw(camera); //draws terrain
         } while (chunks.cycleUp());
     }
 }

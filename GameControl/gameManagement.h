@@ -47,6 +47,8 @@ private:
     b2Vec2 getPos(){return body->GetPosition();};
 
     void draw(Camera* camera); //draw each shape attached to main body
+    void drawBackDecs(Camera* camera); //draws all the background decorations inside this chunk
+    void drawForeDecs(Camera* camera); //draws all the foreground decorations inside this chunk
 
     //define what the world chunk should be
     void defSegmentDefault();
@@ -60,11 +62,17 @@ private:
 
     void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
     void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
+    void addDecoration(int id, b2Vec2 decPos, float lowest, LinkedList<Decoration>* ptr); //adds a decoration compensating for base drop
+    void addForeDec(int id, b2Vec2 decPos, float lowest){addDecoration(id, decPos, lowest, &foreDecs);}; //add decoration to foreground
+    void addBackDec(int id, b2Vec2 decPos, float lowest){addDecoration(id, decPos, lowest, &backDecs);}; //add decoration to background
+
 
     b2World* world;
     b2Body* body;
     LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
     float changeY = 0.0f;
+    LinkedList<Decoration> backDecs; //stores background decorations in a linked list
+    LinkedList<Decoration> foreDecs; //stores foreground decorations in a linked list
 
 };
 
@@ -90,7 +98,6 @@ private:
     void processChunkRemoval(); //removes terrain if behind lava
 
     LinkedList<Chunk> chunks; //stores terrain chunks in linked list
-    LinkedList<Decoration> backDecs; //stores background decorations in a linked list
 
     float nextChunkX = 0.0f; //x position of the next chunk to be added
     float nextChunkY = 0.0f; //y position of the next chunk to be added

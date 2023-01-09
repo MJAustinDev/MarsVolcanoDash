@@ -53,6 +53,9 @@ Chunk :: Chunk(b2World* w, int segID, GLfloat x, GLfloat y){
 
 Chunk :: ~Chunk(){
     world->DestroyBody(body); //body has to be destroyed by the b2World
+    while(backDecs.first != nullptr){
+        backDecs.remFront();
+    }
 }
 
 //camera tries to draw chunk to world
@@ -63,6 +66,28 @@ void Chunk :: draw(Camera* camera){
         do {
             camera->drawChunkShape(body, shapes.cycle->obj);
         } while (shapes.cycleUp());
+    }
+}
+
+//camera draws background decorations to the world
+void Chunk :: drawBackDecs(Camera* camera){
+
+    //cycle through and draw all background decorations
+    if (backDecs.resetCycle()){
+        do {
+            backDecs.cycle->obj->draw(camera);
+        } while(backDecs.cycleUp());
+    }
+}
+
+//camera draws foreground decorations to the world
+void Chunk :: drawForeDecs(Camera* camera){
+
+    //cycle through and draw all background decorations
+    if (foreDecs.resetCycle()){
+        do {
+            foreDecs.cycle->obj->draw(camera);
+        } while(foreDecs.cycleUp());
     }
 }
 
@@ -111,6 +136,17 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
     }
 }
 
+//adds a decoration compensating for base height
+void Chunk :: addDecoration(int id, b2Vec2 decPos, float lowest, LinkedList<Decoration>* ptr){
+
+    b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
+    lowest -= decPos.y; //work out the shift difference between the chunks lowest point and the decorations position relative the the chunk
+    relPos += decPos; //adjust decorations position to map to the world rather than to the chunk
+
+    ptr->addEnd(new Decoration(id, relPos, lowest)); //add new decoration to the chunk
+
+}
+
 //just a flat platform used when invalid numbers are entered as segment identifier
 void Chunk :: defSegmentDefault(){
     b2Vec2 points[8]; //main base plate
@@ -130,6 +166,7 @@ void Chunk :: defSegmentStart(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0); //use ground chunk shading
+    float lowest = -3.0f;
 
     //start of mountain slope
     points[0].Set(-32.0f,0.0f);
@@ -154,6 +191,11 @@ void Chunk :: defSegmentStart(){
     points[3].Set(-200.0f, 400.0f);
     points[4].Set(-200.0f, 0.0f);
     addShape(points, 5, 1); //use backing mountain shading
+
+    //TEMP TESTING
+    addForeDec(-1, b2Vec2(32.0f, -3.0f), lowest);
+    addBackDec(-1, b2Vec2(16.0f, 6.0f), lowest);
+
 }
 
 
@@ -166,6 +208,7 @@ void Chunk :: defSegment0(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
+    float lowest = -3.0f;
 
     float x = -32;
     float y[9] = {0,0,0,0,0,0,0,0,0};
@@ -185,6 +228,7 @@ void Chunk :: defSegment1(){
     points[2].Set(32,-19.0);
     points[3].Set(32,-16.0);
     addShape(points,4,0);
+    float lowest = -19.0;
 
     float x = -32;
     float y[9] = {0, -0.5, -1, -1.5, -2, -2.5, -3, -3.5, -4};
@@ -208,6 +252,7 @@ void Chunk :: defSegment2(){
     points[2].Set(32,13.0);
     points[3].Set(32,16.0);
     addShape(points,4,0);
+    float lowest = -3.0f;
 
     float x = -32;
     float y[9] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4};
@@ -231,6 +276,7 @@ void Chunk :: defSegment3(){
     points[2].Set(32,-35.0);
     points[3].Set(32,-32.0);
     addShape(points,4,0);
+    float lowest = -35.0f;
 
     float x = -32;
     float y[9] = {0, -1, -2, -3, -4, -5, -6, -7, -8};
@@ -254,6 +300,7 @@ void Chunk :: defSegment4(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
+    float lowest = -3.0f;
 
     float x = -32;
     float y[9] = {0,0,0,0,0,0,0,0,0};
@@ -274,6 +321,7 @@ void Chunk :: defSegment5(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
+    float lowest = -3.0f;
 
     //rocks in the gap, want drawn under both ramps
     float y1[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};

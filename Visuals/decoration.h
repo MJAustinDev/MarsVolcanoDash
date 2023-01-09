@@ -54,6 +54,7 @@ private:
     //b2PolygonShape base; //base plate for raised decorations (on slopes) -- MAYBE???
 
     LinkedList<b2PolygonShape> shapes; //all decoration details to be drawn
+    LinkedList<b2PolygonShape> details; //all extra on top details to be drawn
 
 
     struct TextShape {
@@ -77,18 +78,44 @@ private:
     void addShape(b2PolygonShape* shape){
         shapes.addEnd(shape);
     };
+
+    //adds an on top detail
+    void addDetail(b2PolygonShape* detail){
+        details.addEnd(detail);
+    };
+
     // add new texture
     void addTexture(unsigned int id, b2Vec2 tCoords[4], b2PolygonShape shape){
         if ((id != (unsigned int)-1) && (shape.m_count == 4)){ //make sure input is valid
             tShapes.addEnd(new TextShape(id, tCoords, shape));
         }
     };
+
+    //add a base to the decoration (prevent floating decorations), baseLevel is the level the base drops too relative to the shape pos
+    void addBase(float baseLevel, b2Vec2 sides){ //sides is the coordinates that the base spans too left and right side (x -> left cord, y -> right cord)
+
+        //if base has some space
+        if (baseLevel < 0.0f && sides.x != sides.y){
+        //if (baseLevel != 0.0f && sides.x != sides.y){
+            b2Vec2 points[8];
+            points[0].Set(sides.x, 0.0f);
+            points[1].Set(sides.x, baseLevel);
+            points[2].Set(sides.y, baseLevel);
+            points[3].Set(sides.y, 0.0f);
+            b2PolygonShape* base = new b2PolygonShape;
+            base->Set(points, 4);
+            addShape(base);
+            base = nullptr;
+        }
+    };
+
     //add new set id methods
-    void setID0();
+    void setDefault(float baseLevel);
+    void setID0(float baseLevel);
 
 public:
 
-    Decoration(int id, b2Vec2 pos){
+    Decoration(int id, b2Vec2 pos, float baseLevel){
         this->pos = pos;
 
         //set colour randomly
@@ -105,9 +132,12 @@ public:
 
         //set decoration's shapes and textures
         switch(id){
-            case 0 : setID0(); break;
+            //case 0 : setID0(); break;
+            default : {setDefault(baseLevel);}
         }
     };
+
+    Decoration(int id, b2Vec2 pos) : Decoration(id, pos, (-pos.y)){}; //default is to assume that the ground is at 0.0f
 
     ~Decoration(){
         //clear both linked lists
@@ -121,7 +151,7 @@ public:
 
     void draw(Camera* camera){
 
-        float glow = 0.6 - camera->getGlow();
+        float glow = 0.5 - camera->getGlow();
         b2Vec2 posBody = camera->getCamPos(pos); //get world pos relative to camera
 
         //draw all shapes
@@ -133,13 +163,20 @@ public:
         }
 
         //draw all textures
-        glow += 0.35;
+        glow += 0.45;
         glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, 1.0f);
         if(tShapes.resetCycle()){
             do {
                 TextShape* ptr = tShapes.cycle->obj;
                 camera->drawTextB2Polygone(ptr->id, ptr->tCoords, posBody, &(ptr->shape), 0.0f);
             } while (tShapes.cycleUp());
+        }
+
+        //draw all on top details
+        if (details.resetCycle()){
+            do {
+                camera->drawB2PolygonShape(posBody, details.cycle->obj, 0.0f);
+            } while (details.cycleUp());
         }
     };
 

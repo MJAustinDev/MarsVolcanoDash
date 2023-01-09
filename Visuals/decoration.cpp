@@ -26,8 +26,8 @@ SOFTWARE.
 
 #include <decoration.h>
 
-//set decoration zero (currently just test asset, will be changed later)
-void Decoration :: setID0(){
+//set default decoration (currently just test asset, wont be used in final game)
+void Decoration :: setDefault(float baseLevel){
 
     b2PolygonShape* shape = new b2PolygonShape;
     b2Vec2 points[8];
@@ -65,6 +65,28 @@ void Decoration :: setID0(){
     points[3].Set(-2.5f, 12.0f);
     tShape.Set(points, 4);
     addTexture(18, tCoords, tShape);
+
+    //add a detail to the shape
+    shape = new b2PolygonShape;
+    points[0].Set(-3.0f, 16.5f);
+    points[1].Set(-3.0f, 16.0f);
+    points[2].Set(2.0f, 17.5f);
+    points[3].Set(2.0f, 18.0f);
+    shape->Set(points, 4);
+    addShape(shape);
+    shape = nullptr;
+
+    //add another detail to complete a roof
+    shape = new b2PolygonShape;
+    points[0].Set(2.0f, 18.0f);
+    points[1].Set(2.0f, 17.5f);
+    points[2].Set(3.0f, 16.0f);
+    points[3].Set(3.0f, 16.5f);
+    shape->Set(points, 4);
+    addShape(shape);
+    shape = nullptr;
+
+    addBase(baseLevel, b2Vec2(-3.5f, 3.5f));
 
 }
 
