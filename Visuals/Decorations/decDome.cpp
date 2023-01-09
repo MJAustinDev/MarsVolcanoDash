@@ -118,34 +118,28 @@ void Decoration :: setDome1(float baseLevel){
     b2PolygonShape* shape = new b2PolygonShape;
     setDome(shape);
     addShape(shape);
-    shape = nullptr;
 
     //centre two triangles
     shape = new b2PolygonShape;
     setTri0(shape);
     addDetail(shape);
-    shape = nullptr;
     shape = new b2PolygonShape;
     setTri4(shape);
     addDetail(shape);
-    shape = nullptr;
 
     //draw all symmetrical triangles
     for (int i=-1; i<=1; i+=2){ //-1 to 1 inclusive
         shape = new b2PolygonShape;
         setTri1(shape,(float)i);
         addDetail(shape);
-        shape = nullptr;
 
         shape = new b2PolygonShape;
         setTri2(shape, (float)i);
         addDetail(shape);
-        shape = nullptr;
 
         shape = new b2PolygonShape;
         setTri3(shape, (float)i);
         addDetail(shape);
-        shape = nullptr;
     }
 
     addBase(baseLevel, b2Vec2(-4.0f, 4.0f));
@@ -157,25 +151,21 @@ void Decoration :: setDome2(float baseLevel){
     b2PolygonShape* shape = new b2PolygonShape;
     setDome(shape);
     addShape(shape);
-    shape = nullptr;
 
     //centre two triangles
     shape = new b2PolygonShape;
     setSquare(shape);
     addDetail(shape);
-    shape = nullptr;
 
     //draw all symmetrical triangles
     for (int i=-1; i<=1; i+=2){ //-1 to 1 inclusive
         shape = new b2PolygonShape;
         setTri5(shape,(float)i);
         addDetail(shape);
-        shape = nullptr;
 
         shape = new b2PolygonShape;
         setTri6(shape, (float)i);
         addDetail(shape);
-        shape = nullptr;
     }
 
     addBase(baseLevel, b2Vec2(-4.0f, 4.0f));

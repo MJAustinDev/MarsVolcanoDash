@@ -63,11 +63,25 @@ private:
     void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
     void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
     void addDecoration(int id, b2Vec2 decPos, float* ptrColour, float lowest, LinkedList<Decoration>* ptr); //adds a decoration compensating for base drop
-    void addForeDec(int id, b2Vec2 decPos, float* ptrColour, float lowest){addDecoration(id, decPos, ptrColour, lowest, &foreDecs);}; //add decoration to foreground
-    void addBackDec(int id, b2Vec2 decPos, float* ptrColour, float lowest){addDecoration(id, decPos, ptrColour, lowest, &backDecs);}; //add decoration to background
+    //add decoration to foreground
+    void addForeDec(int id, b2Vec2 decPos, float* ptrColour, float lowest, bool remBase = false){
+        addDecoration(id, decPos, ptrColour, lowest, &foreDecs);
+        if (remBase){
+            foreDecs.last->obj->remBase();
+        }
+    };
+    //add decoration to background
+    void addBackDec(int id, b2Vec2 decPos, float* ptrColour, float lowest, bool remBase = false){
+        addDecoration(id, decPos, ptrColour, lowest, &backDecs);
+        if (remBase){
+            backDecs.last->obj->remBase();
+        }
+    };
     //add decorations with rand orange or purple
     void addForeDec(int id, b2Vec2 decPos, float lowest){addBackDec(id, decPos, nullptr, lowest);};
     void addBackDec(int id, b2Vec2 decPos, float lowest){addBackDec(id, decPos, nullptr, lowest);};
+    void addForeDec(int id, b2Vec2 decPos, float lowest, bool remBase){addBackDec(id, decPos, nullptr, lowest, remBase);};
+    void addBackDec(int id, b2Vec2 decPos, float lowest, bool remBase){addBackDec(id, decPos, nullptr, lowest, remBase);};
 
     b2World* world;
     b2Body* body;

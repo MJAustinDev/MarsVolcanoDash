@@ -60,6 +60,8 @@
 		<Unit filename="Visuals/button.cpp" />
 		<Unit filename="Visuals/camera.cpp" />
 		<Unit filename="Visuals/camera.h" />
+		<Unit filename="Visuals/decoration.cpp" />
+		<Unit filename="Visuals/decoration.h" />
 		<Unit filename="Visuals/drawChunks.cpp" />
 		<Unit filename="Visuals/loadTextures.cpp" />
 		<Unit filename="Visuals/visualColours.h" />

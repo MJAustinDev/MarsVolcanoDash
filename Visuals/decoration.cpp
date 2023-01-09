@@ -48,6 +48,11 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
         switch(id){
             case DEC_CODE_DOME_1 : {setDome1(baseLevel); break;}
             case DEC_CODE_DOME_2 : {setDome2(baseLevel); break;}
+
+            case DEC_CODE_LQ_1 : {setLQ1(baseLevel); break;}
+            case DEC_CODE_LQ_2 : {setLQ2(baseLevel); break;}
+            case DEC_CODE_TUNNEL_1 : {setTunnel1(baseLevel); break;}
+
             default : {setDefault(baseLevel);}
         }
 }

@@ -38,11 +38,11 @@ class Decoration {
 
 private:
 
+    bool hasBase = false;
     unsigned int id; //texture id used by camera
     float colour[4]; //decorations's colour
 
     b2Vec2 pos; //position of the decoration relative to the world
-
     LinkedList<b2PolygonShape> shapes; //all decoration base details to be drawn
     LinkedList<b2PolygonShape> details; //all extra on top details to be drawn
 
@@ -96,6 +96,7 @@ private:
             base->Set(points, 4);
             addShape(base);
             base = nullptr;
+            hasBase = true;
         }
     };
 
@@ -103,6 +104,9 @@ private:
     void setDefault(float baseLevel);
     void setDome1(float baseLevel);
     void setDome2(float baseLevel);
+    void setLQ1(float baseLevel);
+    void setLQ2(float baseLevel);
+    void setTunnel1(float baseLevel);
 
 public:
 
@@ -110,6 +114,21 @@ public:
     ~Decoration();
 
     void draw(Camera* camera);
+
+    //sets pasted pointer to the values of this decorations colour (used to keep continuity between 'attached' decorations)
+    void getColour(float* ptrRet){
+        for (int i=0;i<4;i++){
+            ptrRet[i] = colour[i];
+        }
+    }
+
+    //remove the base if desired
+    void remBase(){
+        if (hasBase && shapes.last != nullptr){
+            shapes.remEnd();
+            hasBase = false;
+        }
+    };
 
 };
 

@@ -26,6 +26,7 @@ SOFTWARE.
 
 
 #include "gameManagement.h"
+#include "decorationCodes.h"
 
 
 Chunk :: Chunk(b2World* w, int segID, GLfloat x, GLfloat y){
@@ -195,7 +196,12 @@ void Chunk :: defSegmentStart(){
     //TEMP TESTING
     float c[4] = COLOUR_LAVA_4;
     addForeDec(-1, b2Vec2(32.0f, -3.0f), &c[0], lowest);
-    addBackDec(-1, b2Vec2(16.0f, 6.0f), lowest);
+    addBackDec(-1, b2Vec2(24.0f, 6.0f), lowest);
+
+    addBackDec(DEC_CODE_DOME_2, b2Vec2(0.0f, 0.0f), lowest);
+    addBackDec(DEC_CODE_LQ_2, b2Vec2(10.0f, 3.0f), lowest);
+    backDecs.last->obj->getColour(&c[0]);
+    addBackDec(DEC_CODE_DOME_1, b2Vec2(10.0f, 3.0f+6.5f), &c[0], lowest, true);
 
 }
 

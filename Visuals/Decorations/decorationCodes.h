@@ -30,5 +30,9 @@ SOFTWARE.
 #define DEC_CODE_DOME_1 0
 #define DEC_CODE_DOME_2 1
 
+#define DEC_CODE_LQ_1 2
+#define DEC_CODE_LQ_2 3
+#define DEC_CODE_TUNNEL_1 4
+
 
 #endif
