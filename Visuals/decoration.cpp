@@ -26,6 +26,75 @@ SOFTWARE.
 
 #include <decoration.h>
 
+//constructor
+Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
+
+        this->pos = pos; //set position
+
+        //set colour
+        float colPur[4] = COLOUR_PURPLE;
+        float colOrg[4] = COLOUR_ORANGE;
+        if (ptrColour == nullptr){ //compensate for default random colour selection
+            switch (randModRanged(2)){
+                case 0 : {ptrColour = &colPur[0]; break; }
+                case 1 : {ptrColour = &colOrg[0]; break; }
+            }
+        }
+        for (int i=0;i<4;i++){
+            colour[i] = ptrColour[i];
+        }
+
+        //set decoration's shapes and textures based on id
+        switch(id){
+            default : {setDefault(baseLevel);}
+        }
+}
+
+//destructor
+Decoration :: ~Decoration(){
+    //clear both linked lists
+    while(shapes.first != nullptr){
+        shapes.remFront();
+    }
+    while (tShapes.first != nullptr){
+        tShapes.remFront();
+    }
+}
+
+//draw the decoration
+void Decoration :: draw(Camera* camera){
+
+    float glow = 0.5 - camera->getGlow();
+    b2Vec2 posBody = camera->getCamPos(pos); //get world pos relative to camera
+
+    //draw all shapes
+    glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, colour[3]*0.9);
+    if(shapes.resetCycle()){
+        do {
+            camera->drawB2PolygonShape(posBody, shapes.cycle->obj, 0.0f);
+        } while (shapes.cycleUp());
+    }
+
+    //draw all textures
+    glow += 0.45;
+    glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, 1.0f);
+    if(tShapes.resetCycle()){
+        do {
+            TextShape* ptr = tShapes.cycle->obj;
+            camera->drawTextB2Polygone(ptr->id, ptr->tCoords, posBody, &(ptr->shape), 0.0f);
+        } while (tShapes.cycleUp());
+    }
+
+    //draw all on top details
+    if (details.resetCycle()){
+        do {
+            camera->drawB2PolygonShape(posBody, details.cycle->obj, 0.0f);
+        } while (details.cycleUp());
+    }
+}
+
+
+
 //set default decoration (currently just test asset, wont be used in final game)
 void Decoration :: setDefault(float baseLevel){
 

@@ -137,13 +137,13 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
 }
 
 //adds a decoration compensating for base height
-void Chunk :: addDecoration(int id, b2Vec2 decPos, float lowest, LinkedList<Decoration>* ptr){
+void Chunk :: addDecoration(int id, b2Vec2 decPos, float* ptrColour, float lowest, LinkedList<Decoration>* ptr){
 
     b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
     lowest -= decPos.y; //work out the shift difference between the chunks lowest point and the decorations position relative the the chunk
     relPos += decPos; //adjust decorations position to map to the world rather than to the chunk
 
-    ptr->addEnd(new Decoration(id, relPos, lowest)); //add new decoration to the chunk
+    ptr->addEnd(new Decoration(id, relPos, ptrColour, lowest)); //add new decoration to the chunk
 
 }
 
@@ -193,7 +193,8 @@ void Chunk :: defSegmentStart(){
     addShape(points, 5, 1); //use backing mountain shading
 
     //TEMP TESTING
-    addForeDec(-1, b2Vec2(32.0f, -3.0f), lowest);
+    float c[4] = COLOUR_LAVA_4;
+    addForeDec(-1, b2Vec2(32.0f, -3.0f), &c[0], lowest);
     addBackDec(-1, b2Vec2(16.0f, 6.0f), lowest);
 
 }

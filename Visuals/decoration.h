@@ -51,12 +51,10 @@ private:
 
     b2Vec2 pos; //position of the decoration relative to the world
 
-    //b2PolygonShape base; //base plate for raised decorations (on slopes) -- MAYBE???
-
-    LinkedList<b2PolygonShape> shapes; //all decoration details to be drawn
+    LinkedList<b2PolygonShape> shapes; //all decoration base details to be drawn
     LinkedList<b2PolygonShape> details; //all extra on top details to be drawn
 
-
+    //structure stores texture drawing infomation
     struct TextShape {
         unsigned int id; //texture id
         b2Vec2 tCoords[4]; //texture sheet coordinates
@@ -115,70 +113,10 @@ private:
 
 public:
 
-    Decoration(int id, b2Vec2 pos, float baseLevel){
-        this->pos = pos;
+    Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel);
+    ~Decoration();
 
-        //set colour randomly
-        float colPur[4] = COLOUR_PURPLE;
-        float colOrg[4] = COLOUR_ORANGE;
-        float* rndColour = nullptr;
-        switch (randModRanged(2)){
-            case 0 : {rndColour = &colPur[0]; break; }
-            case 1 : {rndColour = &colOrg[0]; break; }
-        }
-        for (int i=0;i<4;i++){
-            colour[i] = rndColour[i];
-        }
-
-        //set decoration's shapes and textures
-        switch(id){
-            //case 0 : setID0(); break;
-            default : {setDefault(baseLevel);}
-        }
-    };
-
-    Decoration(int id, b2Vec2 pos) : Decoration(id, pos, (-pos.y)){}; //default is to assume that the ground is at 0.0f
-
-    ~Decoration(){
-        //clear both linked lists
-        while(shapes.first != nullptr){
-            shapes.remFront();
-        }
-        while (tShapes.first != nullptr){
-            tShapes.remFront();
-        }
-    };
-
-    void draw(Camera* camera){
-
-        float glow = 0.5 - camera->getGlow();
-        b2Vec2 posBody = camera->getCamPos(pos); //get world pos relative to camera
-
-        //draw all shapes
-        glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, colour[3]*0.9);
-        if(shapes.resetCycle()){
-            do {
-                camera->drawB2PolygonShape(posBody, shapes.cycle->obj, 0.0f);
-            } while (shapes.cycleUp());
-        }
-
-        //draw all textures
-        glow += 0.45;
-        glColor4f(colour[0]*glow, colour[1]*glow, colour[2]*glow, 1.0f);
-        if(tShapes.resetCycle()){
-            do {
-                TextShape* ptr = tShapes.cycle->obj;
-                camera->drawTextB2Polygone(ptr->id, ptr->tCoords, posBody, &(ptr->shape), 0.0f);
-            } while (tShapes.cycleUp());
-        }
-
-        //draw all on top details
-        if (details.resetCycle()){
-            do {
-                camera->drawB2PolygonShape(posBody, details.cycle->obj, 0.0f);
-            } while (details.cycleUp());
-        }
-    };
+    void draw(Camera* camera);
 
 };
 
