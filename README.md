@@ -16,6 +16,25 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - Christmas easter egg (code/images) (verify)
 - Easter easter egg??? (probs not lol) (code/images) (verify)
 
+### TODO DECORATIONS
+
+- ~Dome 1 \& 2~
+- Living Quarters 1 \& 2
+- Base tunnel 1
+- Solar Panel Array 1
+- Gas Tank 1
+- Gas Tank 1 exploded
+- Drill main vehical
+- Drill piece intact
+- Drill piece broken
+- Crashed Satalitte
+- Crashed Cargo Ship
+- Arch ways (upward, alongward, broken)
+- Track pieces (buffer, alongward, broken)
+- Train pieces (train, cargo carrage, passenger carrage, cargo fuel carrage)
+- Crashed Truck
+- Flying background cargo ship
+
 ---
 
 ## Repository break down
