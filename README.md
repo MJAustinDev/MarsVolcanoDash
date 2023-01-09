@@ -7,9 +7,9 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 
 ## TODO 
 
-- Background decorations (code/images) (verify)
-- Foreground decorations (code/images) (verify)
-- Rasied/Angled decorations?
+- Background decorations (~code~/images) (verify)
+- Foreground decorations (~code~/images) (verify)
+- ~Rasied/Angled decorations?~ (NA, dropped idea)
 - Two player split screen (code) (verify)
 - Distance Markers (code) (verify)
 - Halloween easter egg (easter-ween???) (code/images) (verify)
