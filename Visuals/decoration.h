@@ -27,19 +27,11 @@ SOFTWARE.
 #ifndef DECORATION_H
 #define DECORATION_H
 
-#include <camera.h>
-#include <visualColours.h>
-#include <linkedList.h>
-#include <rangedRandom.h>
-
-/*
-
-WIP NOTES - Have reference to the chunk it 'exists in'
- so when the chunk is removed the game manager removes all decorations that the chunk created
-
- Have new .h with pre-processor reference to the decoration IDs
-
-*/
+#include "decorationCodes.h"
+#include "camera.h"
+#include "visualColours.h"
+#include "linkedList.h"
+#include "rangedRandom.h"
 
 //back/foreground decoration, no effect on game play just makes the world look better
 class Decoration {
@@ -109,7 +101,8 @@ private:
 
     //add new set id methods
     void setDefault(float baseLevel);
-    void setID0(float baseLevel);
+    void setDome1(float baseLevel);
+    void setDome2(float baseLevel);
 
 public:
 

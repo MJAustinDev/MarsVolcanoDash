@@ -46,6 +46,8 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
 
         //set decoration's shapes and textures based on id
         switch(id){
+            case DEC_CODE_DOME_1 : {setDome1(baseLevel); break;}
+            case DEC_CODE_DOME_2 : {setDome2(baseLevel); break;}
             default : {setDefault(baseLevel);}
         }
 }
