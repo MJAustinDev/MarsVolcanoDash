@@ -46,7 +46,7 @@ private:
     LinkedList<b2PolygonShape> shapes; //all decoration base details to be drawn
     LinkedList<b2PolygonShape> details; //all extra on top details to be drawn
 
-    //structure stores texture drawing infomation
+    //structure stores texture drawing information
     struct TextShape {
         unsigned int id; //texture id
         b2Vec2 tCoords[4]; //texture sheet coordinates
@@ -63,6 +63,28 @@ private:
 
     //list of textures to add over if needed
     LinkedList<TextShape> tShapes;
+
+    //add new set id methods
+    void setDefault(float baseLevel);
+    void setDome1(float baseLevel);
+    void setDome2(float baseLevel);
+    void setLQ1(float baseLevel);
+    void setLQ2(float baseLevel);
+    void setTunnel1(float baseLevel);
+
+public:
+
+    Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel);
+    ~Decoration();
+
+    void draw(Camera* camera);
+
+    //sets pasted pointer to the values of this decorations colour (used to keep continuity between 'attached' decorations)
+    void getColour(float* ptrRet){
+        for (int i=0;i<4;i++){
+            ptrRet[i] = colour[i];
+        }
+    }
 
     //adds shape to the linked list assume (0, 0) is the very top centre of the base
     void addShape(b2PolygonShape* shape){
@@ -99,28 +121,6 @@ private:
             hasBase = true;
         }
     };
-
-    //add new set id methods
-    void setDefault(float baseLevel);
-    void setDome1(float baseLevel);
-    void setDome2(float baseLevel);
-    void setLQ1(float baseLevel);
-    void setLQ2(float baseLevel);
-    void setTunnel1(float baseLevel);
-
-public:
-
-    Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel);
-    ~Decoration();
-
-    void draw(Camera* camera);
-
-    //sets pasted pointer to the values of this decorations colour (used to keep continuity between 'attached' decorations)
-    void getColour(float* ptrRet){
-        for (int i=0;i<4;i++){
-            ptrRet[i] = colour[i];
-        }
-    }
 
     //remove the base if desired
     void remBase(){

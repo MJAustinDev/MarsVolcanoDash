@@ -112,6 +112,7 @@ void setTri6(b2PolygonShape* shape, float mirror){
     shape->Set(points, 3);
 }
 
+//set details unique to dome 1
 void Decoration :: setDome1(float baseLevel){
 
     //dome backing shape
@@ -145,6 +146,7 @@ void Decoration :: setDome1(float baseLevel){
     addBase(baseLevel, b2Vec2(-4.0f, 4.0f));
 }
 
+//set details unique to dome 2
 void Decoration :: setDome2(float baseLevel){
 
     //dome backing shape

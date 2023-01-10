@@ -20,6 +20,7 @@
 					<Add directory="Utility" />
 					<Add directory="Visuals" />
 					<Add directory="Visuals/Icons" />
+					<Add directory="Visuals/Decorations" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -51,6 +52,9 @@
 		<Unit filename="Utility/gameConfig.h" />
 		<Unit filename="Utility/linkedList.h" />
 		<Unit filename="Utility/rangedRandom.h" />
+		<Unit filename="Visuals/Decorations/decDome.cpp" />
+		<Unit filename="Visuals/Decorations/decLivingQuarters.cpp" />
+		<Unit filename="Visuals/Decorations/decorationCodes.h" />
 		<Unit filename="Visuals/Icons/gameIcon.h" />
 		<Unit filename="Visuals/Icons/gameIcon.rc">
 			<Option compilerVar="WINDRES" />

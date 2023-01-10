@@ -26,7 +26,9 @@ SOFTWARE.
 
 #include "decoration.h"
 
-void setLivingQuarter(LinkedList<b2PolygonShape>* shapes, LinkedList<b2PolygonShape>* details){
+//sets the details that exist in both living quarters decorations
+void setLivingQuarter(Decoration* dec){
+
     //backing
     b2PolygonShape* shape = new b2PolygonShape;
     b2Vec2 points[8];
@@ -35,7 +37,7 @@ void setLivingQuarter(LinkedList<b2PolygonShape>* shapes, LinkedList<b2PolygonSh
     points[2].Set(4.0f, 6.5f);
     points[3].Set(-4.0f, 6.5f);
     shape->Set(points, 4);
-    shapes->addEnd(shape);
+    dec->addShape(shape);
 
     //ridge both on floor and roof
     for (int i=0; i<=6 ; i+=6){
@@ -45,7 +47,7 @@ void setLivingQuarter(LinkedList<b2PolygonShape>* shapes, LinkedList<b2PolygonSh
         points[2].Set(4.25f, 0.5f + ((float)i));
         points[3].Set(-4.25f, 0.5f + ((float)i));
         shape->Set(points, 4);
-        details->addEnd(shape);
+        dec->addDetail(shape);
     }
 
     //add door window
@@ -55,15 +57,59 @@ void setLivingQuarter(LinkedList<b2PolygonShape>* shapes, LinkedList<b2PolygonSh
     points[2].Set(0.75f, 3.5f);
     points[3].Set(-0.75f, 3.5f);
     shape->Set(points, 4);
-    details->addEnd(shape);
+    dec->addDetail(shape);
 
+
+    //add number texture
+    b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
+    shape = new b2PolygonShape;
+    points[0].Set(1.25f, 6.0f);
+    points[1].Set(4.0f, 6.0f);
+    points[2].Set(4.0f, 0.5f);
+    points[3].Set(1.25f, 0.5f);
+    shape->Set(points, 4);
+    dec->addTexture(11+randModRanged(10), tCoords, (*shape));
+    delete shape;
+
+    //add left side box
+    for (int i=0; i<=1; i++){
+        //vertical bars
+        float shift = ((float) i) * 1.75f;
+        shape = new b2PolygonShape;
+        points[0].Set(-3.75f + shift, 5.75f);
+        points[1].Set(-3.5f + shift, 5.75f);
+        points[2].Set(-3.5f + shift, 0.75f);
+        points[3].Set(-3.75f + shift, 0.75f);
+        shape->Set(points, 4);
+        dec->addDetail(shape);
+
+        //horizontal bars
+        shift = ((float) i) * -4.75f;
+        shape = new b2PolygonShape;
+        points[0].Set(-3.75f, 5.75f + shift);
+        points[1].Set(-2.0f, 5.75f + shift);
+        points[2].Set(-2.0f, 5.5f + shift);
+        points[3].Set(-3.75f, 5.5f + shift);
+        shape->Set(points, 4);
+        dec->addDetail(shape);
+
+        //diagonal bars
+        shift = ((float) i) * -5.5f;
+        float mirror = (i == 0) ? 1.0f : -1.0f;
+        shape = new b2PolygonShape;
+        points[0].Set((-3.75f * mirror) + shift, 5.5f);
+        points[1].Set((-2.0f * mirror) + shift, 0.75f);
+        points[2].Set((-1.75f * mirror) + shift, 1.0f);
+        points[3].Set((-3.5f * mirror) + shift, 5.75f);
+        shape->Set(points, 4);
+        dec->addDetail(shape);
+    }
 }
 
-
-
+//adds details unique to living quarters 1
 void Decoration :: setLQ1(float baseLevel){
 
-    setLivingQuarter(&shapes, &details); //add most living quarter details
+    setLivingQuarter(this); //add most living quarter details
 
     //add the door way
     for (int i=-1; i<=1; i+=2){
@@ -74,7 +120,7 @@ void Decoration :: setLQ1(float baseLevel){
         points[2].Set(0.7f * ((float) i), 3.75f + 0.85f);
         points[3].Set(0.0f, 3.75f + 1.0f);
         shape->Set(points, 4);
-        details.addEnd(shape);
+        addDetail(shape);
 
         shape = new b2PolygonShape;
         points[0].Set(0.8f * ((float) i), 3.75f + 1.25f);
@@ -82,7 +128,7 @@ void Decoration :: setLQ1(float baseLevel){
         points[2].Set(0.85f * ((float) i), 3.75f + 0.7f);
         points[3].Set(1.25f * ((float) i), 3.75f + 0.8f);
         shape->Set(points, 4);
-        details.addEnd(shape);
+        addDetail(shape);
 
         shape = new b2PolygonShape;
         points[0].Set(0.85f * ((float) i), 3.75f + 0.7f);
@@ -90,7 +136,7 @@ void Decoration :: setLQ1(float baseLevel){
         points[2].Set(1.5f * ((float) i), 3.75f + 0.0f);
         points[3].Set(1.05f * ((float) i), 3.75f + 0.0f);
         shape->Set(points, 4);
-        details.addEnd(shape);
+        addDetail(shape);
 
         shape = new b2PolygonShape;
         points[0].Set(1.5f * ((float) i), 3.75f + 0.0f);
@@ -98,14 +144,15 @@ void Decoration :: setLQ1(float baseLevel){
         points[2].Set(1.0f * ((float) i), 0.0f);
         points[3].Set(1.5f * ((float) i), 0.0f);
         shape->Set(points, 4);
-        details.addEnd(shape);
+        addDetail(shape);
     }
     addBase(baseLevel, b2Vec2(4.25f, -4.25f));
 }
 
+//adds details unique to living quarters 2
 void Decoration :: setLQ2(float baseLevel){
 
-    setLivingQuarter(&shapes, &details); //add most living quarter details
+    setLivingQuarter(this); //add most living quarter details
 
     //add the door way
     for (int i=-1; i<=1; i+=2){
@@ -116,7 +163,7 @@ void Decoration :: setLQ2(float baseLevel){
         points[2].Set(1.05f * ((float) i), 0.0f);
         points[3].Set(1.5f * ((float) i), 0.0f);
         shape->Set(points, 4);
-        details.addEnd(shape);
+        addDetail(shape);
     }
     addBase(baseLevel, b2Vec2(4.25f, -4.25f));
 }
