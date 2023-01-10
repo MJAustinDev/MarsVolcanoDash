@@ -71,6 +71,8 @@ private:
     void setLQ1(float baseLevel);
     void setLQ2(float baseLevel);
     void setTunnel1(float baseLevel);
+    void setTunnel2(float baseLevel);
+    void setTunnel3(float baseLevel);
 
 public:
 

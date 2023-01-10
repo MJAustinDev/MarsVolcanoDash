@@ -193,17 +193,21 @@ void Chunk :: defSegmentStart(){
     points[4].Set(-200.0f, 0.0f);
     addShape(points, 5, 1); //use backing mountain shading
 
-    //TEMP TESTING
-    float c[4] = COLOUR_LAVA_4;
-    addForeDec(-1, b2Vec2(32.0f, -3.0f), &c[0], lowest);
-    addBackDec(-1, b2Vec2(24.0f, 6.0f), lowest);
+    //add back ground base
+    float c[4]; //used to keep consistent colouring
+    //random chance how the base will look
+    int lqCode = (randModRanged(2) == 0) ? DEC_CODE_LQ_1 : DEC_CODE_LQ_2;
+    int domeCode1 = (randModRanged(2) == 0) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2;
+    int domeCode2 = (randModRanged(2) == 0) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2;
 
-    addBackDec(DEC_CODE_LQ_1, b2Vec2(-10.0f, 3.0f), &c[0], lowest);
-
-    addBackDec(DEC_CODE_DOME_2, b2Vec2(0.0f, 0.0f), lowest);
-    addBackDec(DEC_CODE_LQ_2, b2Vec2(10.0f, 3.0f), lowest);
-    backDecs.last->obj->getColour(&c[0]);
-    addBackDec(DEC_CODE_DOME_1, b2Vec2(10.0f, 3.0f+6.5f), &c[0], lowest, true);
+    //add decorations that make up the base
+    addBackDec(lqCode, b2Vec2(5.0f, 3.0f), lowest);
+    backDecs.last->obj->getColour(&c[0]); //get colour
+    addBackDec(domeCode1, b2Vec2(5.0f, 9.5f), &c[0], lowest, true);
+    addBackDec(DEC_CODE_TUNNEL_2, b2Vec2(17.25f, 3.0f), &c[0], lowest, true);
+    addBackDec(DEC_CODE_TUNNEL_3, b2Vec2(-7.25f, 3.0f), &c[0], lowest, true);
+    addBackDec(domeCode2, b2Vec2(29.5f, 3.0f), &c[0], lowest);
+    addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), &c[0], lowest);
 
 }
 

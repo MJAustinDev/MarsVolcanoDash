@@ -20,7 +20,7 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 
 - ~Dome 1 \& 2~
 - ~Living Quarters 1 \& 2~
-- Base tunnel 1
+- ~Base tunnel 1, 2 \& 3~
 - Solar Panel Array 1
 - Gas Tank 1
 - Gas Tank 1 exploded

@@ -52,6 +52,8 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
             case DEC_CODE_LQ_1 : {setLQ1(baseLevel); break;}
             case DEC_CODE_LQ_2 : {setLQ2(baseLevel); break;}
             case DEC_CODE_TUNNEL_1 : {setTunnel1(baseLevel); break;}
+            case DEC_CODE_TUNNEL_2 : {setTunnel2(baseLevel); break;}
+            case DEC_CODE_TUNNEL_3 : {setTunnel3(baseLevel); break;}
 
             default : {setDefault(baseLevel);}
         }

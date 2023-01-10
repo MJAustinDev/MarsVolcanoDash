@@ -168,6 +168,72 @@ void Decoration :: setLQ2(float baseLevel){
     addBase(baseLevel, b2Vec2(4.25f, -4.25f));
 }
 
+//adds a connector that maps onto the dome backing shape
+void setTunnelToDome(Decoration* dec, float mirror){
+    b2PolygonShape* shape = new b2PolygonShape;
+    b2Vec2 points[8];
+    points[0].Set(8.0f * mirror, 5.5f);
+    points[1].Set(8.0f * mirror, 1.5f);
+    points[2].Set(8.4f * mirror, 1.25f);
+    points[3].Set(8.75f * mirror, 4.25f);
+    shape->Set(points, 4);
+    dec->addShape(shape);
+
+    shape = new b2PolygonShape;
+    points[0].Set(8.0f * mirror, 5.5f);
+    points[1].Set(8.75f * mirror, 4.25f);
+    points[2].Set(9.85f * mirror, 5.75f);
+    shape->Set(points, 3);
+    dec->addShape(shape);
+}
+
+//set tunnel 1 (just a flat tunnel)
 void Decoration :: setTunnel1(float baseLevel){
 
+    //main tunnel shape
+    b2PolygonShape* shape = new b2PolygonShape;
+    b2Vec2 points[8];
+    points[0].Set(-8.0f, 5.5f);
+    points[1].Set(8.0f, 5.5f);
+    points[2].Set(8.0f, 1.5f);
+    points[3].Set(-8.0f, 1.5f);
+    shape->Set(points, 4);
+    addShape(shape);
+
+    //edge ridges
+    for (int i=0; i<=1; i++){
+        float shift = ((float) i) * 16.25f;
+        shape = new b2PolygonShape;
+        points[0].Set(-8.25f + shift, 5.75f);
+        points[1].Set(-8.0f + shift, 5.75f);
+        points[2].Set(-8.0f + shift, 1.25f);
+        points[3].Set(-8.25f + shift, 1.25f);
+        shape->Set(points, 4);
+        addDetail(shape);
+    }
+
+    //tunnel window
+    shape = new b2PolygonShape;
+    points[0].Set(-7.25f, 4.75f);
+    points[1].Set(7.25f, 4.75f);
+    points[2].Set(7.25f, 4.25f);
+    points[3].Set(-7.25f, 4.25f);
+    shape->Set(points, 4);
+    addDetail(shape);
+
+
+    addBase(baseLevel, b2Vec2(-8.0f, 8.0f));
+
+}
+
+//set tunnel 2 (tunnel with a dome connector on the right)
+void Decoration :: setTunnel2(float baseLevel){
+    setTunnelToDome(this, 1.0f);
+    setTunnel1(baseLevel);
+}
+
+//set tunnel 3 (tunnel with a dome connector on the left)
+void Decoration :: setTunnel3(float baseLevel){
+    setTunnelToDome(this, -1.0f);
+    setTunnel1(baseLevel);
 }

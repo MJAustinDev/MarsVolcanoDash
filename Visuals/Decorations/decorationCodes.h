@@ -33,6 +33,8 @@ SOFTWARE.
 #define DEC_CODE_LQ_1 2
 #define DEC_CODE_LQ_2 3
 #define DEC_CODE_TUNNEL_1 4
+#define DEC_CODE_TUNNEL_2 5
+#define DEC_CODE_TUNNEL_3 6
 
 
 #endif
