@@ -75,6 +75,14 @@ private:
     void setTunnel3(float baseLevel);
     void setTank1(float baseLevel);
     //void setTank2(float baseLevel);
+    //void setPanel1(float baseLevel);
+    //void setDrill1(float baseLevel);
+    //void setDrill2(float baseLevel);
+    void setArch1(float baseLevel);
+    void setArch2(float baseLevel);
+    void setArch3(float baseLevel);
+    void setArch4(float baseLevel);
+    void setArch5(float baseLevel);
 
 public:
 

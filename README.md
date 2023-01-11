@@ -24,12 +24,12 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - Solar Panel Array 1
 - ~Gas Tank 1~
 - Gas Tank 1 exploded (tank 2)
-- Drill main vehical
+- Drill main vehicle
 - Drill piece intact
 - Drill piece broken
 - Crashed Satalitte
 - Crashed Cargo Ship
-- Arch ways (upward, alongward, broken)
+- ~Arch ways (upward, alongward, broken)~
 - Track pieces (buffer, alongward, broken)
 - Train pieces (train, cargo carrage, passenger carrage, cargo fuel carrage)
 - Crashed Truck

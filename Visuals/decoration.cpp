@@ -58,6 +58,17 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
             case DEC_CODE_TANK_1 : {setTank1(baseLevel); break;}
             //case DEC_CODE_TANK_2 : {setTank2(baseLevel); break;}
 
+            //case DEC_CODE_PANEL_1 : {setPanel1(baseLevel); break;}
+
+            //case DEC_CODE_DRILL_1 : {setDrill1(baseLevel); break;}
+            //case DEC_CODE_DRILL_2 : {setDrill2(baseLevel); break;}
+
+            case DEC_CODE_ARCH_1 : {setArch1(baseLevel); break;}
+            case DEC_CODE_ARCH_2 : {setArch2(baseLevel); break;}
+            case DEC_CODE_ARCH_3 : {setArch3(baseLevel); break;}
+            case DEC_CODE_ARCH_4 : {setArch4(baseLevel); break;}
+            case DEC_CODE_ARCH_5 : {setArch5(baseLevel); break;}
+
             default : {setDefault(baseLevel);}
         }
 }

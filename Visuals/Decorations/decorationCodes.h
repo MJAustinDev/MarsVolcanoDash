@@ -39,5 +39,16 @@ SOFTWARE.
 #define DEC_CODE_TANK_1 7 //intact tank
 #define DEC_CODE_TANK_2 8 //exploded tank
 
+#define DEC_CODE_PANEL_1 9
+
+#define DEC_CODE_DRILL_1 10 //intact drill vehicle
+#define DEC_CODE_DRILL_2 11 //broken drill vehicle
+
+#define DEC_CODE_ARCH_1 12 //flat archway
+#define DEC_CODE_ARCH_2 13 //left starting archway
+#define DEC_CODE_ARCH_3 14 //right starting archway
+#define DEC_CODE_ARCH_4 15 //broken leftward archway
+#define DEC_CODE_ARCH_5 16 //broken rightward archway
+
 
 #endif
