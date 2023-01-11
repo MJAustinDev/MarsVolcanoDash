@@ -73,6 +73,8 @@ private:
     void setTunnel1(float baseLevel);
     void setTunnel2(float baseLevel);
     void setTunnel3(float baseLevel);
+    void setTank1(float baseLevel);
+    //void setTank2(float baseLevel);
 
 public:
 

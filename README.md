@@ -22,8 +22,8 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - ~Living Quarters 1 \& 2~
 - ~Base tunnel 1, 2 \& 3~
 - Solar Panel Array 1
-- Gas Tank 1
-- Gas Tank 1 exploded
+- ~Gas Tank 1~
+- Gas Tank 1 exploded (tank 2)
 - Drill main vehical
 - Drill piece intact
 - Drill piece broken

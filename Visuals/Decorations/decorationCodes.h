@@ -36,5 +36,8 @@ SOFTWARE.
 #define DEC_CODE_TUNNEL_2 5
 #define DEC_CODE_TUNNEL_3 6
 
+#define DEC_CODE_TANK_1 7 //intact tank
+#define DEC_CODE_TANK_2 8 //exploded tank
+
 
 #endif
