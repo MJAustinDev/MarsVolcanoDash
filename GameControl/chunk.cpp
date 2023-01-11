@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2022 Matthew James Austin
+Copyright (c) 2023 Matthew James Austin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -193,6 +193,20 @@ void Chunk :: defSegmentStart(){
     points[4].Set(-200.0f, 0.0f);
     addShape(points, 5, 1); //use backing mountain shading
 
+    //TEMP TESTING
+    float c[4] = COLOUR_LAVA_4;
+    addForeDec(DEC_CODE_ARCH_1, b2Vec2(0.0f, 4.0f), &c[0], lowest);
+
+    //addForeDec(DEC_CODE_ARCH_2, b2Vec2(-12.0f, 4.0f), &c[0], lowest);
+    //addForeDec(DEC_CODE_ARCH_3, b2Vec2(12.0f, 4.0f), &c[0], lowest);
+    addForeDec(DEC_CODE_ARCH_4, b2Vec2(-12.0f, 4.0f), &c[0], lowest);
+    addForeDec(DEC_CODE_ARCH_5, b2Vec2(12.0f, 4.0f), &c[0], lowest);
+
+    addForeDec(DEC_CODE_ARCH_4, b2Vec2(24.0f, 4.0f), &c[0], lowest);
+    addForeDec(DEC_CODE_ARCH_1, b2Vec2(36.0f, 4.0f), &c[0], lowest);
+    addForeDec(DEC_CODE_ARCH_3, b2Vec2(48.0f, 4.0f), &c[0], lowest);
+
+    /*
     //add back ground base
     float c[4]; //used to keep consistent colouring
     //random chance how the base will look
@@ -208,6 +222,9 @@ void Chunk :: defSegmentStart(){
     addBackDec(DEC_CODE_TUNNEL_3, b2Vec2(-7.25f, 3.0f), &c[0], lowest, true);
     addBackDec(domeCode2, b2Vec2(29.5f, 3.0f), &c[0], lowest);
     addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), &c[0], lowest);
+
+    addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 0.0f), lowest);
+    */
 
 }
 
