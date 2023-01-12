@@ -74,7 +74,7 @@ private:
     void setTunnel2(float baseLevel);
     void setTunnel3(float baseLevel);
     void setTank1(float baseLevel);
-    //void setTank2(float baseLevel);
+    void setTank2(float baseLevel);
     //void setPanel1(float baseLevel);
     //void setDrill1(float baseLevel);
     //void setDrill2(float baseLevel);
