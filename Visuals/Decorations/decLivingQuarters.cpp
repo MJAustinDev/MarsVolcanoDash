@@ -68,7 +68,7 @@ void setLivingQuarter(Decoration* dec){
     points[2].Set(4.0f, 0.5f);
     points[3].Set(1.25f, 0.5f);
     shape->Set(points, 4);
-    dec->addTexture(11+randModRanged(10), tCoords, (*shape));
+    dec->addTexture(randText0to9(), tCoords, (*shape));
     delete shape;
 
     //add left side box

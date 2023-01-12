@@ -90,6 +90,6 @@ void Decoration :: setTank1(float baseLevel){
     points[2].Set(3.25f, 6.0f);
     points[3].Set(-0.5f, 6.0f);
     shape->Set(points, 4);
-    addTexture(11+randModRanged(10), tCoords, (*shape));
+    addTexture(randText0to9(), tCoords, (*shape));
     delete shape;
 }

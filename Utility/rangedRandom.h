@@ -56,4 +56,9 @@ inline int randNegPos(){
     }
 }
 
+//returns the texture ID for a random number between 0 and 9
+inline unsigned int randText0to9(){
+    return 11+randModRanged(10);
+}
+
 #endif
