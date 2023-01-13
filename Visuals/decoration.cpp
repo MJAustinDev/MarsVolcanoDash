@@ -27,7 +27,7 @@ SOFTWARE.
 #include <decoration.h>
 
 //constructor
-Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
+Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel, float ang, b2Vec2 mag){
 
         this->pos = pos; //set position
 
@@ -68,6 +68,8 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel){
             case DEC_CODE_ARCH_3 : {setArch3(baseLevel); break;}
             case DEC_CODE_ARCH_4 : {setArch4(baseLevel); break;}
             case DEC_CODE_ARCH_5 : {setArch5(baseLevel); break;}
+
+            case DEC_CODE_SHIP_1 : {setShip1(baseLevel, ang, mag); break;}
 
             default : {setDefault(baseLevel);}
         }

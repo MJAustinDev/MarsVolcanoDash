@@ -50,5 +50,7 @@ SOFTWARE.
 #define DEC_CODE_ARCH_4 15 //broken leftward archway
 #define DEC_CODE_ARCH_5 16 //broken rightward archway
 
+#define DEC_CODE_SHIP_1 17
+
 
 #endif

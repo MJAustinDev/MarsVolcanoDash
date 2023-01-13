@@ -83,10 +83,11 @@ private:
     void setArch3(float baseLevel);
     void setArch4(float baseLevel);
     void setArch5(float baseLevel);
+    void setShip1(float baseLevel, float ang, b2Vec2 mag);
 
 public:
 
-    Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel);
+    Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f));
     ~Decoration();
 
     void draw(Camera* camera);

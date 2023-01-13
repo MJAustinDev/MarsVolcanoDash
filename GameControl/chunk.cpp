@@ -138,13 +138,13 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
 }
 
 //adds a decoration compensating for base height
-void Chunk :: addDecoration(int id, b2Vec2 decPos, float* ptrColour, float lowest, LinkedList<Decoration>* ptr){
+void Chunk :: addDecoration(int id, b2Vec2 decPos, float* ptrColour, float lowest, LinkedList<Decoration>* ptr, float ang, b2Vec2 mag){
 
     b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
     lowest -= decPos.y; //work out the shift difference between the chunks lowest point and the decorations position relative the the chunk
     relPos += decPos; //adjust decorations position to map to the world rather than to the chunk
 
-    ptr->addEnd(new Decoration(id, relPos, ptrColour, lowest)); //add new decoration to the chunk
+    ptr->addEnd(new Decoration(id, relPos, ptrColour, lowest, ang, mag)); //add new decoration to the chunk
 
 }
 
@@ -193,20 +193,10 @@ void Chunk :: defSegmentStart(){
     points[4].Set(-200.0f, 0.0f);
     addShape(points, 5, 1); //use backing mountain shading
 
+
     //TEMP TESTING
-    float c[4] = COLOUR_LAVA_4;
-    addForeDec(DEC_CODE_ARCH_1, b2Vec2(0.0f, 4.0f), &c[0], lowest);
 
-    //addForeDec(DEC_CODE_ARCH_2, b2Vec2(-12.0f, 4.0f), &c[0], lowest);
-    //addForeDec(DEC_CODE_ARCH_3, b2Vec2(12.0f, 4.0f), &c[0], lowest);
-    addForeDec(DEC_CODE_ARCH_4, b2Vec2(-12.0f, 4.0f), &c[0], lowest);
-    addForeDec(DEC_CODE_ARCH_5, b2Vec2(12.0f, 4.0f), &c[0], lowest);
 
-    addForeDec(DEC_CODE_ARCH_4, b2Vec2(24.0f, 4.0f), &c[0], lowest);
-    addForeDec(DEC_CODE_ARCH_1, b2Vec2(36.0f, 4.0f), &c[0], lowest);
-    addForeDec(DEC_CODE_ARCH_3, b2Vec2(48.0f, 4.0f), &c[0], lowest);
-
-    /*
     //add back ground base
     float c[4]; //used to keep consistent colouring
     //random chance how the base will look
@@ -224,7 +214,16 @@ void Chunk :: defSegmentStart(){
     addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), &c[0], lowest);
 
     addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 0.0f), lowest);
-    */
+    addBackDec(DEC_CODE_TANK_2, b2Vec2(50.0f, 0.0f), lowest);
+
+    //flying in distance
+    for (int i=-30; i<=105; i+=15){
+        float scale = randRanged(0.1f, 0.6f);
+        addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(0.0f, 1.0f), b2Vec2(scale, scale));
+    }
+
+    addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
+
 
 }
 
