@@ -48,12 +48,12 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
 
     b2PolygonShape* shape = new b2PolygonShape; //main body of the ship
     b2Vec2 points[8];
-    points[0].Set(4.8f, 1.75f);
-    points[1].Set(1.0f, 2.0f);
+    points[0].Set(8.8f, 1.75f);
+    points[1].Set(5.0f, 2.0f);
     points[2].Set(-5.0f, 2.0f);
     points[3].Set(-5.0f, -2.0f);
-    points[4].Set(3.5f, -2.0f);
-    points[5].Set(5.0f, -1.5f);
+    points[4].Set(7.5f, -2.0f);
+    points[5].Set(9.0f, -1.5f);
     transformPoints(&points[0], 6, ang, mag);
     shape->Set(points, 6);
     dec->addShape(shape);
@@ -110,8 +110,8 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     shape = new b2PolygonShape; //cargo section
     points[0].Set(-1.5f, 1.0f);
     points[1].Set(-1.25f, -2.25f);
-    points[2].Set(3.0f, -2.25f);
-    points[3].Set(3.25f, 1.0f);
+    points[2].Set(7.0f, -2.25f);
+    points[3].Set(7.25f, 1.0f);
     transformPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addDetail(shape);
