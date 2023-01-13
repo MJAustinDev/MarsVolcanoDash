@@ -60,8 +60,8 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel, 
 
             //case DEC_CODE_PANEL_1 : {setPanel1(baseLevel); break;}
 
-            //case DEC_CODE_DRILL_1 : {setDrill1(baseLevel); break;}
-            //case DEC_CODE_DRILL_2 : {setDrill2(baseLevel); break;}
+            case DEC_CODE_DRILL_1 : {setDrill1(baseLevel); break;}
+            case DEC_CODE_DRILL_2 : {setDrill2(baseLevel); break;}
 
             case DEC_CODE_ARCH_1 : {setArch1(baseLevel); break;}
             case DEC_CODE_ARCH_2 : {setArch2(baseLevel); break;}

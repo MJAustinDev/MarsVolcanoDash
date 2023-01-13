@@ -222,7 +222,8 @@ void Chunk :: defSegmentStart(){
         addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(0.0f, 1.0f), b2Vec2(scale, scale));
     }
 
-    addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
+    //addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
+    addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest);
 
 
 }

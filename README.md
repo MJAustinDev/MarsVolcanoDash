@@ -24,9 +24,8 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - Solar Panel Array 1
 - ~Gas Tank 1~
 - ~Gas Tank 1 exploded (tank 2)~
-- Drill main vehicle
-- Drill piece intact
-- Drill piece broken
+- ~Drill 1 intact~
+- Drill 2 broken
 - Crashed Satalitte
 - Crashed Cargo Ship
 - ~Arch ways (upward, alongward, broken)~

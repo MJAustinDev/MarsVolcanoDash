@@ -26,23 +26,6 @@ SOFTWARE.
 
 #include "decoration.h"
 
-//rotates then scales the passed b2Vec2(x, y) points
-void transformPoints(b2Vec2* points, int num, float ang, b2Vec2 mag){
-
-    //rotate
-    for (int i=0; i<num; i++){
-        float c = cos(ang);
-        float s = sin(ang);
-        points[i].Set((points[i].x * c) - (points[i].y * s), (points[i].y * c) + (points[i].x * s));
-    }
-
-    //scale (and mirror if scale is negative)
-    for (int i=0; i<num; i++){
-        points[i].x *= mag.x;
-        points[i].y *= mag.y;
-    }
-}
-
 //sets out ship shape relative to rotation and scale
 void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
 
@@ -54,7 +37,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[3].Set(-5.0f, -2.0f);
     points[4].Set(7.5f, -2.0f);
     points[5].Set(9.0f, -1.5f);
-    transformPoints(&points[0], 6, ang, mag);
+    transformDecPoints(&points[0], 6, ang, mag);
     shape->Set(points, 6);
     dec->addShape(shape);
 
@@ -64,7 +47,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[2].Set(-6.0f, 0.5f);
     points[3].Set(-6.25f, 2.0f);
     points[4].Set(-5.0f, 2.0f);
-    transformPoints(&points[0], 5, ang, mag);
+    transformDecPoints(&points[0], 5, ang, mag);
     shape->Set(points, 5);
     dec->addShape(shape);
 
@@ -73,7 +56,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[1].Set(-4.25f, 2.0f);
     points[2].Set(-3.25f, 2.6f);
     points[3].Set(-0.25f, 2.5f);
-    transformPoints(&points[0], 4, ang, mag);
+    transformDecPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addShape(shape);
 
@@ -83,7 +66,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[2].Set(-0.25f, 2.3f);
     points[3].Set(0.5f, 2.0f);
     points[4].Set(-2.25f, 1.75f);
-    transformPoints(&points[0], 5, ang, mag);
+    transformDecPoints(&points[0], 5, ang, mag);
     shape->Set(points, 5);
     dec->addDetail(shape);
 
@@ -94,7 +77,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[3].Set(-4.75f, 0.5f);
     points[4].Set(-4.5f, -2.1f);
     points[5].Set(-2.75f, -1.75f);
-    transformPoints(&points[0], 6, ang, mag);
+    transformDecPoints(&points[0], 6, ang, mag);
     shape->Set(points, 6);
     dec->addDetail(shape);
 
@@ -103,7 +86,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[1].Set(-6.0f, 2.25f);
     points[2].Set(-5.75f, 1.0f);
     points[3].Set(-4.75f, 0.5f);
-    transformPoints(&points[0], 4, ang, mag);
+    transformDecPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addDetail(shape);
 
@@ -112,7 +95,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[1].Set(-1.25f, -2.25f);
     points[2].Set(7.0f, -2.25f);
     points[3].Set(7.25f, 1.0f);
-    transformPoints(&points[0], 4, ang, mag);
+    transformDecPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addDetail(shape);
 
@@ -121,7 +104,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[1].Set(-7.0f, 1.5f);
     points[2].Set(-7.0f, 0.5f);
     points[3].Set(-6.0f, 0.5f);
-    transformPoints(&points[0], 4, ang, mag);
+    transformDecPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addDetail(shape);
 
@@ -130,7 +113,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[1].Set(-7.0f, 0.25f);
     points[2].Set(-7.0f, 0.5f);
     points[3].Set(-6.0f, 0.5f);
-    transformPoints(&points[0], 4, ang, mag);
+    transformDecPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addDetail(shape);
 
@@ -139,7 +122,7 @@ void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
     points[1].Set(-6.0f, -0.35f);
     points[2].Set(-6.0f, -1.5f);
     points[3].Set(-5.0f, -1.75f);
-    transformPoints(&points[0], 4, ang, mag);
+    transformDecPoints(&points[0], 4, ang, mag);
     shape->Set(points, 4);
     dec->addDetail(shape);
 

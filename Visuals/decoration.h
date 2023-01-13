@@ -33,6 +33,35 @@ SOFTWARE.
 #include "linkedList.h"
 #include "rangedRandom.h"
 
+
+//used by some decorations rotates then scales the passed b2Vec2(x, y) points
+inline void transformDecPoints(b2Vec2* points, int num, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f), b2Vec2 shift = b2Vec2(0.0f, 0.0f)){
+
+    //rotate
+    if (ang != 0.0f){
+        for (int i=0; i<num; i++){
+            float c = cos(ang);
+            float s = sin(ang);
+            points[i].Set((points[i].x * c) - (points[i].y * s), (points[i].y * c) + (points[i].x * s));
+        }
+    }
+
+    //scale (and mirror if scale is negative)
+    if (mag != b2Vec2(1.0f, 1.0f)){
+        for (int i=0; i<num; i++){
+            points[i].x *= mag.x;
+            points[i].y *= mag.y;
+        }
+    }
+
+    //shift
+    if (shift != b2Vec2(0.0f, 0.0f)){
+        for (int i=0; i<num; i++){
+            points[i] += shift;
+        }
+    }
+}
+
 //back/foreground decoration, no effect on game play just makes the world look better
 class Decoration {
 
@@ -76,8 +105,8 @@ private:
     void setTank1(float baseLevel);
     void setTank2(float baseLevel);
     //void setPanel1(float baseLevel);
-    //void setDrill1(float baseLevel);
-    //void setDrill2(float baseLevel);
+    void setDrill1(float baseLevel);
+    void setDrill2(float baseLevel);
     void setArch1(float baseLevel);
     void setArch2(float baseLevel);
     void setArch3(float baseLevel);
