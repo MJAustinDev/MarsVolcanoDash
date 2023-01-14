@@ -140,7 +140,7 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
 }
 
 //adds a decoration compensating for base height
-void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, float* ptrColour){
+void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, bool hasBase, float* ptrColour){
 
     b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
     lowest -= decPos.y; //work out the shift difference between the chunks lowest point and the decorations position relative the the chunk
@@ -149,10 +149,13 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
     Decoration* dec;
     switch(id){
         case DEC_CODE_DOME_1 :
-        case DEC_CODE_DOME_2 : {dec = new DecDome(id, relPos, lowest, ptrColour); break;}
+        case DEC_CODE_DOME_2 : {dec = new DecDome(id, relPos, lowest, hasBase, ptrColour); break;}
         case DEC_CODE_LQ_1 :
-        case DEC_CODE_LQ_2 : {dec = new DecLQ(id, relPos, lowest, ptrColour); break;}
-        default : {dec = new DecDefault(id, relPos, lowest, ptrColour);}
+        case DEC_CODE_LQ_2 : {dec = new DecLQ(id, relPos, lowest, hasBase, ptrColour); break;}
+        case DEC_CODE_TUNNEL_1 :
+        case DEC_CODE_TUNNEL_2 :
+        case DEC_CODE_TUNNEL_3 : {dec = new DecTunnel(id, relPos, lowest, hasBase, ptrColour); break;}
+        default : {dec = new DecDefault(id, relPos, lowest, hasBase, ptrColour);}
     }
     ptr->addEnd(dec); //add new decoration to the chunk
 
@@ -204,13 +207,6 @@ void Chunk :: defSegmentStart(){
     addShape(points, 5, 1); //use backing mountain shading
 
 
-    //TEMP TESTING
-    float c[4] = COLOUR_LAVA_4;
-    addBackDec(69, b2Vec2(-8.0f, 8.0f), lowest);
-    addBackDec(DEC_CODE_LQ_1, b2Vec2(10.0f, 8.0f), lowest);
-    addBackDec(DEC_CODE_LQ_2, b2Vec2(0.0f, 2.0f), lowest);
-
-    /*
     //add back ground base
     float c[4]; //used to keep consistent colouring
     //random chance how the base will look
@@ -221,23 +217,23 @@ void Chunk :: defSegmentStart(){
     //add decorations that make up the base
     addBackDec(lqCode, b2Vec2(5.0f, 3.0f), lowest);
     backDecs.last->obj->getColour(&c[0]); //get colour
-    addBackDec(domeCode1, b2Vec2(5.0f, 9.5f), &c[0], lowest, true);
-    addBackDec(DEC_CODE_TUNNEL_2, b2Vec2(17.25f, 3.0f), &c[0], lowest, true);
-    addBackDec(DEC_CODE_TUNNEL_3, b2Vec2(-7.25f, 3.0f), &c[0], lowest, true);
-    addBackDec(domeCode2, b2Vec2(29.5f, 3.0f), &c[0], lowest);
-    addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), &c[0], lowest);
+    addBackDec(domeCode1, b2Vec2(5.0f, 9.5f), lowest, false, &c[0]);
+    addBackDec(DEC_CODE_TUNNEL_2, b2Vec2(17.25f, 3.0f), lowest, true, &c[0]);
+    addBackDec(DEC_CODE_TUNNEL_3, b2Vec2(-7.25f, 3.0f), lowest, true, &c[0]);
+    addBackDec(domeCode2, b2Vec2(29.5f, 3.0f), lowest, true, &c[0]);
+    addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), lowest, true, &c[0]);
 
-    addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 0.0f), lowest);
-    addBackDec(DEC_CODE_TANK_2, b2Vec2(50.0f, 0.0f), lowest);
+    addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 0.0f), lowest, true, &c[0]);
+    addBackDec(DEC_CODE_TANK_2, b2Vec2(50.0f, 0.0f), lowest, true, &c[0]);
 
     //flying in distance
     for (int i=-30; i<=105; i+=15){
         float scale = randRanged(0.1f, 0.6f);
-        addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(0.0f, 1.0f), b2Vec2(scale, scale));
+        //addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(0.0f, 1.0f), b2Vec2(scale, scale));
     }
 
     //addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
-    addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest); */
+    //addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest); */
 
 
 }

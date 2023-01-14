@@ -89,7 +89,7 @@ void Decoration :: draw(Camera* camera){
 }
 
 //Default decoration design, not meant to be used in finished game
-DecDefault :: DecDefault(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decoration(pos, ptrColour){
+DecDefault :: DecDefault(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour){
 
     b2PolygonShape shape;
     b2Vec2 points[8];

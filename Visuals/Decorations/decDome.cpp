@@ -27,7 +27,7 @@ SOFTWARE.
 #include "decoration.h"
 
 //constructor for dome's 1 and 2
-DecDome :: DecDome(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decoration(pos, ptrColour) {
+DecDome :: DecDome(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour) {
 
     //set shape to the backing that both domes share
     b2PolygonShape shape;
@@ -44,10 +44,10 @@ DecDome :: DecDome(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Deco
     switch(id){
         case DEC_CODE_DOME_1 : {setDome1(); break;}
         case DEC_CODE_DOME_2 : {setDome2(); break;}
-        default : {} //no details by default
+        default : {} //no extra details by default
     }
-    addBase(baseLevel, b2Vec2(-4.0f, 4.0f));
 
+    if(hasBase){addBase(baseLevel, b2Vec2(-4.0f, 4.0f));};
 }
 
 DecDome :: ~DecDome(){} //no extra dynamic memory to deallocate
@@ -116,6 +116,5 @@ void DecDome :: setDome2(){
         points[2].Set(3.25f * mirror, 4.3f);
         shape.Set(points, 3);
         addDetail(shape);
-
     }
 }

@@ -27,7 +27,7 @@ SOFTWARE.
 #include "decoration.h"
 
 //constructor for living quarters's 1 and 2
-DecLQ :: DecLQ(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decoration(pos, ptrColour){
+DecLQ :: DecLQ(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour){
 
     b2PolygonShape shape;
     b2Vec2 points[8];
@@ -96,10 +96,10 @@ DecLQ :: DecLQ(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decorati
     switch(id){
         case DEC_CODE_LQ_1 : {setLQ1(); break;}
         case DEC_CODE_LQ_2 : {setLQ2(); break;}
-        default : {}
+        default : {} //no extra details by default
     }
 
-    addBase(baseLevel, b2Vec2(-4.25f, 4.25f));
+    if (hasBase) {addBase(baseLevel, b2Vec2(-4.25f, 4.25f));};
 
 }
 
@@ -108,7 +108,7 @@ DecLQ :: ~ DecLQ(){} //no extra dynamically allocated memory to release
 //sets the door way for living quarters 1
 void DecLQ :: setLQ1(){
 
-    for (int i=-1; i<=1; i+=2){ //adds the frame of the doorway symetrically
+    for (int i=-1; i<=1; i+=2){ //adds the frame of the doorway symmetrically
 
         float mirror = (float) i;
         b2PolygonShape shape;
@@ -146,7 +146,7 @@ void DecLQ :: setLQ1(){
 //sets the door way for living quarters 2
 void DecLQ :: setLQ2(){
 
-    for (int i=-1; i<=1; i+=2){ //adds each doorway bar symetrically
+    for (int i=-1; i<=1; i+=2){ //adds each doorway bar symmetrically
         float mirror = (float) i;
         b2PolygonShape shape;
         b2Vec2 points[8];
@@ -158,80 +158,3 @@ void DecLQ :: setLQ2(){
         addDetail(shape);
     }
 }
-
-/*
-//sets the details that exist in both living quarters decorations
-
-
-
-//adds a connector that maps onto the dome backing shape
-void setTunnelToDome(Decoration* dec, float mirror){
-    b2PolygonShape* shape = new b2PolygonShape;
-    b2Vec2 points[8];
-    points[0].Set(8.0f * mirror, 5.5f);
-    points[1].Set(8.0f * mirror, 1.5f);
-    points[2].Set(8.4f * mirror, 1.25f);
-    points[3].Set(8.75f * mirror, 4.25f);
-    shape->Set(points, 4);
-    dec->addShape(shape);
-
-    shape = new b2PolygonShape;
-    points[0].Set(8.0f * mirror, 5.5f);
-    points[1].Set(8.75f * mirror, 4.25f);
-    points[2].Set(9.85f * mirror, 5.75f);
-    shape->Set(points, 3);
-    dec->addShape(shape);
-}
-
-//set tunnel 1 (just a flat tunnel)
-void Decoration :: setTunnel1(float baseLevel){
-
-    //main tunnel shape
-    b2PolygonShape* shape = new b2PolygonShape;
-    b2Vec2 points[8];
-    points[0].Set(-8.0f, 5.5f);
-    points[1].Set(8.0f, 5.5f);
-    points[2].Set(8.0f, 1.5f);
-    points[3].Set(-8.0f, 1.5f);
-    shape->Set(points, 4);
-    addShape(shape);
-
-    //edge ridges
-    for (int i=0; i<=1; i++){
-        float shift = ((float) i) * 16.25f;
-        shape = new b2PolygonShape;
-        points[0].Set(-8.25f + shift, 5.75f);
-        points[1].Set(-8.0f + shift, 5.75f);
-        points[2].Set(-8.0f + shift, 1.25f);
-        points[3].Set(-8.25f + shift, 1.25f);
-        shape->Set(points, 4);
-        addDetail(shape);
-    }
-
-    //tunnel window
-    shape = new b2PolygonShape;
-    points[0].Set(-7.25f, 4.75f);
-    points[1].Set(7.25f, 4.75f);
-    points[2].Set(7.25f, 4.25f);
-    points[3].Set(-7.25f, 4.25f);
-    shape->Set(points, 4);
-    addDetail(shape);
-
-
-    addBase(baseLevel, b2Vec2(-8.0f, 8.0f));
-
-}
-
-//set tunnel 2 (tunnel with a dome connector on the right)
-void Decoration :: setTunnel2(float baseLevel){
-    setTunnelToDome(this, 1.0f);
-    setTunnel1(baseLevel);
-}
-
-//set tunnel 3 (tunnel with a dome connector on the left)
-void Decoration :: setTunnel3(float baseLevel){
-    setTunnelToDome(this, -1.0f);
-    setTunnel1(baseLevel);
-}
-
-*/

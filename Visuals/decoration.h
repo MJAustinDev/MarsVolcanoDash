@@ -67,7 +67,6 @@ class Decoration {
 
 private:
 
-    bool hasBase = false;
     unsigned int id; //texture id used by camera
     float colour[4]; //decorations's colour
 
@@ -92,30 +91,6 @@ private:
 
     //list of textures to add over if needed
     LinkedList<TextShape> tShapes;
-
-    /*
-    //add new set id methods
-    void setDefault(float baseLevel);
-    void setDome1(float baseLevel);
-    void setDome2(float baseLevel);
-    void setLQ1(float baseLevel);
-    void setLQ2(float baseLevel);
-    void setTunnel1(float baseLevel);
-    void setTunnel2(float baseLevel);
-    void setTunnel3(float baseLevel);
-    void setTank1(float baseLevel);
-    void setTank2(float baseLevel);
-    //void setPanel1(float baseLevel);
-    void setDrill1(float baseLevel);
-    void setDrill2(float baseLevel);
-    void setArch1(float baseLevel);
-    void setArch2(float baseLevel);
-    void setArch3(float baseLevel);
-    void setArch4(float baseLevel);
-    void setArch5(float baseLevel);
-    void setShip1(float baseLevel, float ang, b2Vec2 mag);
-
-    */
 
 public:
 
@@ -161,25 +136,15 @@ public:
             b2PolygonShape base;
             base.Set(points, 4);
             addShape(base);
-            hasBase = true;
         }
     };
-
-    //remove the base if desired
-    void remBase(){
-        if (hasBase && shapes.last != nullptr){
-            shapes.remEnd();
-            hasBase = false;
-        }
-    };
-
 };
 
 //default decoration (invalid id)
 class DecDefault : public Decoration {
 
 public:
-    DecDefault(int id, b2Vec2 pos, float baseLevel, float* ptrColour);
+    DecDefault(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
     ~DecDefault();
 
 };
@@ -188,7 +153,7 @@ public:
 class DecDome : public Decoration {
 
 public:
-    DecDome(int id, b2Vec2 pos, float baseLevel, float* ptrColour);
+    DecDome(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
     ~DecDome();
 
 private:
@@ -201,7 +166,7 @@ private:
 class DecLQ : public Decoration {
 
 public:
-    DecLQ(int id, b2Vec2 pos, float baseLevel, float* ptrColour);
+    DecLQ(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
     ~DecLQ();
 
 private:
@@ -210,14 +175,20 @@ private:
 
 };
 
+//base tunnel (uses default draw method)
+class DecTunnel : public Decoration {
+
+public:
+    DecTunnel(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
+    ~DecTunnel();
+
+private:
+    void setTunnelToDome(float mirror);
+
+};
 
 /*
 
-void setLQ1(float baseLevel);
-void setLQ2(float baseLevel);
-void setTunnel1(float baseLevel);
-void setTunnel2(float baseLevel);
-void setTunnel3(float baseLevel);
 void setTank1(float baseLevel);
 void setTank2(float baseLevel);
 //void setPanel1(float baseLevel);
