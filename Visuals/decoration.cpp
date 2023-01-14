@@ -88,6 +88,32 @@ void Decoration :: draw(Camera* camera){
     }
 }
 
+//performs rotation, scale, then translation on given points array
+void Decoration :: transformDecPoints(b2Vec2 points[8], int num, float ang, b2Vec2 mag, b2Vec2 shift){
+
+    if ((num > 8) || (mag.x == 0) || (mag.y == 0)){ //safety catch
+        return;
+    }
+
+    for (int i=0; i<num; i++){ //perform transformation on each point in the array
+        if (ang != 0.0f){ //rotate
+            float c = cos(ang);
+            float s = sin(ang);
+            points[i].Set((points[i].x * c) - (points[i].y * s), (points[i].y * c) + (points[i].x * s));
+        }
+
+        if (mag != b2Vec2(1.0f, 1.0f)){ //scale (and mirror if scale is negative)
+            points[i].x *= mag.x;
+            points[i].y *= mag.y;
+        }
+
+        if (shift != b2Vec2(0.0f, 0.0f)){ //translate
+            points[i] += shift;
+        }
+    }
+
+}
+
 //Default decoration design, not meant to be used in finished game
 DecDefault :: DecDefault(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour){
 

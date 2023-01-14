@@ -26,99 +26,115 @@ SOFTWARE.
 
 #include "decoration.h"
 
-/*
-//sets gridded crate
-void setCrate(Decoration* dec, float mirror, b2Vec2 mag, b2Vec2 shift){
-    if (mirror == 0.0f || mag.x == 0.0f || mag.y == 0.0f){
-        return;
+//constructor for drill 1 and 2
+DecDrill :: DecDrill(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour){
+
+    b2Vec2 points[8];
+    points[0].Set(0.0f, 0.0f); //main cockpit backing
+    points[1].Set(0.0f, 3.5f);
+    points[2].Set(-0.25f, 7.0f);
+    points[3].Set(-5.0f, 7.0f);
+    points[4].Set(-5.0f, 0.0f);
+    addShape(points, 5);
+
+    points[2].Set(5.0f, 3.5f); //front drill connector backing
+    points[3].Set(5.0f, 0.0f);
+    addShape(points, 4);
+
+    b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
+    points[0].Set(-2.5f, 6.75f); //random texture number
+    points[1].Set(-5.0f, 6.75f);
+    points[2].Set(-5.0f, 0.5f);
+    points[3].Set(-2.5f, 0.5f);
+    addTexture(randText0to9(), tCoords, points, 4);
+
+    points[0].Set(-0.25f, 3.5f); //cockpit window
+    points[1].Set(-0.5f, 6.75f);
+    points[2].Set(-2.5f, 6.75f);
+    points[3].Set(-2.5f, 0.75f);
+    points[4].Set(-0.5f, 0.75f);
+    addDetail(points, 5);
+
+    //set ridges on the main body
+    setBar(b2Vec2(-5.25f, 7.0f), b2Vec2(5.5f, 0.25f));
+    setBar(b2Vec2(-5.25f, 0.0f), b2Vec2(10.5f, 0.25f));
+    setBar(b2Vec2(0.0f, 3.25f), b2Vec2(5.25f, 0.25f));
+
+    for (int i=0; i<10; i++){ //start of drill arm, diagonal bar alternates
+        setCrate((i%2 == 0) ? 1.0f : -1.0f, b2Vec2(1.0f, 1.0f), b2Vec2(3.5f, 3.5f + (2.0f * ((float) i))));
+    }
+    setCrate(1.0f, b2Vec2(2.0f, 0.75f), b2Vec2(6.5f, 21.75f)); //horizontal bar of arm
+    setCrate(-1.0f, b2Vec2(1.0f, 1.0f), b2Vec2(9.5f, 21.5f)); //arm box
+
+    switch(id){
+        case DEC_CODE_DRILL_1 : {
+            setBar(b2Vec2(9.0f, 11.5f), b2Vec2(0.2f, 10.0f)); //left cable
+            setBar(b2Vec2(9.8f, 11.5f), b2Vec2(0.2f, 10.0f)); //right cable
+            setDrillPiece(0.0f, b2Vec2(1.0f, 1.0f), b2Vec2(9.5f, 6.5f)); //drill piece
+            break;
+        }
+        case DEC_CODE_DRILL_2 : {
+            setBar(b2Vec2(9.0f, 16.5f), b2Vec2(0.2f, 5.0f)); //left cable before break point
+            setBar(b2Vec2(9.8f, 11.4f), b2Vec2(0.2f, 10.1f)); //right cable
+            setDrillPiece(0.25f, b2Vec2(1.0f, 1.0f), b2Vec2(10.75f, 6.5f)); //drill piece
+            //TODO -- ADD CABLE AFTER BREAK POINT
+        break;}
+        default : {} //no extra detail by default
     }
 
+    if (hasBase){addBase(baseLevel, b2Vec2(-5.25f, 5.25f));}
+}
+
+DecDrill :: ~DecDrill(){} //no dynamically allocated memory to clear as of yet
+
+//sets a gridded create
+void DecDrill :: setCrate(float mirror, b2Vec2 mag, b2Vec2 shift){
+
     for (int i=-1; i<=1; i+=2){
-        b2PolygonShape* shape = new b2PolygonShape; //vertical bar
         b2Vec2 points[8];
-        points[0].Set(1.0f * ((float) i), 0.0f);
+        points[0].Set(1.0f * ((float) i), 0.0f);  //vertical bar
         points[1].Set(1.0f * ((float) i), 2.0f);
         points[2].Set(0.55f * ((float) i), 2.0f);
         points[3].Set(0.55f * ((float) i), 0.0f);
         transformDecPoints(points, 4, 0.0f, mag, shift);
-        shape->Set(points, 4);
-        dec->addShape(shape);
+        addShape(points, 4);
 
-        shape = new b2PolygonShape; //inner vertical bar
-        points[0].Set(1.0f * ((float) i), 0.0f);
+        points[0].Set(1.0f * ((float) i), 0.0f); //inner vertical bar
         points[1].Set(1.0f * ((float) i), 2.0f);
         points[2].Set(0.75f * ((float) i), 2.0f);
         points[3].Set(0.75f * ((float) i), 0.0f);
         transformDecPoints(points, 4, 0.0f, mag, shift);
-        shape->Set(points, 4);
-        dec->addDetail(shape);
+        addDetail(points, 4);
 
         float yShift = (i == -1) ? 0.0f : -1.55f;
-        shape = new b2PolygonShape; //horizontal bar
-        points[0].Set(-0.55f, 2.0f + yShift);
+        points[0].Set(-0.55f, 2.0f + yShift); //horizontal bar
         points[1].Set(-0.55f, 1.55f + yShift);
         points[2].Set(0.55f, 1.55f + yShift);
         points[3].Set(0.55f, 2.0f + yShift);
         transformDecPoints(points, 4, 0.0f, mag, shift);
-        shape->Set(points, 4);
-        dec->addShape(shape);
+        addShape(points, 4);
 
         yShift = (i == -1) ? 0.0f : -1.75f;
-        points[0].Set(-0.75f, 2.0f + yShift);
+        points[0].Set(-0.75f, 2.0f + yShift); //inner horizontal bar
         points[1].Set(-0.75f, 1.75f + yShift);
         points[2].Set(0.75f, 1.75f + yShift);
         points[3].Set(0.75f, 2.0f + yShift);
-        shape = new b2PolygonShape; //inner horizontal bar
         transformDecPoints(points, 4, 0.0f, mag, shift);
-        shape->Set(points, 4);
-        dec->addDetail(shape);
+        addDetail(points, 4);
 
-        shape = new b2PolygonShape; //diagonal bar
-        points[0].Set(0.55f * mirror, 1.75f);
+        points[0].Set(0.55f * mirror, 1.75f); //diagonal bar
         points[1].Set(0.75f * mirror, 1.75f);
         points[2].Set(0.75f * mirror, 1.55f);
         points[3].Set(-0.55f * mirror, 0.25f);
         points[4].Set(-0.75f * mirror, 0.25f);
         points[5].Set(-0.75f * mirror, 0.45f);
         transformDecPoints(points, 6, 0.0f, mag, shift);
-        shape->Set(points, 6);
-        dec->addDetail(shape);
-
-    }
-
-
-}
-
-//sets drill piece
-void setDrillPiece(Decoration* dec, float ang, b2Vec2 mag, b2Vec2 shift){
-
-    b2PolygonShape* shape = new b2PolygonShape; //drill triangle shape
-    b2Vec2 points[8];
-    points[0].Set(0.0f, 0.0f);
-    points[1].Set(1.0f, 5.0f);
-    points[2].Set(-1.0f, 5.0f);
-    transformDecPoints(points, 3, ang, mag, shift);
-    shape->Set(points, 3);
-    dec->addShape(shape);
-
-    for (int i=0; i<13; i++) { //drill groves
-        float yShift = ((float) i) * 0.4f;
-        float xMag = 1.0f + (((float) i) * 0.8f);
-        shape = new b2PolygonShape;
-        points[0].Set(-0.1f * xMag, 0.2f + yShift);
-        points[1].Set(-0.1f * xMag, 0.0f + yShift);
-        points[2].Set(0.1f * xMag, 0.1f + yShift);
-        points[3].Set(0.1f * xMag, 0.3f + yShift);
-        transformDecPoints(points, 4, ang, mag, shift);
-        shape->Set(points, 4);
-        dec->addDetail(shape);
+        addDetail(points, 6);
     }
 }
 
-//sets a ridge (basic bar starting at given position and spanning given dimensions)
-void setRidge(Decoration* dec, b2Vec2 pos, b2Vec2 dim){
-
-    b2PolygonShape* shape = new b2PolygonShape;
+//sets a solid rectangular bar
+void DecDrill :: setBar(b2Vec2 pos, b2Vec2 dim){
     b2Vec2 points[8];
     points[0] = pos;
     points[1] = pos;
@@ -126,78 +142,27 @@ void setRidge(Decoration* dec, b2Vec2 pos, b2Vec2 dim){
     points[2] = pos + dim;
     points[3] = pos;
     points[3].x += dim.x;
-    shape->Set(points, 4);
-    dec->addDetail(shape);
+    addDetail(points, 4);
 }
 
-//sets main drill machine body
-void setDrillBody(Decoration* dec){
+//sets a drill piece that rotates around it's tip
+void DecDrill :: setDrillPiece(float ang, b2Vec2 mag, b2Vec2 shift){
 
-    b2PolygonShape* shape = new b2PolygonShape; //main cockpit backing
     b2Vec2 points[8];
-    points[0].Set(0.0f, 0.0f);
-    points[1].Set(0.0f, 3.5f);
-    points[2].Set(-0.25f, 7.0f);
-    points[3].Set(-5.0f, 7.0f);
-    points[4].Set(-5.0f, 0.0f);
-    shape->Set(points, 5);
-    dec->addShape(shape);
+    points[0].Set(0.0f, 0.0f); //drill triangle shape
+    points[1].Set(1.0f, 5.0f);
+    points[2].Set(-1.0f, 5.0f);
+    transformDecPoints(points, 3, ang, mag, shift);
+    addShape(points, 3);
 
-    shape = new b2PolygonShape; //front drill connector backing
-    points[2].Set(5.0f, 3.5f);
-    points[3].Set(5.0f, 0.0f);
-    shape->Set(points, 4);
-    dec->addShape(shape);
-
-    shape = new b2PolygonShape; //texture number
-    b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
-    points[0].Set(-2.5f, 6.75f);
-    points[1].Set(-5.0f, 6.75f);
-    points[2].Set(-5.0f, 0.5f);
-    points[3].Set(-2.5f, 0.5f);
-    shape->Set(points, 4);
-    dec->addTexture(randText0to9(), tCoords, (*shape));
-
-    //cockpit window
-    points[0].Set(-0.25f, 3.5f);
-    points[1].Set(-0.5f, 6.75f);
-    points[2].Set(-2.5f, 6.75f);
-    points[3].Set(-2.5f, 0.75f);
-    points[4].Set(-0.5f, 0.75f);
-    shape->Set(points, 5);
-    dec->addDetail(shape);
-
-    //set ridges on the main body
-    setRidge(dec, b2Vec2(-5.25f, 7.0f), b2Vec2(5.5f, 0.25f));
-    setRidge(dec, b2Vec2(-5.25f, 0.0f), b2Vec2(10.5f, 0.25f));
-    setRidge(dec, b2Vec2(0.0f, 3.25f), b2Vec2(5.25f, 0.25f));
-
-}
-
-//set details for intact drill machine
-void Decoration :: setDrill1(float baseLevel){
-
-    setDrillBody(this);
-    for (int i=0; i<10; i++){ //start of drill arm, diagonal bar alternates
-        setCrate(this, (i%2 == 0) ? 1.0f : -1.0f, b2Vec2(1.0f, 1.0f), b2Vec2(3.5f, 3.5f + (2.0f * ((float) i))));
+    for (int i=0; i<13; i++) { //drill groves
+        float yShift = ((float) i) * 0.4f;
+        float xMag = 1.0f + (((float) i) * 0.8f);
+        points[0].Set(-0.1f * xMag, 0.2f + yShift);
+        points[1].Set(-0.1f * xMag, 0.0f + yShift);
+        points[2].Set(0.1f * xMag, 0.1f + yShift);
+        points[3].Set(0.1f * xMag, 0.3f + yShift);
+        transformDecPoints(points, 4, ang, mag, shift);
+        addDetail(points, 4);
     }
-    setCrate(this, 1.0f, b2Vec2(2.0f, 0.75f), b2Vec2(6.5f, 21.75f)); //horizontal bar of arm
-    setCrate(this, -1.0f, b2Vec2(1.0f, 1.0f), b2Vec2(9.5f, 21.5f)); //arm box
-
-    //add cables
-    setRidge(this, b2Vec2(9.0f, 11.5f), b2Vec2(0.2f, 10.0f));
-    setRidge(this, b2Vec2(9.8f, 11.5f), b2Vec2(0.2f, 10.0f));
-
-    //add drill
-    setDrillPiece(this, 0.0f, b2Vec2(1.0f, 1.0f), b2Vec2(9.5f, 6.5f));
-
-    addBase(baseLevel, b2Vec2(-5.25f, 5.25f));
 }
-
-//set details for broken drill machine
-void Decoration :: setDrill2(float baseLevel){
-
-
-}
-
-*/

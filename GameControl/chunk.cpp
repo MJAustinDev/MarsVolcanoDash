@@ -162,6 +162,8 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
         case DEC_CODE_ARCH_3 :
         case DEC_CODE_ARCH_4 :
         case DEC_CODE_ARCH_5 : {dec = new DecArch(id, relPos, lowest, hasBase, ptrColour); break;}
+        case DEC_CODE_DRILL_1 :
+        case DEC_CODE_DRILL_2 : {dec = new DecDrill(id, relPos, lowest, hasBase, ptrColour); break;}
         default : {dec = new DecDefault(id, relPos, lowest, hasBase, ptrColour);}
     }
     ptr->addEnd(dec); //add new decoration to the chunk
@@ -230,8 +232,11 @@ void Chunk :: defSegmentStart(){
     addBackDec(domeCode2, b2Vec2(29.5f, 3.0f), lowest, true, &c[0]);
     addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), lowest, true, &c[0]);
 
-    addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 0.0f), lowest, true, &c[0]);
-    addBackDec(DEC_CODE_TANK_2, b2Vec2(50.0f, 0.0f), lowest, true, &c[0]);
+    addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 2.0f), lowest, true, &c[0]);
+    addBackDec(DEC_CODE_TANK_2, b2Vec2(50.0f, 2.0f), lowest, true, &c[0]);
+
+    addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 1.0f), lowest, true, &c[0]);
+    addBackDec(DEC_CODE_DRILL_2, b2Vec2(77.0f, 1.0f), lowest, true, &c[0]);
 
     //flying in distance
     for (int i=-30; i<=105; i+=15){
