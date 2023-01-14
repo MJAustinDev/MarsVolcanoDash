@@ -26,147 +26,143 @@ SOFTWARE.
 
 #include "decoration.h"
 
-//sets the details that exist in both living quarters decorations
-void setLivingQuarter(Decoration* dec){
+//constructor for living quarters's 1 and 2
+DecLQ :: DecLQ(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decoration(pos, ptrColour){
 
-    //backing
-    b2PolygonShape* shape = new b2PolygonShape;
+    b2PolygonShape shape;
     b2Vec2 points[8];
-    points[0].Set(-4.0f, 0.0f);
+    points[0].Set(-4.0f, 0.0f); //backing shape
     points[1].Set(4.0f, 0.0f);
     points[2].Set(4.0f, 6.5f);
     points[3].Set(-4.0f, 6.5f);
-    shape->Set(points, 4);
-    dec->addShape(shape);
+    shape.Set(points, 4);
+    addShape(shape);
 
-    //ridge both on floor and roof
-    for (int i=0; i<=6 ; i+=6){
-        shape = new b2PolygonShape;
-        points[0].Set(-4.25f, 0.0f + ((float)i));
-        points[1].Set(4.25f, 0.0f + ((float)i));
-        points[2].Set(4.25f, 0.5f + ((float)i));
-        points[3].Set(-4.25f, 0.5f + ((float)i));
-        shape->Set(points, 4);
-        dec->addDetail(shape);
-    }
-
-    //add door window
-    shape = new b2PolygonShape;
-    points[0].Set(-0.75f, 3.0f);
+    points[0].Set(-0.75f, 3.0f); //add door window
     points[1].Set(0.75f, 3.0f);
     points[2].Set(0.75f, 3.5f);
     points[3].Set(-0.75f, 3.5f);
-    shape->Set(points, 4);
-    dec->addDetail(shape);
+    shape.Set(points, 4);
+    addDetail(shape);
 
 
-    //add number texture
     b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
-    shape = new b2PolygonShape;
-    points[0].Set(1.25f, 6.0f);
+    points[0].Set(1.25f, 6.0f); //add number texture to right side of living quarters
     points[1].Set(4.0f, 6.0f);
     points[2].Set(4.0f, 0.5f);
     points[3].Set(1.25f, 0.5f);
-    shape->Set(points, 4);
-    dec->addTexture(randText0to9(), tCoords, (*shape));
-    delete shape;
+    shape.Set(points, 4);
+    addTexture(randText0to9(), tCoords, shape);
 
-    //add left side box
     for (int i=0; i<=1; i++){
-        //vertical bars
-        float shift = ((float) i) * 1.75f;
-        shape = new b2PolygonShape;
-        points[0].Set(-3.75f + shift, 5.75f);
+
+        float shift = ((float)i) * 6.0f;
+        points[0].Set(-4.25f, 0.0f + shift); //add top and bottom ridges
+        points[1].Set(4.25f, 0.0f + shift);
+        points[2].Set(4.25f, 0.5f + shift);
+        points[3].Set(-4.25f, 0.5f + shift);
+        shape.Set(points, 4);
+        addDetail(shape);
+
+        //add left side box
+        shift = ((float) i) * 1.75f;
+        points[0].Set(-3.75f + shift, 5.75f); //vertical bars
         points[1].Set(-3.5f + shift, 5.75f);
         points[2].Set(-3.5f + shift, 0.75f);
         points[3].Set(-3.75f + shift, 0.75f);
-        shape->Set(points, 4);
-        dec->addDetail(shape);
+        shape.Set(points, 4);
+        addDetail(shape);
 
         //horizontal bars
         shift = ((float) i) * -4.75f;
-        shape = new b2PolygonShape;
         points[0].Set(-3.75f, 5.75f + shift);
         points[1].Set(-2.0f, 5.75f + shift);
         points[2].Set(-2.0f, 5.5f + shift);
         points[3].Set(-3.75f, 5.5f + shift);
-        shape->Set(points, 4);
-        dec->addDetail(shape);
+        shape.Set(points, 4);
+        addDetail(shape);
 
-        //diagonal bars
-        shift = ((float) i) * -5.5f;
+        shift = ((float) i) * -5.5f; //diagonal bars
         float mirror = (i == 0) ? 1.0f : -1.0f;
-        shape = new b2PolygonShape;
         points[0].Set((-3.75f * mirror) + shift, 5.5f);
         points[1].Set((-2.0f * mirror) + shift, 0.75f);
         points[2].Set((-1.75f * mirror) + shift, 1.0f);
         points[3].Set((-3.5f * mirror) + shift, 5.75f);
-        shape->Set(points, 4);
-        dec->addDetail(shape);
+        shape.Set(points, 4);
+        addDetail(shape);
     }
+
+    //add doorway
+    switch(id){
+        case DEC_CODE_LQ_1 : {setLQ1(); break;}
+        case DEC_CODE_LQ_2 : {setLQ2(); break;}
+        default : {}
+    }
+
+    addBase(baseLevel, b2Vec2(-4.25f, 4.25f));
+
 }
 
-//adds details unique to living quarters 1
-void Decoration :: setLQ1(float baseLevel){
+DecLQ :: ~ DecLQ(){} //no extra dynamically allocated memory to release
 
-    setLivingQuarter(this); //add most living quarter details
+//sets the door way for living quarters 1
+void DecLQ :: setLQ1(){
 
-    //add the door way
-    for (int i=-1; i<=1; i+=2){
-        b2PolygonShape* shape = new b2PolygonShape;
+    for (int i=-1; i<=1; i+=2){ //adds the frame of the doorway symetrically
+
+        float mirror = (float) i;
+        b2PolygonShape shape;
         b2Vec2 points[8];
-        points[0].Set(0.0f, 3.75f + 1.5f);
-        points[1].Set(0.8f * ((float) i), 3.75f + 1.25f);
-        points[2].Set(0.7f * ((float) i), 3.75f + 0.85f);
-        points[3].Set(0.0f, 3.75f + 1.0f);
-        shape->Set(points, 4);
+        points[0].Set(0.0f, 5.25f); //top section
+        points[1].Set(0.8f * mirror, 5.0f);
+        points[2].Set(0.7f * mirror, 4.6f);
+        points[3].Set(0.0f, 4.75f);
+        shape.Set(points, 4);
         addDetail(shape);
 
-        shape = new b2PolygonShape;
-        points[0].Set(0.8f * ((float) i), 3.75f + 1.25f);
-        points[1].Set(0.7f * ((float) i), 3.75f + 0.85f);
-        points[2].Set(0.85f * ((float) i), 3.75f + 0.7f);
-        points[3].Set(1.25f * ((float) i), 3.75f + 0.8f);
-        shape->Set(points, 4);
+        points[0].Set(0.8f * mirror, 5.0f); //middle section
+        points[1].Set(0.7f * mirror, 4.60f);
+        points[2].Set(0.85f * mirror, 4.45f);
+        points[3].Set(1.25f * mirror, 4.55f);
+        shape.Set(points, 4);
         addDetail(shape);
 
-        shape = new b2PolygonShape;
-        points[0].Set(0.85f * ((float) i), 3.75f + 0.7f);
-        points[1].Set(1.25f * ((float) i), 3.75f + 0.8f);
-        points[2].Set(1.5f * ((float) i), 3.75f + 0.0f);
-        points[3].Set(1.05f * ((float) i), 3.75f + 0.0f);
-        shape->Set(points, 4);
+        points[0].Set(0.85f * mirror, 4.45f); //bottom section
+        points[1].Set(1.25f * mirror, 4.55f);
+        points[2].Set(1.5f * mirror, 3.75f);
+        points[3].Set(1.05f * mirror, 3.75f);
+        shape.Set(points, 4);
         addDetail(shape);
 
-        shape = new b2PolygonShape;
-        points[0].Set(1.5f * ((float) i), 3.75f + 0.0f);
-        points[1].Set(1.05f * ((float) i), 3.75f + 0.0f);
-        points[2].Set(1.0f * ((float) i), 0.0f);
-        points[3].Set(1.5f * ((float) i), 0.0f);
-        shape->Set(points, 4);
+        points[0].Set(1.5f * mirror, 3.75f); //remaining vertical bars
+        points[1].Set(1.05f * mirror, 3.75f);
+        points[2].Set(1.0f * mirror, 0.0f);
+        points[3].Set(1.5f * mirror, 0.0f);
+        shape.Set(points, 4);
         addDetail(shape);
     }
-    addBase(baseLevel, b2Vec2(4.25f, -4.25f));
 }
 
-//adds details unique to living quarters 2
-void Decoration :: setLQ2(float baseLevel){
+//sets the door way for living quarters 2
+void DecLQ :: setLQ2(){
 
-    setLivingQuarter(this); //add most living quarter details
-
-    //add the door way
-    for (int i=-1; i<=1; i+=2){
-        b2PolygonShape* shape = new b2PolygonShape;
+    for (int i=-1; i<=1; i+=2){ //adds each doorway bar symetrically
+        float mirror = (float) i;
+        b2PolygonShape shape;
         b2Vec2 points[8];
-        points[0].Set(1.5f * ((float) i), 6.5f);
-        points[1].Set(1.05f * ((float) i), 6.5f);
-        points[2].Set(1.05f * ((float) i), 0.0f);
-        points[3].Set(1.5f * ((float) i), 0.0f);
-        shape->Set(points, 4);
+        points[0].Set(1.5f * mirror, 6.5f);
+        points[1].Set(1.05f * mirror, 6.5f);
+        points[2].Set(1.05f * mirror, 0.0f);
+        points[3].Set(1.5f * mirror, 0.0f);
+        shape.Set(points, 4);
         addDetail(shape);
     }
-    addBase(baseLevel, b2Vec2(4.25f, -4.25f));
 }
+
+/*
+//sets the details that exist in both living quarters decorations
+
+
 
 //adds a connector that maps onto the dome backing shape
 void setTunnelToDome(Decoration* dec, float mirror){
@@ -237,3 +233,5 @@ void Decoration :: setTunnel3(float baseLevel){
     setTunnelToDome(this, -1.0f);
     setTunnel1(baseLevel);
 }
+
+*/

@@ -76,6 +76,8 @@ void Chunk :: drawBackDecs(Camera* camera){
     //cycle through and draw all background decorations
     if (backDecs.resetCycle()){
         do {
+            //Decoration* ptr = backDecs.cycle->obj;
+            //ptr->draw(camera);
             backDecs.cycle->obj->draw(camera);
         } while(backDecs.cycleUp());
     }
@@ -138,13 +140,21 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
 }
 
 //adds a decoration compensating for base height
-void Chunk :: addDecoration(int id, b2Vec2 decPos, float* ptrColour, float lowest, LinkedList<Decoration>* ptr, float ang, b2Vec2 mag){
+void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, float* ptrColour){
 
     b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
     lowest -= decPos.y; //work out the shift difference between the chunks lowest point and the decorations position relative the the chunk
     relPos += decPos; //adjust decorations position to map to the world rather than to the chunk
 
-    ptr->addEnd(new Decoration(id, relPos, ptrColour, lowest, ang, mag)); //add new decoration to the chunk
+    Decoration* dec;
+    switch(id){
+        case DEC_CODE_DOME_1 :
+        case DEC_CODE_DOME_2 : {dec = new DecDome(id, relPos, lowest, ptrColour); break;}
+        case DEC_CODE_LQ_1 :
+        case DEC_CODE_LQ_2 : {dec = new DecLQ(id, relPos, lowest, ptrColour); break;}
+        default : {dec = new DecDefault(id, relPos, lowest, ptrColour);}
+    }
+    ptr->addEnd(dec); //add new decoration to the chunk
 
 }
 
@@ -195,8 +205,12 @@ void Chunk :: defSegmentStart(){
 
 
     //TEMP TESTING
+    float c[4] = COLOUR_LAVA_4;
+    addBackDec(69, b2Vec2(-8.0f, 8.0f), lowest);
+    addBackDec(DEC_CODE_LQ_1, b2Vec2(10.0f, 8.0f), lowest);
+    addBackDec(DEC_CODE_LQ_2, b2Vec2(0.0f, 2.0f), lowest);
 
-
+    /*
     //add back ground base
     float c[4]; //used to keep consistent colouring
     //random chance how the base will look
@@ -223,7 +237,7 @@ void Chunk :: defSegmentStart(){
     }
 
     //addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
-    addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest);
+    addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest); */
 
 
 }

@@ -26,6 +26,8 @@ SOFTWARE.
 
 #include "decoration.h"
 
+/*
+
 //sets the number on the side of the tank randomly between 0 and 9
 void setTankNumber(Decoration* dec){
     //number on tank
@@ -197,3 +199,4 @@ void Decoration :: setTank2(float baseLevel){
     }
     addBase(baseLevel, b2Vec2(-3.75f, 3.75f));
 }
+*/

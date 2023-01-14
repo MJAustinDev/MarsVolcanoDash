@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include "decoration.h"
 
+/*
 //sets out ship shape relative to rotation and scale
 void setShipShape(Decoration* dec, float ang, b2Vec2 mag){
 
@@ -134,9 +135,7 @@ void Decoration :: setShip1(float baseLevel, float ang, b2Vec2 mag){
     setShipShape(this, ang, mag);
 
 }
-
-
-
+*/
 
 
 

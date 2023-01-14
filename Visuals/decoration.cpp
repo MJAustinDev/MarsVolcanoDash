@@ -27,7 +27,7 @@ SOFTWARE.
 #include <decoration.h>
 
 //constructor
-Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel, float ang, b2Vec2 mag){
+Decoration :: Decoration(b2Vec2 pos, float* ptrColour){
 
         this->pos = pos; //set position
 
@@ -42,36 +42,6 @@ Decoration :: Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel, 
         }
         for (int i=0;i<4;i++){
             colour[i] = ptrColour[i];
-        }
-
-        //set decoration's shapes and textures based on id
-        switch(id){
-            case DEC_CODE_DOME_1 : {setDome1(baseLevel); break;}
-            case DEC_CODE_DOME_2 : {setDome2(baseLevel); break;}
-
-            case DEC_CODE_LQ_1 : {setLQ1(baseLevel); break;}
-            case DEC_CODE_LQ_2 : {setLQ2(baseLevel); break;}
-            case DEC_CODE_TUNNEL_1 : {setTunnel1(baseLevel); break;}
-            case DEC_CODE_TUNNEL_2 : {setTunnel2(baseLevel); break;}
-            case DEC_CODE_TUNNEL_3 : {setTunnel3(baseLevel); break;}
-
-            case DEC_CODE_TANK_1 : {setTank1(baseLevel); break;}
-            case DEC_CODE_TANK_2 : {setTank2(baseLevel); break;}
-
-            //case DEC_CODE_PANEL_1 : {setPanel1(baseLevel); break;}
-
-            case DEC_CODE_DRILL_1 : {setDrill1(baseLevel); break;}
-            case DEC_CODE_DRILL_2 : {setDrill2(baseLevel); break;}
-
-            case DEC_CODE_ARCH_1 : {setArch1(baseLevel); break;}
-            case DEC_CODE_ARCH_2 : {setArch2(baseLevel); break;}
-            case DEC_CODE_ARCH_3 : {setArch3(baseLevel); break;}
-            case DEC_CODE_ARCH_4 : {setArch4(baseLevel); break;}
-            case DEC_CODE_ARCH_5 : {setArch5(baseLevel); break;}
-
-            case DEC_CODE_SHIP_1 : {setShip1(baseLevel, ang, mag); break;}
-
-            default : {setDefault(baseLevel);}
         }
 }
 
@@ -118,69 +88,52 @@ void Decoration :: draw(Camera* camera){
     }
 }
 
+//Default decoration design, not meant to be used in finished game
+DecDefault :: DecDefault(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decoration(pos, ptrColour){
 
-
-//set default decoration (currently just test asset, wont be used in final game)
-void Decoration :: setDefault(float baseLevel){
-
-    b2PolygonShape* shape = new b2PolygonShape;
+    b2PolygonShape shape;
     b2Vec2 points[8];
-    points[0].Set(-3.5f, 0.0f);
+    points[0].Set(-3.5f, 0.0f); //base quad
     points[1].Set(3.5f, 0.0f);
     points[2].Set(3.0f, 3.5f);
     points[3].Set(-3.0f, 3.5f);
-    shape->Set(points, 4);
+    shape.Set(points, 4);
     addShape(shape);
-    shape = nullptr;
 
-    shape = new b2PolygonShape;
-    points[0].Set(-3.0f, 3.5f);
+    points[0].Set(-3.0f, 3.5f); //main rectangle
     points[1].Set(3.0f, 3.5f);
     points[2].Set(3.0f, 16.5f);
     points[3].Set(-3.0f, 16.5f);
-    shape->Set(points, 4);
+    shape.Set(points, 4);
     addShape(shape);
-    shape = nullptr;
 
-    shape = new b2PolygonShape;
-    points[0].Set(-3.0f, 16.5f);
+    points[0].Set(-3.0f, 16.5f); //top triangle
     points[1].Set(3.0f, 16.5f);
     points[2].Set(2.0f, 18.0f);
-    shape->Set(points, 3);
+    shape.Set(points, 3);
     addShape(shape);
-    shape = nullptr;
 
-    //adds a number 7 to it
     b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
-    b2PolygonShape tShape;
-    points[0].Set(-2.5f, 4.0f);
+    points[0].Set(-2.5f, 4.0f); //add a random number on to it
     points[1].Set(2.5f, 4.0f);
     points[2].Set(2.5f, 12.0f);
     points[3].Set(-2.5f, 12.0f);
-    tShape.Set(points, 4);
-    addTexture(18, tCoords, tShape);
+    shape.Set(points, 4);
+    addTexture(randText0to9(), tCoords, shape);
 
-    //add a detail to the shape
-    shape = new b2PolygonShape;
-    points[0].Set(-3.0f, 16.5f);
+    points[0].Set(-3.0f, 16.5f); //add left slope of roof
     points[1].Set(-3.0f, 16.0f);
     points[2].Set(2.0f, 17.5f);
     points[3].Set(2.0f, 18.0f);
-    shape->Set(points, 4);
-    addShape(shape);
-    shape = nullptr;
+    shape.Set(points, 4);
+    addDetail(shape);
 
-    //add another detail to complete a roof
-    shape = new b2PolygonShape;
-    points[0].Set(2.0f, 18.0f);
+    points[0].Set(2.0f, 18.0f); //add right slope of roof
     points[1].Set(2.0f, 17.5f);
     points[2].Set(3.0f, 16.0f);
     points[3].Set(3.0f, 16.5f);
-    shape->Set(points, 4);
-    addShape(shape);
-    shape = nullptr;
+    shape.Set(points, 4);
+    addDetail(shape);
 
     addBase(baseLevel, b2Vec2(-3.5f, 3.5f));
-
 }
-

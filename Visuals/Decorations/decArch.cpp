@@ -27,7 +27,7 @@ SOFTWARE.
 #include "decoration.h"
 
 
-
+/*
 //sets details and shape for a side of an arch
 void setArchPole(Decoration* dec, float mirror){
 
@@ -203,3 +203,4 @@ void Decoration :: setArch5(float baseLevel){
     setBrokeArch(this, 1.0f); //rightward broken arch
     addBase(baseLevel, b2Vec2(-6.0f, -5.0f));
 }
+*/

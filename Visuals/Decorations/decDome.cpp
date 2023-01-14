@@ -26,9 +26,11 @@ SOFTWARE.
 
 #include "decoration.h"
 
-//set shape to the backing that both domes share
-void setDome(b2PolygonShape* shape){
+//constructor for dome's 1 and 2
+DecDome :: DecDome(int id, b2Vec2 pos, float baseLevel, float* ptrColour) : Decoration(pos, ptrColour) {
 
+    //set shape to the backing that both domes share
+    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(-4.0f, 0.0f);
     points[1].Set(4.0f, 0.0f);
@@ -36,139 +38,84 @@ void setDome(b2PolygonShape* shape){
     points[3].Set(1.5f, 7.0f);
     points[4].Set(-1.5f, 7.0f);
     points[5].Set(-3.5f, 4.25f);
-    shape->Set(points, 6);
+    shape.Set(points, 6);
+    addShape(shape);
+
+    switch(id){
+        case DEC_CODE_DOME_1 : {setDome1(); break;}
+        case DEC_CODE_DOME_2 : {setDome2(); break;}
+        default : {} //no details by default
+    }
+    addBase(baseLevel, b2Vec2(-4.0f, 4.0f));
+
 }
 
-//dome 1 top centre triangle
-void setTri0(b2PolygonShape* shape){
+DecDome :: ~DecDome(){} //no extra dynamic memory to deallocate
+
+//set window details specific to dome 1
+void DecDome :: setDome1(){
+
+    b2PolygonShape shape;
     b2Vec2 points[8];
-    points[0].Set(0.0f, 4.25f);
+    points[0].Set(0.0f, 4.25f); //centre top triangle shape
     points[1].Set(1.25f, 6.75f);
     points[2].Set(-1.25f, 6.75f);
-    shape->Set(points, 3);
-}
+    shape.Set(points, 3);
+    addDetail(shape);
 
-//dome 1 top outer triangle
-void setTri1(b2PolygonShape* shape, float mirror){
-    b2Vec2 points[8];
-    points[0].Set(3.25f * mirror, 4.25f);
-    points[1].Set(0.25f * mirror, 4.25f);
-    points[2].Set(1.5f * mirror, 6.75f);
-    shape->Set(points, 3);
-}
-
-//dome 1 bottom outer triangle
-void setTri2(b2PolygonShape* shape, float mirror){
-    b2Vec2 points[8];
-    points[0].Set(3.75f * mirror, 0.25f);
-    points[1].Set(1.25f * mirror, 0.25f);
-    points[2].Set(3.25f * mirror, 4.0f);
-    shape->Set(points, 3);
-}
-
-//dome 1 bottom upside down triangle
-void setTri3(b2PolygonShape* shape, float mirror){
-    b2Vec2 points[8];
-    points[0].Set(1.0f * mirror, 0.25f);
-    points[1].Set(0.25f * mirror, 4.0f);
-    points[2].Set(3.0f * mirror, 4.0f);
-    shape->Set(points, 3);
-}
-
-//dome 1 bottom centre triangle
-void setTri4(b2PolygonShape* shape){
-    b2Vec2 points[8];
-    points[0].Set(0.0f, 4.0f);
+    points[0].Set(0.0f, 4.0f); //bottom centre triangle
     points[1].Set(0.75, 0.25f);
     points[2].Set(-0.75, 0.25f);
-    shape->Set(points, 3);
+    shape.Set(points, 3);
+    addDetail(shape);
+
+    for (int i=-1; i<=1; i+=2){
+        float mirror = (float) i;
+        points[0].Set(3.25f * mirror, 4.25f); //dome 1 top outer triangle
+        points[1].Set(0.25f * mirror, 4.25f);
+        points[2].Set(1.5f * mirror, 6.75f);
+        shape.Set(points, 3);
+        addDetail(shape);
+
+        points[0].Set(3.75f * mirror, 0.25f); //dome 1 bottom outer triangle
+        points[1].Set(1.25f * mirror, 0.25f);
+        points[2].Set(3.25f * mirror, 4.0f);
+        shape.Set(points, 3);
+        addDetail(shape);
+
+        points[0].Set(1.0f * mirror, 0.25f); //dome 1 bottom upside down triangle
+        points[1].Set(0.25f * mirror, 4.0f);
+        points[2].Set(3.0f * mirror, 4.0f);
+        shape.Set(points, 3);
+        addDetail(shape);
+    }
 }
 
-//dome 2 main square panel
-void setSquare(b2PolygonShape* shape){
+//set window details specific to dome 2
+void DecDome :: setDome2(){
+
+    b2PolygonShape shape;
     b2Vec2 points[8];
-    points[0].Set(-1.25f, 6.75f);
+    points[0].Set(-1.25f, 6.75f); //dome 2 main square panel
     points[1].Set(-1.25f, 0.25f);
     points[2].Set(1.25f, 0.25f);
     points[3].Set(1.25f, 6.75f);
-    shape->Set(points, 4);
-}
-
-//dome 2 outer triangle
-void setTri5(b2PolygonShape* shape, float mirror){
-    b2Vec2 points[8];
-    points[0].Set(3.75f * mirror, 0.25f);
-    points[1].Set(1.75f * mirror, 0.25f);
-    points[2].Set(3.3f * mirror, 4.05f);
-    shape->Set(points, 3);
-}
-
-//dome 2 inner triangle
-void setTri6(b2PolygonShape* shape, float mirror){
-    b2Vec2 points[8];
-    points[0].Set(1.5f * mirror, 0.25f);
-    points[1].Set(1.5f * mirror, 6.75f);
-    points[2].Set(3.25f * mirror, 4.3f);
-    shape->Set(points, 3);
-}
-
-//set details unique to dome 1
-void Decoration :: setDome1(float baseLevel){
-
-    //dome backing shape
-    b2PolygonShape* shape = new b2PolygonShape;
-    setDome(shape);
-    addShape(shape);
-
-    //centre two triangles
-    shape = new b2PolygonShape;
-    setTri0(shape);
-    addDetail(shape);
-    shape = new b2PolygonShape;
-    setTri4(shape);
+    shape.Set(points, 4);
     addDetail(shape);
 
-    //draw all symmetrical triangles
-    for (int i=-1; i<=1; i+=2){ //-1 to 1 inclusive
-        shape = new b2PolygonShape;
-        setTri1(shape,(float)i);
+    for (int i=-1; i<=1; i+=2){
+        float mirror = (float) i;
+        points[0].Set(3.75f * mirror, 0.25f); //dome 2 outer triangle
+        points[1].Set(1.75f * mirror, 0.25f);
+        points[2].Set(3.3f * mirror, 4.05f);
+        shape.Set(points, 3);
         addDetail(shape);
 
-        shape = new b2PolygonShape;
-        setTri2(shape, (float)i);
+        points[0].Set(1.5f * mirror, 0.25f); //dome 2 inner triangle
+        points[1].Set(1.5f * mirror, 6.75f);
+        points[2].Set(3.25f * mirror, 4.3f);
+        shape.Set(points, 3);
         addDetail(shape);
 
-        shape = new b2PolygonShape;
-        setTri3(shape, (float)i);
-        addDetail(shape);
     }
-
-    addBase(baseLevel, b2Vec2(-4.0f, 4.0f));
-}
-
-//set details unique to dome 2
-void Decoration :: setDome2(float baseLevel){
-
-    //dome backing shape
-    b2PolygonShape* shape = new b2PolygonShape;
-    setDome(shape);
-    addShape(shape);
-
-    //centre two triangles
-    shape = new b2PolygonShape;
-    setSquare(shape);
-    addDetail(shape);
-
-    //draw all symmetrical triangles
-    for (int i=-1; i<=1; i+=2){ //-1 to 1 inclusive
-        shape = new b2PolygonShape;
-        setTri5(shape,(float)i);
-        addDetail(shape);
-
-        shape = new b2PolygonShape;
-        setTri6(shape, (float)i);
-        addDetail(shape);
-    }
-
-    addBase(baseLevel, b2Vec2(-4.0f, 4.0f));
 }

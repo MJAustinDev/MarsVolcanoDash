@@ -44,7 +44,7 @@ inline void transformDecPoints(b2Vec2* points, int num, float ang = 0.0f, b2Vec2
             float s = sin(ang);
             points[i].Set((points[i].x * c) - (points[i].y * s), (points[i].y * c) + (points[i].x * s));
         }
-    }
+        }
 
     //scale (and mirror if scale is negative)
     if (mag != b2Vec2(1.0f, 1.0f)){
@@ -93,6 +93,7 @@ private:
     //list of textures to add over if needed
     LinkedList<TextShape> tShapes;
 
+    /*
     //add new set id methods
     void setDefault(float baseLevel);
     void setDome1(float baseLevel);
@@ -114,12 +115,14 @@ private:
     void setArch5(float baseLevel);
     void setShip1(float baseLevel, float ang, b2Vec2 mag);
 
+    */
+
 public:
 
-    Decoration(int id, b2Vec2 pos, float* ptrColour, float baseLevel, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f));
+    Decoration(b2Vec2 pos, float* ptrColour);
     ~Decoration();
 
-    void draw(Camera* camera);
+    virtual void draw(Camera* camera);
 
     //sets pasted pointer to the values of this decorations colour (used to keep continuity between 'attached' decorations)
     void getColour(float* ptrRet){
@@ -129,13 +132,13 @@ public:
     }
 
     //adds shape to the linked list assume (0, 0) is the very top centre of the base
-    void addShape(b2PolygonShape* shape){
-        shapes.addEnd(shape);
+    void addShape(b2PolygonShape shape){
+        shapes.addEnd( new b2PolygonShape(shape));
     };
 
     //adds an on top detail
-    void addDetail(b2PolygonShape* detail){
-        details.addEnd(detail);
+    void addDetail(b2PolygonShape detail){
+        details.addEnd(new b2PolygonShape(detail));
     };
 
     // add new texture
@@ -150,16 +153,14 @@ public:
 
         //if base has some space
         if (baseLevel < 0.0f && sides.x != sides.y){
-        //if (baseLevel != 0.0f && sides.x != sides.y){
             b2Vec2 points[8];
             points[0].Set(sides.x, 0.0f);
             points[1].Set(sides.x, baseLevel);
             points[2].Set(sides.y, baseLevel);
             points[3].Set(sides.y, 0.0f);
-            b2PolygonShape* base = new b2PolygonShape;
-            base->Set(points, 4);
+            b2PolygonShape base;
+            base.Set(points, 4);
             addShape(base);
-            base = nullptr;
             hasBase = true;
         }
     };
@@ -174,5 +175,60 @@ public:
 
 };
 
+//default decoration (invalid id)
+class DecDefault : public Decoration {
+
+public:
+    DecDefault(int id, b2Vec2 pos, float baseLevel, float* ptrColour);
+    ~DecDefault();
+
+};
+
+//dome decoration (uses default draw method)
+class DecDome : public Decoration {
+
+public:
+    DecDome(int id, b2Vec2 pos, float baseLevel, float* ptrColour);
+    ~DecDome();
+
+private:
+    void setDome1();
+    void setDome2();
+
+};
+
+//living quarters (uses default draw method)
+class DecLQ : public Decoration {
+
+public:
+    DecLQ(int id, b2Vec2 pos, float baseLevel, float* ptrColour);
+    ~DecLQ();
+
+private:
+    void setLQ1();
+    void setLQ2();
+
+};
+
+
+/*
+
+void setLQ1(float baseLevel);
+void setLQ2(float baseLevel);
+void setTunnel1(float baseLevel);
+void setTunnel2(float baseLevel);
+void setTunnel3(float baseLevel);
+void setTank1(float baseLevel);
+void setTank2(float baseLevel);
+//void setPanel1(float baseLevel);
+void setDrill1(float baseLevel);
+void setDrill2(float baseLevel);
+void setArch1(float baseLevel);
+void setArch2(float baseLevel);
+void setArch3(float baseLevel);
+void setArch4(float baseLevel);
+void setArch5(float baseLevel);
+void setShip1(float baseLevel, float ang, b2Vec2 mag);
+*/
 
 #endif

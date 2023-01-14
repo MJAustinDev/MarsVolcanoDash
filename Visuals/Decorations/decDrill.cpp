@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include "decoration.h"
 
+/*
 //sets gridded crate
 void setCrate(Decoration* dec, float mirror, b2Vec2 mag, b2Vec2 shift){
     if (mirror == 0.0f || mag.x == 0.0f || mag.y == 0.0f){
@@ -199,4 +200,4 @@ void Decoration :: setDrill2(float baseLevel){
 
 }
 
-
+*/
