@@ -144,7 +144,7 @@ public:
 class DecDefault : public Decoration {
 
 public:
-    DecDefault(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
+    DecDefault(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
     ~DecDefault();
 
 };
@@ -153,7 +153,7 @@ public:
 class DecDome : public Decoration {
 
 public:
-    DecDome(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
+    DecDome(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
     ~DecDome();
 
 private:
@@ -166,7 +166,7 @@ private:
 class DecLQ : public Decoration {
 
 public:
-    DecLQ(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
+    DecLQ(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
     ~DecLQ();
 
 private:
@@ -179,11 +179,32 @@ private:
 class DecTunnel : public Decoration {
 
 public:
-    DecTunnel(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour = nullptr);
+    DecTunnel(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
     ~DecTunnel();
 
 private:
     void setTunnelToDome(float mirror);
+
+};
+
+//gas tank (uses custom draw method)
+class DecTank : public Decoration {
+
+public :
+    DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
+    ~DecTank();
+
+    void draw(Camera* camera); //TODO -- HAVE MOVING BACKGROUND FLAMES FOR BROKEN TANKER
+
+private:
+    void setTankBacking(float height);
+    void setTankRidge(float shift);
+    void setLadderPoles(float height);
+    void setLadderBars(int num);
+    void setBrokenShards(float mirror);
+    void setFlames(); //TODO
+
+    //TODO -- STORE REFERENCE FOR DRAWING BACKGROUND FLAMES IN LINKED LIST
 
 };
 

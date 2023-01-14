@@ -155,6 +155,8 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
         case DEC_CODE_TUNNEL_1 :
         case DEC_CODE_TUNNEL_2 :
         case DEC_CODE_TUNNEL_3 : {dec = new DecTunnel(id, relPos, lowest, hasBase, ptrColour); break;}
+        case DEC_CODE_TANK_1 :
+        case DEC_CODE_TANK_2 : {dec = new DecTank(id, relPos, lowest, hasBase, ptrColour); break;}
         default : {dec = new DecDefault(id, relPos, lowest, hasBase, ptrColour);}
     }
     ptr->addEnd(dec); //add new decoration to the chunk
