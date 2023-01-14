@@ -64,36 +64,12 @@ private:
     void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
 
     void addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, bool hasBase, float* ptrColour);
-    void addBackDec(int id, b2Vec2 decPos, float lowest, bool hasBase = true,  float* ptrColour = nullptr){addDecoration(&backDecs, id, decPos, lowest, hasBase, ptrColour);}
-    void addForeDec(int id, b2Vec2 decPos,  float lowest, bool hasBase = true, float* ptrColour = nullptr){addDecoration(&foreDecs, id, decPos, lowest, hasBase, ptrColour);}
-
-    /*
-    void addDecoration(int id, b2Vec2 decPos, float* ptrColour, float lowest, LinkedList<Decoration>* ptr, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f)); //adds a decoration compensating for base drop
-    //add decoration to foreground
-    void addForeDec(int id, b2Vec2 decPos, float* ptrColour, float lowest, bool remBase = false, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f)){
-        addDecoration(id, decPos, ptrColour, lowest, &foreDecs, ang, mag);
-        if (remBase){
-            foreDecs.last->obj->remBase();
-        }
-    };
-    //add decoration to background
-    void addBackDec(int id, b2Vec2 decPos, float* ptrColour, float lowest, bool remBase = false, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f)){
-        addDecoration(id, decPos, ptrColour, lowest, &backDecs, ang, mag);
-        if (remBase){
-            backDecs.last->obj->remBase();
-        }
-    };
-    //add decorations with rand orange or purple
-    void addForeDec(int id, b2Vec2 decPos, float lowest){addBackDec(id, decPos, nullptr, lowest);};
-    void addBackDec(int id, b2Vec2 decPos, float lowest){addBackDec(id, decPos, nullptr, lowest);};
-
-    void addForeDec(int id, b2Vec2 decPos, float lowest, float ang, b2Vec2 mag){addBackDec(id, decPos, nullptr, lowest, false, ang, mag);};
-    void addBackDec(int id, b2Vec2 decPos, float lowest, float ang, b2Vec2 mag){addBackDec(id, decPos, nullptr, lowest, false, ang, mag);};
-
-    void addForeDec(int id, b2Vec2 decPos, float lowest, bool remBase){addBackDec(id, decPos, nullptr, lowest, remBase);};
-    void addBackDec(int id, b2Vec2 decPos, float lowest, bool remBase){addBackDec(id, decPos, nullptr, lowest, remBase);};
-    */
-
+    void addBackDec(int id, b2Vec2 decPos, float lowest, bool hasBase = true,  float* ptrColour = nullptr){
+        addDecoration(&backDecs, id, decPos, lowest, hasBase, ptrColour);
+    }
+    void addForeDec(int id, b2Vec2 decPos,  float lowest, bool hasBase = true, float* ptrColour = nullptr){
+        addDecoration(&foreDecs, id, decPos, lowest, hasBase, ptrColour);
+    }
 
     b2World* world;
     b2Body* body;

@@ -29,21 +29,18 @@ SOFTWARE.
 //constructor for the tunnel decoration
 DecTunnel :: DecTunnel(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour) {
 
-    b2PolygonShape shape; //main tunnel shape
     b2Vec2 points[8];
-    points[0].Set(-8.0f, 5.5f);
+    points[0].Set(-8.0f, 5.5f); //main tunnel shape
     points[1].Set(8.0f, 5.5f);
     points[2].Set(8.0f, 1.5f);
     points[3].Set(-8.0f, 1.5f);
-    shape.Set(points, 4);
-    addShape(shape);
+    addShape(points, 4);
 
     points[0].Set(-7.25f, 4.75f); //tunnel window
     points[1].Set(7.25f, 4.75f);
     points[2].Set(7.25f, 4.25f);
     points[3].Set(-7.25f, 4.25f);
-    shape.Set(points, 4);
-    addDetail(shape);
+    addDetail(points, 4);
 
     for (int i=0; i<=1; i++){ //edge ridges
         float shift = ((float) i) * 16.25f;
@@ -51,8 +48,7 @@ DecTunnel :: DecTunnel(int id, b2Vec2 pos, float baseLevel, bool hasBase, float*
         points[1].Set(-8.0f + shift, 5.75f);
         points[2].Set(-8.0f + shift, 1.25f);
         points[3].Set(-8.25f + shift, 1.25f);
-        shape.Set(points, 4);
-        addDetail(shape);
+        addDetail(points, 4);
     }
 
     switch(id){
@@ -68,8 +64,7 @@ DecTunnel :: DecTunnel(int id, b2Vec2 pos, float baseLevel, bool hasBase, float*
             points[1].Set(7.0f * mirror, 1.5f);
             points[2].Set(7.25f * mirror, 0.0f);
             points[3].Set(8.0f * mirror, 0.0f);
-            shape.Set(points, 4);
-            addShape(shape);
+            addShape(points, 4);
         }
         addBase(baseLevel, b2Vec2(-8.0f, -7.25f)); //add base on left
         addBase(baseLevel, b2Vec2(7.25f, 8.0f)); //add base on right
@@ -81,18 +76,15 @@ DecTunnel :: ~DecTunnel(){} //no extra dynamic memory to deallocate
 
 //adds a connector shape that fits between the tunnel and a dome
 void DecTunnel :: setTunnelToDome(float mirror){
-    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(8.0f * mirror, 5.5f); //quad between tunnel and dome
     points[1].Set(8.0f * mirror, 1.5f);
     points[2].Set(8.4f * mirror, 1.25f);
     points[3].Set(8.75f * mirror, 4.25f);
-    shape.Set(points, 4);
-    addShape(shape);
+    addShape(points, 4);
 
     points[0].Set(8.0f * mirror, 5.5f); //final triangle on top of the connector quad
     points[1].Set(8.75f * mirror, 4.25f);
     points[2].Set(9.85f * mirror, 5.75f);
-    shape.Set(points, 3);
-    addShape(shape);
+    addShape(points, 3);
 }

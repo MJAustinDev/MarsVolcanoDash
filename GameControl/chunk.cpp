@@ -157,6 +157,11 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
         case DEC_CODE_TUNNEL_3 : {dec = new DecTunnel(id, relPos, lowest, hasBase, ptrColour); break;}
         case DEC_CODE_TANK_1 :
         case DEC_CODE_TANK_2 : {dec = new DecTank(id, relPos, lowest, hasBase, ptrColour); break;}
+        case DEC_CODE_ARCH_1 :
+        case DEC_CODE_ARCH_2 :
+        case DEC_CODE_ARCH_3 :
+        case DEC_CODE_ARCH_4 :
+        case DEC_CODE_ARCH_5 : {dec = new DecArch(id, relPos, lowest, hasBase, ptrColour); break;}
         default : {dec = new DecDefault(id, relPos, lowest, hasBase, ptrColour);}
     }
     ptr->addEnd(dec); //add new decoration to the chunk
@@ -235,8 +240,7 @@ void Chunk :: defSegmentStart(){
     }
 
     //addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
-    //addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest); */
-
+    //addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest);
 
 }
 

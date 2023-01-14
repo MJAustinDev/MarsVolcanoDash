@@ -80,17 +80,25 @@ private:
         b2Vec2 tCoords[4]; //texture sheet coordinates
         b2PolygonShape shape; //texture world coordinates
 
-        TextShape(unsigned int id, b2Vec2 tCoords[4], b2PolygonShape shape){
+        TextShape(unsigned int id, b2Vec2 tCoords[4], b2Vec2 points[8], int num){
             this->id = id;
             for (int i=0; i<4; i++){
                 this->tCoords[i] = tCoords[i];
             }
-            this->shape = shape;
+            this->shape.Set(points, num);
         }
     };
 
     //list of textures to add over if needed
     LinkedList<TextShape> tShapes;
+
+    //adds a b2PolygonShape to the passed linked list
+    void addTo(LinkedList<b2PolygonShape>* store, b2Vec2 points[8], int num){
+        b2PolygonShape* ptr = new b2PolygonShape; //dynamically allocate memory for shape
+        ptr->Set(points, num); //set shape
+        store->addEnd(ptr); //store shape
+        ptr = nullptr; //clear pointer for sake of completeness
+    }
 
 public:
 
@@ -107,19 +115,15 @@ public:
     }
 
     //adds shape to the linked list assume (0, 0) is the very top centre of the base
-    void addShape(b2PolygonShape shape){
-        shapes.addEnd( new b2PolygonShape(shape));
-    };
+    void addShape(b2Vec2 points[8], int num){addTo(&shapes, points, num);};
 
     //adds an on top detail
-    void addDetail(b2PolygonShape detail){
-        details.addEnd(new b2PolygonShape(detail));
-    };
+    void addDetail(b2Vec2 points[8], int num){addTo(&details, points, num);}
 
     // add new texture
-    void addTexture(unsigned int id, b2Vec2 tCoords[4], b2PolygonShape shape){
-        if ((id != (unsigned int)-1) && (shape.m_count == 4)){ //make sure input is valid
-            tShapes.addEnd(new TextShape(id, tCoords, shape));
+    void addTexture(unsigned int id, b2Vec2 tCoords[4], b2Vec2 points[8], int num){
+        if ((id != (unsigned int)-1) && (num == 4)){ //make sure input is valid
+            tShapes.addEnd(new TextShape(id, tCoords, points, num));
         }
     };
 
@@ -133,9 +137,7 @@ public:
             points[1].Set(sides.x, baseLevel);
             points[2].Set(sides.y, baseLevel);
             points[3].Set(sides.y, 0.0f);
-            b2PolygonShape base;
-            base.Set(points, 4);
-            addShape(base);
+            addShape(points, 4);
         }
     };
 };
@@ -205,6 +207,19 @@ private:
     void setFlames(); //TODO
 
     //TODO -- STORE REFERENCE FOR DRAWING BACKGROUND FLAMES IN LINKED LIST
+
+};
+
+class DecArch : public Decoration {
+
+public:
+    DecArch(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
+    ~DecArch();
+
+private:
+    void setArchPole(float mirror);
+    void setArchStart(float mirror);
+    void setArchEnd(float mirror);
 
 };
 

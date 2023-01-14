@@ -91,49 +91,42 @@ void Decoration :: draw(Camera* camera){
 //Default decoration design, not meant to be used in finished game
 DecDefault :: DecDefault(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour){
 
-    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(-3.5f, 0.0f); //base quad
     points[1].Set(3.5f, 0.0f);
     points[2].Set(3.0f, 3.5f);
     points[3].Set(-3.0f, 3.5f);
-    shape.Set(points, 4);
-    addShape(shape);
+    addShape(points, 4);
 
     points[0].Set(-3.0f, 3.5f); //main rectangle
     points[1].Set(3.0f, 3.5f);
     points[2].Set(3.0f, 16.5f);
     points[3].Set(-3.0f, 16.5f);
-    shape.Set(points, 4);
-    addShape(shape);
+    addShape(points, 4);
 
     points[0].Set(-3.0f, 16.5f); //top triangle
     points[1].Set(3.0f, 16.5f);
     points[2].Set(2.0f, 18.0f);
-    shape.Set(points, 3);
-    addShape(shape);
+    addShape(points, 3);
 
     b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
     points[0].Set(-2.5f, 4.0f); //add a random number on to it
     points[1].Set(2.5f, 4.0f);
     points[2].Set(2.5f, 12.0f);
     points[3].Set(-2.5f, 12.0f);
-    shape.Set(points, 4);
-    addTexture(randText0to9(), tCoords, shape);
+    addTexture(randText0to9(), tCoords, points, 4);
 
     points[0].Set(-3.0f, 16.5f); //add left slope of roof
     points[1].Set(-3.0f, 16.0f);
     points[2].Set(2.0f, 17.5f);
     points[3].Set(2.0f, 18.0f);
-    shape.Set(points, 4);
-    addDetail(shape);
+    addDetail(points, 4);
 
     points[0].Set(2.0f, 18.0f); //add right slope of roof
     points[1].Set(2.0f, 17.5f);
     points[2].Set(3.0f, 16.0f);
     points[3].Set(3.0f, 16.5f);
-    shape.Set(points, 4);
-    addDetail(shape);
+    addDetail(points, 4);
 
     addBase(baseLevel, b2Vec2(-3.5f, 3.5f));
 }

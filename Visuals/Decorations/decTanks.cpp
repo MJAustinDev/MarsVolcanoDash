@@ -26,17 +26,16 @@ SOFTWARE.
 
 #include "decoration.h"
 
+//constructor for tanks 1 & 2
 DecTank :: DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour) : Decoration(pos, ptrColour) {
 
     b2Vec2 tCoords[4] = {b2Vec2(1.0f, 0.0f), b2Vec2(1.0f, 1.0f), b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, 0.0f)};
-    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(-0.5f, 0.75f); //random 0 to 9 number on tank
     points[1].Set(3.25f, 0.75f);
     points[2].Set(3.25f, 6.0f);
     points[3].Set(-0.5f, 6.0f);
-    shape.Set(points, 4);
-    addTexture(randText0to9(), tCoords, shape);
+    addTexture(randText0to9(), tCoords, points, 4);
 
     setTankRidge(0.0f); //bottom ridge
 
@@ -51,30 +50,27 @@ DecTank :: DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptr
             points[1].Set(0.5f, 8.875f);
             points[2].Set(1.4f, 6.75f);
             points[3].Set(2.3f, 8.875f);
-            shape.Set(points, 4);
-            addDetail(shape);
+            addDetail(points, 4);
             break;
         }
         case DEC_CODE_TANK_2 : { //broken tank
             setTankBacking(6.0f); //main rectangle shape before breaking
             setBrokenShards(-1.0f); //add shards left side
             setBrokenShards(1.0f); //add shards right side
-            setLadderPoles(5.8f);
-            setLadderBars(8);
+            setLadderPoles(5.8f); //two ladder poles till break point
+            setLadderBars(8); //8 ladder bars till break point
 
             points[0].Set(-3.0f, 5.8f); //left ladder pole after breaking
             points[1].Set(-3.25f, 9.4f);
             points[2].Set(-3.05f, 9.5f);
             points[3].Set(-2.75f, 5.8f);
-            shape.Set(points, 4);
-            addDetail(shape);
+            addDetail(points, 4);
 
             points[0].Set(-1.75f, 5.8f); //right ladder pole after breaking
             points[1].Set(-1.7f, 6.7f);
             points[2].Set(-1.55f, 6.9f);
             points[3].Set(-1.5f, 5.8f);
-            shape.Set(points, 4);
-            addDetail(shape);
+            addDetail(points, 4);
 
             for (int i=0; i<=3; i++){ //remaining broken ladder bars
                 float xShift = ((float) i) * -0.1f;
@@ -83,8 +79,7 @@ DecTank :: DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptr
                 points[1].Set(-3.3f + xShift, 6.7f + yShift);
                 points[2].Set(-2.45f + xShift, 6.7f + yShift);
                 points[3].Set(-2.40f + xShift, 6.5f + yShift);
-                shape.Set(points, 4);
-                addDetail(shape);
+                addDetail(points, 4);
             }
 
             setFlames(); //set flames out of broken tank
@@ -98,7 +93,7 @@ DecTank :: DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptr
 
 }
 
-DecTank :: ~DecTank(){};
+DecTank :: ~DecTank(){}; //TODO -- CLEAR FLAMES LINKED LIST
 
 void DecTank :: draw(Camera* camera){
     //TODO -- DRAW FLAMES OUT OF TOP (IF BROKEN) -- VIA LINKED LIST
@@ -108,41 +103,34 @@ void DecTank :: draw(Camera* camera){
 
 //sets main background rectangle shape of the tank
 void DecTank :: setTankBacking(float height){
-    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(-3.5f, 0.0f);
     points[1].Set(3.5f, 0.0f);
     points[2].Set(3.5f, height);
     points[3].Set(-3.5f, height);
-    shape.Set(points, 4);
-    addShape(shape);
+    addShape(points, 4);
 }
 
 //sets a ridge along the tank, shifted upward by passed float
 void DecTank :: setTankRidge(float shift){
-    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(-3.75f, shift);
     points[1].Set(3.75f, shift);
     points[2].Set(3.75f, 0.5f + shift);
     points[3].Set(-3.75f, 0.5f + shift);
-    shape.Set(points, 4);
-    addDetail(shape);
+    addDetail(points, 4);
 }
 
 //sets ladder poles along the tank up to the passed height
 void DecTank :: setLadderPoles(float height){
     for (int i=0; i<=1; i++){
-        //ladder poles
         float shift = ((float) i) * 1.25f;
-        b2PolygonShape shape;
         b2Vec2 points[8];
         points[0].Set(-3.0f + shift, 0.0f);
         points[1].Set(-2.75f + shift, 0.0f);
         points[2].Set(-2.75f + shift, height);
         points[3].Set(-3.0f + shift, height);
-        shape.Set(points, 4);
-        addDetail(shape);
+        addDetail(points, 4);
     }
 }
 
@@ -150,35 +138,30 @@ void DecTank :: setLadderPoles(float height){
 void DecTank :: setLadderBars(int num){
     for (int i=0; i<num; i++){
         float shift = ((float) i) * 0.7f;
-        b2PolygonShape shape;
         b2Vec2 points[8];
         points[0].Set(-3.25f, 0.75f + shift);
         points[1].Set(-1.25f, 0.75f + shift);
         points[2].Set(-1.25f, 1.0f + shift);
         points[3].Set(-3.25f, 1.0f + shift);
-        shape.Set(points, 4);
-        addDetail(shape);
+        addDetail(points, 4);
     }
 }
 
 //adds broken shards of metal on top of the broken tank
 void DecTank :: setBrokenShards(float mirror){
 
-    b2PolygonShape shape;
     b2Vec2 points[8];
     points[0].Set(3.5f *  mirror, 6.0f); //outer shards
     points[1].Set(randRanged(3.5f, 4.0f)  *  mirror, randRanged(7.2f, 10.0f));
     points[2].Set(3.0f *  mirror, 6.0f);
-    shape.Set(points, 3);
-    addShape(shape);
+    addShape(points, 3);
 
     for (int j=0; j<3 ;j++){ //inner shards
         float shift = (float) j;
         points[0].Set(shift * mirror, 6.0f);
         points[1].Set(randRanged(shift - 0.1f, shift + 0.9f) * mirror, randRanged(7.4f, 11.5f));
         points[2].Set((shift + 1.0f) * mirror, 6.0f);
-        shape.Set(points, 3);
-        addShape(shape);
+        addShape(points, 3);
 
         //add broken diamond symbol to 2 of the shard segments
         if ((mirror == 1.0f) && (j != 2)){ //(j != 2) => (j == 0) || (j == 1)
@@ -187,8 +170,7 @@ void DecTank :: setBrokenShards(float mirror){
             half = points[2] + points[1]; //repeat for the next side
             points[2].Set(half.x / 2.0f, half.y / 2.0f);
             points[3].Set(randRanged(0.25f, 0.75f) + (shift * mirror), randRanged(6.1f, 6.5f)); //set point 3 at the bottom of the shard
-            shape.Set(points, 4);
-            addDetail(shape);
+            addDetail(points, 4);
         }
     }
 }
