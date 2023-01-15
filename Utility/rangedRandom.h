@@ -49,11 +49,7 @@ inline int randModRanged(int high){
 
 //returns either -1 or +1
 inline int randNegPos(){
-    if (randModRanged(2) == 0){
-        return 1;
-    } else {
-        return -1;
-    }
+    return (randModRanged(2) == 0) ? 1 : -1;
 }
 
 //returns the texture ID for a random number between 0 and 9
