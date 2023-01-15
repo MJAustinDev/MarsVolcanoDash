@@ -50,7 +50,8 @@ SOFTWARE.
 #define DEC_CODE_ARCH_4 15 //broken leftward archway
 #define DEC_CODE_ARCH_5 16 //broken rightward archway
 
-#define DEC_CODE_SHIP_1 17
+#define DEC_CODE_SHIP_1 17 //flying cargo ship
+#define DEC_CODE_SHIP_2 18 //crashed cargo ship
 
 
 #endif

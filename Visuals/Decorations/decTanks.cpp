@@ -95,6 +95,7 @@ DecTank :: DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptr
 
 DecTank :: ~DecTank(){}; //TODO -- CLEAR FLAMES LINKED LIST
 
+//unique draw method
 void DecTank :: draw(Camera* camera){
     //TODO -- DRAW FLAMES OUT OF TOP (IF BROKEN) -- VIA LINKED LIST
 

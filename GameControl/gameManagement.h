@@ -71,6 +71,14 @@ private:
         addDecoration(&foreDecs, id, decPos, lowest, hasBase, ptrColour);
     }
 
+    void addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, float ang, b2Vec2 mag, bool hasBase, float* ptrColour);
+    void addBackDec(int id, b2Vec2 decPos, float lowest, float ang, b2Vec2 mag, bool hasBase,  float* ptrColour = nullptr){
+        addDecoration(&backDecs, id, decPos, lowest, ang, mag, hasBase, ptrColour);
+    }
+    void addForeDec(int id, b2Vec2 decPos,  float lowest, float ang, b2Vec2 mag, bool hasBase, float* ptrColour = nullptr){
+        addDecoration(&foreDecs, id, decPos, lowest, ang, mag, hasBase, ptrColour);
+    }
+
     b2World* world;
     b2Body* body;
     LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn

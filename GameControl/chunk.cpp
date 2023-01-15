@@ -139,7 +139,7 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
     }
 }
 
-//adds a decoration compensating for base height
+//adds a decoration, compensating for base height
 void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, bool hasBase, float* ptrColour){
 
     b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
@@ -164,10 +164,25 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
         case DEC_CODE_ARCH_5 : {dec = new DecArch(id, relPos, lowest, hasBase, ptrColour); break;}
         case DEC_CODE_DRILL_1 :
         case DEC_CODE_DRILL_2 : {dec = new DecDrill(id, relPos, lowest, hasBase, ptrColour); break;}
+        case DEC_CODE_SHIP_1 : {dec = new DecShip(id, relPos, lowest, false, ptrColour); break;}
         default : {dec = new DecDefault(id, relPos, lowest, hasBase, ptrColour);}
     }
     ptr->addEnd(dec); //add new decoration to the chunk
+}
 
+//adds an angled and stretched decoration, compensating for base height
+void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, float lowest, float ang, b2Vec2 mag, bool hasBase, float* ptrColour){
+    b2Vec2 relPos = body->GetPosition(); //get relative position to the chunks body
+    lowest -= decPos.y; //work out the shift difference between the chunks lowest point and the decorations position relative the the chunk
+    relPos += decPos; //adjust decorations position to map to the world rather than to the chunk
+
+    Decoration* dec;
+    switch(id){
+        case DEC_CODE_SHIP_1 :
+        case DEC_CODE_SHIP_2 : {dec = new DecShip(id, relPos, lowest, false, ptrColour, ang, mag); break;}
+        default : {addDecoration(ptr, id, decPos, lowest, hasBase, ptrColour); return;}
+    }
+    ptr->addEnd(dec); //add new decoration to the chunk
 }
 
 //just a flat platform used when invalid numbers are entered as segment identifier
@@ -241,9 +256,12 @@ void Chunk :: defSegmentStart(){
     //flying in distance
     for (int i=-30; i<=105; i+=15){
         float scale = randRanged(0.1f, 0.6f);
-        //addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(0.0f, 1.0f), b2Vec2(scale, scale));
+        addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(-0.5f, 1.0f), b2Vec2(scale, scale), false);
     }
 
+    addBackDec(DEC_CODE_SHIP_1, b2Vec2(15.0f, 20.5f), lowest, 0.0f, b2Vec2(5.5f, 5.5f), true, &c[0]); // TEMP
+
+    addBackDec(DEC_CODE_SHIP_2, b2Vec2(115.0f, 2.5f), lowest, -1.3f, b2Vec2(5.5f, 5.5f), true, &c[0]); // up close crashed
     //addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
     //addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest);
 

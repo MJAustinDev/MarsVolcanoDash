@@ -28,6 +28,8 @@ SOFTWARE.
 
 #include "visualColours.h"
 
+#define RENDER_DIST 256 //distance chunks will be added/removed
+
 GameManager :: GameManager(GameConfig* config) {
 
     //define world
@@ -107,8 +109,8 @@ bool GameManager :: process(bool* keys){
 
 //check if new terrain should be added
 void GameManager :: processChunkAddition() {
-    //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
-    while (nextChunkX<=playerLead->getPos().x+256){
+    //add new chunk if the leading player is (RENDER_DIST) meters behind the next chunk's spawn point
+    while (nextChunkX<=playerLead->getPos().x + RENDER_DIST){
         addChunk(randModRanged(6));
     }
 }
@@ -120,7 +122,7 @@ void GameManager :: processChunkRemoval() {
         bool repeat = true;
         //remove chunks from the front of the linked list until no chunks are behind the lava
         while (repeat){
-            if (chunks.first->obj->getPos().x <= enemies->lavaX - 128) {
+            if (chunks.first->obj->getPos().x <= enemies->lavaX - RENDER_DIST) {
                 chunks.remFront();
                 if (chunks.first==nullptr){
                     repeat = false; //safety catch, shouldn't be hit. Was an issue before death mechanic

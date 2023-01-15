@@ -36,9 +36,8 @@ SOFTWARE.
 //back/foreground decoration, no effect on game play just makes the world look better
 class Decoration {
 
-private:
+protected:
 
-    unsigned int id; //texture id used by camera
     float colour[4]; //decorations's colour
 
     b2Vec2 pos; //position of the decoration relative to the world
@@ -63,6 +62,11 @@ private:
     //list of textures to add over if needed
     LinkedList<TextShape> tShapes;
 
+    //performs rotation, scale, then translation on given points array
+    void transformDecPoints(b2Vec2 points[8], int num, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f), b2Vec2 shift = b2Vec2(0.0f, 0.0f));
+
+private:
+
     //adds a b2PolygonShape to the passed linked list
     void addTo(LinkedList<b2PolygonShape>* store, b2Vec2 points[8], int num){
         b2PolygonShape* ptr = new b2PolygonShape; //dynamically allocate memory for shape
@@ -70,11 +74,6 @@ private:
         store->addEnd(ptr); //store shape
         ptr = nullptr; //clear pointer for sake of completeness
     }
-
-protected:
-
-    //performs rotation, scale, then translation on given points array
-    void transformDecPoints(b2Vec2 points[8], int num, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f), b2Vec2 shift = b2Vec2(0.0f, 0.0f));
 
 public:
 
@@ -104,15 +103,15 @@ public:
     };
 
     //add a base to the decoration (prevent floating decorations), baseLevel is the level the base drops too relative to the shape pos
-    void addBase(float baseLevel, b2Vec2 sides){ //sides is the coordinates that the base spans too left and right side (x -> left cord, y -> right cord)
+    void addBase(float baseLevel, b2Vec2 sides, float topLevel = 0.0f){ //sides is the coordinates that the base spans too left and right side (x -> left cord, y -> right cord)
 
         //if base has some space
-        if (baseLevel < 0.0f && sides.x != sides.y){
+        if (baseLevel < topLevel && sides.x != sides.y){
             b2Vec2 points[8];
-            points[0].Set(sides.x, 0.0f);
+            points[0].Set(sides.x, topLevel);
             points[1].Set(sides.x, baseLevel);
             points[2].Set(sides.y, baseLevel);
-            points[3].Set(sides.y, 0.0f);
+            points[3].Set(sides.y, topLevel);
             addShape(points, 4);
         }
     };
@@ -209,6 +208,23 @@ private:
     void setCrate(float mirror, b2Vec2 mag, b2Vec2 shift);
     void setBar(b2Vec2 pos, b2Vec2 dim);
     void setDrillPiece(float ang, b2Vec2 mag, b2Vec2 shift);
+
+};
+
+class DecShip : public Decoration {
+
+public:
+    DecShip(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour, float ang = 0.0f, b2Vec2 mag = b2Vec2(1.0f, 1.0f));
+    ~DecShip();
+
+    void draw(Camera* camera);
+
+private:
+    void setBaseShip(float ang, b2Vec2 mag);
+
+    int shipID;
+    float dispX; //magnitude of travel in the x axis
+    float dispY; //magnitude of travel in the y axis
 
 };
 
