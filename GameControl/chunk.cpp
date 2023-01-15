@@ -164,7 +164,8 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
         case DEC_CODE_ARCH_5 : {dec = new DecArch(id, relPos, lowest, hasBase, ptrColour); break;}
         case DEC_CODE_DRILL_1 :
         case DEC_CODE_DRILL_2 : {dec = new DecDrill(id, relPos, lowest, hasBase, ptrColour); break;}
-        case DEC_CODE_SHIP_1 : {dec = new DecShip(id, relPos, lowest, false, ptrColour); break;}
+        case DEC_CODE_SHIP_1 :
+        case DEC_CODE_SHIP_2 : {dec = new DecShip(id, relPos, lowest, false, ptrColour); break;}
         default : {dec = new DecDefault(id, relPos, lowest, hasBase, ptrColour);}
     }
     ptr->addEnd(dec); //add new decoration to the chunk
@@ -185,6 +186,79 @@ void Chunk :: addDecoration(LinkedList<Decoration>* ptr, int id, b2Vec2 decPos, 
     ptr->addEnd(dec); //add new decoration to the chunk
 }
 
+//sets a decoration scene that focuses in on the given position
+void Chunk :: setDecs(int value, b2Vec2 pos, float lowest){
+
+    float col[4]; //used to keep colour uniform between decorations
+    switch(value){
+        case 0 : { //series of gas tanks (10% chance that a tank is exploded)
+            pos.x += 3.0f;
+            addBackDec(((randZeroToOne() > 0.10f) ? DEC_CODE_TANK_1 : DEC_CODE_TANK_2), pos, lowest);
+            for (int i=0; i<3+randModRanged(3); i++){
+                pos.x += 10.0f;
+                addBackDec(((randZeroToOne() > 0.10f) ? DEC_CODE_TANK_1 : DEC_CODE_TANK_2), pos, lowest);
+            }
+            break;
+        }
+        case 1 : {//archways
+            pos.x += 8.0f;
+            addForeDec(((randZeroToOne() > 0.25f) ? DEC_CODE_ARCH_2 : DEC_CODE_ARCH_4), pos, lowest);
+            foreDecs.last->obj->getColour(&col[0]);
+            for (int i=0; i<1+randModRanged(2); i++){
+                pos.x += 12.0f;
+                addForeDec(DEC_CODE_ARCH_1, pos, lowest, true, &col[0]);
+            }
+            pos.x += 12.0f;
+            addForeDec(((randZeroToOne() > 0.35f) ? DEC_CODE_ARCH_3 : DEC_CODE_ARCH_5), pos, lowest, true, &col[0]);
+
+            break;
+        }
+        case 2 : { //mars base design
+            int code = ((randZeroToOne() > 0.5f) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2); //keeps the end domes the same
+            addBackDec(code, pos, lowest); //left most dome
+            backDecs.last->obj->getColour(&col[0]);
+            pos.x += 10.25f;
+            addBackDec(DEC_CODE_TUNNEL_3, pos, lowest, true, &col[0]); //left most tunnel
+            pos.x += 10.25f;
+            addBackDec(((randZeroToOne() > 0.5f) ? DEC_CODE_LQ_1 : DEC_CODE_LQ_2), pos, lowest, true, &col[0]);
+            pos.y += 6.5f;
+            addBackDec(((randZeroToOne() > 0.5f) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2), pos, lowest, false, &col[0]);
+            pos += b2Vec2(10.25f, -6.5f);
+            addBackDec(DEC_CODE_TUNNEL_2, pos, lowest, true, &col[0]);
+            pos.x += 10.25f;
+            addBackDec(code, pos, lowest, true, &col[0]);
+            break;
+        }
+        case 3 :  //drilling station intact
+        case 4 : { //drilling station damaged
+            pos.x += 5.0f;
+            addBackDec(((randZeroToOne() > 0.5f) ? DEC_CODE_LQ_1 : DEC_CODE_LQ_2), pos, lowest);
+            backDecs.last->obj->getColour(&col[0]);
+            pos.y += 6.5f;
+            addBackDec(((randZeroToOne() > 0.5f) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2), pos, lowest, false, &col[0]);
+            pos += b2Vec2(15.0f, -6.5f);
+            addBackDec(((value == 3) ? DEC_CODE_TANK_1 : DEC_CODE_TANK_2), pos, lowest, true, &col[0]);
+            pos += b2Vec2(10.0f, 1.5f);
+            addBackDec(((value == 3) ? DEC_CODE_DRILL_1 : DEC_CODE_DRILL_2), pos, lowest, true, &col[0]);
+            break;
+        }
+        case 5 : { //up close crashed
+            addBackDec(DEC_CODE_SHIP_2, b2Vec2(0.0f, pos.y + 15.0f), lowest, randRanged(-2.3f, -1.3f), b2Vec2(5.5f * ((float) randNegPos()), 5.5f), true);
+            break;
+        }
+        case 6 : { //ships flying towards the player in the deep background
+            for (int i=0; i<5; i++){
+                b2Vec2 shipPos = pos + b2Vec2(randRanged(10.0f, 55.0f), randRanged(10.0f, 50.0f));
+                float scale = randRanged(0.25f, 0.9f);
+                addBackDec(DEC_CODE_SHIP_1, shipPos, lowest, randRanged(-0.25f, 0.5f), b2Vec2(-scale, scale), false, nullptr);
+            }
+            break;
+        }
+        default : {} //no decorations by default
+    }
+
+}
+
 //just a flat platform used when invalid numbers are entered as segment identifier
 void Chunk :: defSegmentDefault(){
     b2Vec2 points[8]; //main base plate
@@ -193,6 +267,7 @@ void Chunk :: defSegmentDefault(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
+    setRandomDecs(b2Vec2(-28.0f, 0.0f), -3.0f);
 }
 
 //define starting segment
@@ -231,39 +306,9 @@ void Chunk :: defSegmentStart(){
     addShape(points, 5, 1); //use backing mountain shading
 
 
-    //add back ground base
-    float c[4]; //used to keep consistent colouring
-    //random chance how the base will look
-    int lqCode = (randModRanged(2) == 0) ? DEC_CODE_LQ_1 : DEC_CODE_LQ_2;
-    int domeCode1 = (randModRanged(2) == 0) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2;
-    int domeCode2 = (randModRanged(2) == 0) ? DEC_CODE_DOME_1 : DEC_CODE_DOME_2;
+    setDecs(2, b2Vec2(-15.0f, 0.5f), -3.0f); //add back ground base
 
-    //add decorations that make up the base
-    addBackDec(lqCode, b2Vec2(5.0f, 3.0f), lowest);
-    backDecs.last->obj->getColour(&c[0]); //get colour
-    addBackDec(domeCode1, b2Vec2(5.0f, 9.5f), lowest, false, &c[0]);
-    addBackDec(DEC_CODE_TUNNEL_2, b2Vec2(17.25f, 3.0f), lowest, true, &c[0]);
-    addBackDec(DEC_CODE_TUNNEL_3, b2Vec2(-7.25f, 3.0f), lowest, true, &c[0]);
-    addBackDec(domeCode2, b2Vec2(29.5f, 3.0f), lowest, true, &c[0]);
-    addBackDec(domeCode2, b2Vec2(-19.5f, 3.0f), lowest, true, &c[0]);
 
-    addBackDec(DEC_CODE_TANK_1, b2Vec2(40.0f, 2.0f), lowest, true, &c[0]);
-    addBackDec(DEC_CODE_TANK_2, b2Vec2(50.0f, 2.0f), lowest, true, &c[0]);
-
-    addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 1.0f), lowest, true, &c[0]);
-    addBackDec(DEC_CODE_DRILL_2, b2Vec2(77.0f, 1.0f), lowest, true, &c[0]);
-
-    //flying in distance
-    for (int i=-30; i<=105; i+=15){
-        float scale = randRanged(0.1f, 0.6f);
-        addBackDec(DEC_CODE_SHIP_1, b2Vec2(((float)i), 48.0f + randRanged(-0.3f, 5.0f)), lowest, randRanged(-0.5f, 1.0f), b2Vec2(scale, scale), false);
-    }
-
-    addBackDec(DEC_CODE_SHIP_1, b2Vec2(15.0f, 20.5f), lowest, 0.0f, b2Vec2(5.5f, 5.5f), true, &c[0]); // TEMP
-
-    addBackDec(DEC_CODE_SHIP_2, b2Vec2(115.0f, 2.5f), lowest, -1.3f, b2Vec2(5.5f, 5.5f), true, &c[0]); // up close crashed
-    //addBackDec(DEC_CODE_SHIP_1, b2Vec2(75.0f, 5.0f), lowest, -1.3f, b2Vec2(5.5f, 5.5f)); // up close crashed
-    //addBackDec(DEC_CODE_DRILL_1, b2Vec2(60.0f, 2.5f), lowest);
 
 }
 
@@ -277,7 +322,7 @@ void Chunk :: defSegment0(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
-    float lowest = -3.0f;
+    setRandomDecs(b2Vec2(-28.0f, 0.0f), -3.0f);
 
     float x = -32;
     float y[9] = {0,0,0,0,0,0,0,0,0};
@@ -297,7 +342,7 @@ void Chunk :: defSegment1(){
     points[2].Set(32,-19.0);
     points[3].Set(32,-16.0);
     addShape(points,4,0);
-    float lowest = -19.0;
+    setRandomDecs(b2Vec2(-28.0f, 0.0f), -19.0f);
 
     float x = -32;
     float y[9] = {0, -0.5, -1, -1.5, -2, -2.5, -3, -3.5, -4};
@@ -321,7 +366,7 @@ void Chunk :: defSegment2(){
     points[2].Set(32,13.0);
     points[3].Set(32,16.0);
     addShape(points,4,0);
-    float lowest = -3.0f;
+    setRandomDecs(b2Vec2(-28.0f, 16.0f), -3.0f);
 
     float x = -32;
     float y[9] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4};
@@ -345,7 +390,7 @@ void Chunk :: defSegment3(){
     points[2].Set(32,-35.0);
     points[3].Set(32,-32.0);
     addShape(points,4,0);
-    float lowest = -35.0f;
+    setRandomDecs(b2Vec2(-28.0f, 0.0f), -35.0f);
 
     float x = -32;
     float y[9] = {0, -1, -2, -3, -4, -5, -6, -7, -8};
@@ -369,7 +414,7 @@ void Chunk :: defSegment4(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
-    float lowest = -3.0f;
+    setRandomDecs(b2Vec2(-28.0f, randRanged(1.5f, 3.0f)), -3.0f);
 
     float x = -32;
     float y[9] = {0,0,0,0,0,0,0,0,0};
@@ -390,7 +435,7 @@ void Chunk :: defSegment5(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0);
-    float lowest = -3.0f;
+    setRandomDecs(b2Vec2(-28.0f, 8.0f), -3.0f);
 
     //rocks in the gap, want drawn under both ramps
     float y1[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};

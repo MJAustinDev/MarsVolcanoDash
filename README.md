@@ -15,6 +15,7 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - Halloween easter egg (easter-ween???) (code/images) (verify)
 - Christmas easter egg (code/images) (verify)
 - Easter easter egg??? (probs not lol) (code/images) (verify)
+- Fix Numbers on rotated/mirrored ships
 
 ### TODO DECORATIONS
 
@@ -26,13 +27,14 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - ~Gas Tank 1 exploded (tank 2)~
 - ~Drill 1 intact~
 - Drill 2 broken
+- Flying background satalitte
 - Crashed Satalitte
+- ~Flying background cargo ship~
 - Crashed Cargo Ship
 - ~Arch ways (upward, alongward, broken)~
 - Track pieces (buffer, alongward, broken)
 - Train pieces (train, cargo carrage, passenger carrage, cargo fuel carrage)
 - Crashed Truck
-- ~Flying background cargo ship~
 
 ---
 

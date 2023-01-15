@@ -185,6 +185,7 @@ private:
 
 };
 
+//archway (uses default draw method)
 class DecArch : public Decoration {
 
 public:
@@ -198,6 +199,7 @@ private:
 
 };
 
+//drill machine (uses default draw method)
 class DecDrill : public Decoration {
 
 public:
@@ -211,6 +213,7 @@ private:
 
 };
 
+//cargo ship (uses custom draw method)
 class DecShip : public Decoration {
 
 public:
@@ -228,13 +231,6 @@ private:
 
 };
 
-/*
-
-
-//void setPanel1(float baseLevel);
-void setDrill1(float baseLevel);
-void setDrill2(float baseLevel);
-void setShip1(float baseLevel, float ang, b2Vec2 mag);
-*/
+//TODO -- DESIGN AND IMPLEMENT SOLAR PANELS
 
 #endif

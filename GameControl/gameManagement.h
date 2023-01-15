@@ -79,6 +79,9 @@ private:
         addDecoration(&foreDecs, id, decPos, lowest, ang, mag, hasBase, ptrColour);
     }
 
+    void setDecs(int value, b2Vec2 pos, float lowest);
+    void setRandomDecs(b2Vec2 pos, float lowest){setDecs(randModRanged(8), pos, lowest);};
+
     b2World* world;
     b2Body* body;
     LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
