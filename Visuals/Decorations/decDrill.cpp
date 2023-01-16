@@ -77,7 +77,24 @@ DecDrill :: DecDrill(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* p
             setBar(b2Vec2(9.0f, 16.5f), b2Vec2(0.2f, 5.0f)); //left cable before break point
             setBar(b2Vec2(9.8f, 11.4f), b2Vec2(0.2f, 10.1f)); //right cable
             setDrillPiece(0.25f, b2Vec2(1.0f, 1.0f), b2Vec2(10.75f, 6.5f)); //drill piece
-            //TODO -- ADD CABLE AFTER BREAK POINT
+            points[0].Set(9.0f, 16.5f); //left cable top break
+            points[1].Set(9.0f, 15.0f);
+            points[2].Set(9.2f, 16.5f);
+            addDetail(points, 3);
+
+            points[0].y = 11.2f; //start of cable bottom break
+            points[1].y = 11.4f;
+            points[2].y = 11.5f;
+            points[3].Set(9.2f, 11.2f);
+            addDetail(points, 4);
+
+            points[0].Set(8.9f, 11.5f); //centre of cable bottom break
+            points[3].Set(9.0f, 11.7f);
+            addDetail(points, 4);
+
+            points[1].Set(8.7f, 11.6f); //end of cable bottom break
+            points[2].Set(8.8f, 11.7f);
+            addDetail(points, 4);
         break;}
         default : {} //no extra detail by default
     }

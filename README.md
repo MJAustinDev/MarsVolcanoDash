@@ -26,7 +26,7 @@ Replaced the gameplay stuff with a todo list \& keeping all the license info/fin
 - ~Gas Tank 1~
 - ~Gas Tank 1 exploded (tank 2)~
 - ~Drill 1 intact~
-- Drill 2 broken
+- ~Drill 2 broken~
 - Flying background satalitte
 - Crashed Satalitte
 - ~Flying background cargo ship~
