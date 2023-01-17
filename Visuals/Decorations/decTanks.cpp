@@ -93,13 +93,13 @@ DecTank :: DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptr
 
 }
 
-DecTank :: ~DecTank(){}; //TODO -- CLEAR FLAMES LINKED LIST
+DecTank :: ~DecTank(){}; //no extra dynamic memory to deallocate
 
 //unique draw method
 void DecTank :: draw(Camera* camera){
-    //TODO -- DRAW FLAMES OUT OF TOP (IF BROKEN) -- VIA LINKED LIST
 
-    Decoration::draw(camera);
+    HasFlames::draw(pos, camera);//draws flames
+    Decoration::draw(camera); //draw the rest of the details normally
 }
 
 //sets main background rectangle shape of the tank
@@ -176,5 +176,39 @@ void DecTank :: setBrokenShards(float mirror){
     }
 }
 
-//TODO
-void DecTank :: setFlames(){};
+//sets the flames that are burning out of the broken tank
+void DecTank :: setFlames(){
+
+    for (int k=0; k<4; k++){
+        float height = 18.0f - (((float) k) * 2.0f);
+        b2Vec2 points[8];
+        points[0].Set(randRanged(-0.25f, 0.25f), height);
+        points[1].Set(-0.5f, 0.0f);
+        points[2].Set(0.5f, 0.0f);
+        addFlame(&points[0]); //add centre flame
+
+        for (int i=0; i<6; i++){ //add flames along the top
+            float shift = ((float)i) * 0.5f;
+            points[0].Set(shift+randRanged(0.25f, 0.75f), randRanged(height - 2.0f, height));
+            points[1].Set(shift, 0.0f);
+            points[2].Set(shift + 1.0f, 0.0f);
+            addFlame(&points[0]); //add new flame
+            for(int j=0;j<3;j++){
+                points[j].x *= -1.0f;
+            }
+            addFlame(&points[0]); //add mirrored flame
+        }
+
+        for (int i=0; i<3; i++){
+            float shift = ((float) i) * -0.5f;
+            points[0].Set(-3.5f+shift, randRanged(height - 4.0f, height - (3-i)));
+            addFlame(&points[0]); //add side flames
+            for (int j=0;j<3;j++){
+                points[j].x *= -1.0f;
+            }
+            addFlame(&points[0]); //add mirrored side flame
+            points[1].x *= -1.0f;
+            points[2].x *= -1.0f;
+        }
+    }
+};

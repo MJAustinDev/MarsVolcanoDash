@@ -117,6 +117,31 @@ public:
     };
 };
 
+//inherited class that allows flames to be drawn by a decoration (e.g. used by DecTank)
+class HasFlames{
+
+protected:
+    HasFlames();
+    ~HasFlames();
+
+    void addFlame(b2Vec2* points);
+    void draw(b2Vec2 pos, Camera* camera);
+
+private:
+
+    struct Flame{ //triangle that defines a flame
+        Flame(b2Vec2* points){
+            for(int i=0; i<3; i++){
+                this->points[i] = points[i];
+            }
+        };
+        ~Flame(){};
+        b2Vec2 points[3]; //[0] => top of flame, [1] & [2] => base points of flame
+    };
+    LinkedList<Flame> flames;
+
+};
+
 //default decoration (invalid id)
 class DecDefault : public Decoration {
 
@@ -165,13 +190,13 @@ private:
 };
 
 //gas tank (uses custom draw method)
-class DecTank : public Decoration {
+class DecTank : public Decoration, public HasFlames {
 
 public :
     DecTank(int id, b2Vec2 pos, float baseLevel, bool hasBase, float* ptrColour);
     ~DecTank();
 
-    void draw(Camera* camera); //TODO -- HAVE MOVING BACKGROUND FLAMES FOR BROKEN TANKER
+    void draw(Camera* camera);
 
 private:
     void setTankBacking(float height);
@@ -179,9 +204,7 @@ private:
     void setLadderPoles(float height);
     void setLadderBars(int num);
     void setBrokenShards(float mirror);
-    void setFlames(); //TODO
-
-    //TODO -- STORE REFERENCE FOR DRAWING BACKGROUND FLAMES IN LINKED LIST
+    void setFlames();
 
 };
 

@@ -52,8 +52,14 @@
 		<Unit filename="Utility/gameConfig.h" />
 		<Unit filename="Utility/linkedList.h" />
 		<Unit filename="Utility/rangedRandom.h" />
+		<Unit filename="Visuals/Decorations/decArch.cpp" />
+		<Unit filename="Visuals/Decorations/decCargoShip.cpp" />
 		<Unit filename="Visuals/Decorations/decDome.cpp" />
+		<Unit filename="Visuals/Decorations/decDrill.cpp" />
 		<Unit filename="Visuals/Decorations/decLivingQuarters.cpp" />
+		<Unit filename="Visuals/Decorations/decPanel.cpp" />
+		<Unit filename="Visuals/Decorations/decTanks.cpp" />
+		<Unit filename="Visuals/Decorations/decTunnel.cpp" />
 		<Unit filename="Visuals/Decorations/decorationCodes.h" />
 		<Unit filename="Visuals/Icons/gameIcon.h" />
 		<Unit filename="Visuals/Icons/gameIcon.rc">

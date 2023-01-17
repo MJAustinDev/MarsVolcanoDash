@@ -76,8 +76,6 @@ void Chunk :: drawBackDecs(Camera* camera){
     //cycle through and draw all background decorations
     if (backDecs.resetCycle()){
         do {
-            //Decoration* ptr = backDecs.cycle->obj;
-            //ptr->draw(camera);
             backDecs.cycle->obj->draw(camera);
         } while(backDecs.cycleUp());
     }
@@ -279,7 +277,7 @@ void Chunk :: defSegmentStart(){
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
     addShape(points,4,0); //use ground chunk shading
-    float lowest = -3.0f;
+    setDecs(2, b2Vec2(-15.0f, 0.5f), -3.0f); //add back ground base
 
     //start of mountain slope
     points[0].Set(-32.0f,0.0f);
@@ -304,12 +302,6 @@ void Chunk :: defSegmentStart(){
     points[3].Set(-200.0f, 400.0f);
     points[4].Set(-200.0f, 0.0f);
     addShape(points, 5, 1); //use backing mountain shading
-
-
-    setDecs(2, b2Vec2(-15.0f, 0.5f), -3.0f); //add back ground base
-
-
-
 }
 
 
