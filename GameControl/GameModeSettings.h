@@ -30,6 +30,13 @@ namespace mvd {
 
 namespace game_ctrl {
 
+enum class GameMode {
+    easy,
+    normal,
+    hard,
+    two_player
+};
+
 /*
  TODO RE WORD THIS... AND USE DYOXGEN
 index [0] affects meteors, index [1] affects boulders
@@ -47,8 +54,15 @@ struct GameModeSettings {
     float forces[2]; //initial force applied to enemy when spawned in
     bool twoPlayer; //if game mode has 2 players or not
     float lavaSpeed; //how fast the lava moves when in range of the player
-
 };
+
+/**
+ * @brief Sets the game mode settings depending on the passed enumeration
+ * @param p_gameMode Enumeration that determines the game mode
+ * @param p_settings Game Mode Settings structure to be configured
+ * @throws invalid_argument If an unsupported game mode is passed
+ */
+void setGameMode(GameMode p_gameMode, GameModeSettings &p_settings);
 
 /**
  * @brief Modifies the values in the passed structure for easy mode

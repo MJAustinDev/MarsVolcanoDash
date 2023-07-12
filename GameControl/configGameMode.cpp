@@ -24,6 +24,7 @@ SOFTWARE.
 
 */
 
+#include <exception>
 
 #include "manager.h"
 
@@ -41,7 +42,17 @@ For example the i=0 to i<9 for loop could call a function that sets all meteor a
 but this way it's easier to add verity in spawns. e.g. p_settings.spawns[0][i] = 128 + (i%4);
 */
 
-// TODO NEW FUNC FOR SETTING BASED ON AN ENUM... HAVE CALLED DIRECTLY RATHER THAN PASSED AROUND
+
+void setGameMode(GameMode p_gameMode, GameModeSettings &p_settings) {
+    switch (p_gameMode) {
+        case GameMode::easy : {setGameModeEasy(p_settings); break;}
+        case GameMode::normal : {setGameModeNormal(p_settings); break;}
+        case GameMode::hard : {setGameModeHard(p_settings); break;}
+        case GameMode::two_player : {setGameModeTwoPlayer(p_settings); break;}
+
+        default : {throw std::invalid_argument("Non-supported game mode");}
+    }
+}
 
 
 //configure easy mode's settings

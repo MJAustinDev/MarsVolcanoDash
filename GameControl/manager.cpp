@@ -113,18 +113,22 @@ void Manager :: buttonSelection(bool* keys, int lower, int higher){
 //process events when on main menu
 void Manager :: processMenu(bool* keys){
 
-    buttonSelection(keys, 0, 4); //let user scan up/down the options
+    buttonSelection(keys, 0, 4); // let user scan up/down the options
 
     //ENTER is pressed -- user has selected an option
     if (keys[6]){
+
         GameModeSettings settings;
-        switch(selected){
-            case 0 : {setGameModeEasy(settings); break;}
-            case 1 : {setGameModeNormal(settings); break;}
-            case 2 : {setGameModeHard(settings); break;}
-            case 3 : {setGameModeTwoPlayer(settings); break;}
-            case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); return;} //exit button kill game loop
+        GameMode gameMode;
+        switch (selected) { // TODO ENUM FOR BUTTONS
+            case 0 : {gameMode = GameMode::easy; break;}
+            case 1 : {gameMode = GameMode::normal; break;}
+            case 2 : {gameMode = GameMode::hard; break;}
+            case 3 : {gameMode = GameMode::two_player; break;}
+            case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); return;}
         }
+        setGameMode(gameMode, settings);
+
         selected = 5; //set selected for in game resume option
         colBack = colBackGame; //set background colour to game background colour
         camera->setCamPos(0.0f, 0.0f, 0.05f); //focus camera with default in game zoom
