@@ -26,6 +26,10 @@ SOFTWARE.
 
 #include "manager.h"
 
+namespace mvd {
+
+namespace game_ctrl {
+
 Button :: Button(int id){
     buttonID = id;
 }
@@ -76,3 +80,7 @@ void Button :: draw(Camera* camera, bool selected){
         } while (textures.cycleUp());
     }
 }
+
+}; // end of namespace game_ctrl
+
+}; // end of namespace mvd

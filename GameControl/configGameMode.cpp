@@ -27,6 +27,9 @@ SOFTWARE.
 
 #include "manager.h"
 
+namespace mvd {
+
+namespace game_ctrl {
 
 /*
 Contains game mode configuration settings -- feel free to change and recompile on your own pull down!
@@ -139,3 +142,7 @@ void Manager :: configTwoPlayer() {
     gameMan = new GameManager(&config);
     onMenu = false;
 }
+
+}; // end of namespace game_ctrl
+
+}; // end of namespace mvd

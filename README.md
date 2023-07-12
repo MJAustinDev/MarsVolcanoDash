@@ -11,6 +11,22 @@ An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 ---
 
 
+## TODO
+
+- namespaces
+- doxygen
+- pragma once...
+- yeet old linked list
+- keyboard class (Utility)
+- refactor
+- - manager
+- - gamemanger
+- - player
+- - 
+
+---
+
+
 ## Gameplay
 
 You work for a mining company that operates on the surface of Mars.

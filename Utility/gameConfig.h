@@ -24,9 +24,7 @@ SOFTWARE.
 
 */
 
-
-#ifndef GAMECONFIG_H
-#define GAMECONFIG_H
+# pragma once
 
 /*
 
@@ -48,5 +46,3 @@ struct GameConfig {
     float lavaSpeed; //how fast the lava moves when in range of the player
 
 };
-
-#endif

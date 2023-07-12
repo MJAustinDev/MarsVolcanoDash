@@ -24,18 +24,21 @@ SOFTWARE.
 
 */
 
-
-#ifndef MANAGER_H
-#define MANAGER_H
+#pragma once
 
 #include "gameConfig.h"
 #include "gameManagement.h"
 
 #include "animation.h"
 
+namespace mvd {
+
+namespace game_ctrl {
+
 /* Buttons allow a user to visually interact with the system,
 displaying menu options or information like score.
 The class is entirely scoped to the Manager which exclusively uses it */
+// TODO MAKE A STRUCT... AND COPE DOWN...
 class Button {
 
 friend class Manager;
@@ -49,7 +52,7 @@ private:
 
     void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords); //used to configure textures that are drawn on the button
 
-    void draw(Camera* camera, bool selected);
+    void draw(Camera* camera, bool selected); // TODO CHANGE SCOPE...
 
     //coordinates follow pattern of top (+y), left (-x), bottom (-y), right (+x)
     float highlight[4]; //coordinates of highlighted border of button
@@ -80,6 +83,7 @@ private:
     Button* getButton(int id); //returns position of menu button going of button identifier
 
     //configure the game's mode
+    // TODO MAKE FREE FUNCTIONS
     void configEasy();
     void configNormal();
     void configHard();
@@ -103,7 +107,7 @@ private:
     GLFWwindow* window; //pointer to the window
 
     bool onMenu = true;
-    //interactable menu buttons
+    // interactable menu buttons
     Button butEasy;
     Button butNorm;
     Button butHard;
@@ -111,7 +115,7 @@ private:
     Button butExit;
     Button butResume;
     Button butReturn;
-    //visual only menu buttons
+    // visual only menu buttons
     Button butScore;
     Button butWins;
     bool scoreReady = false;
@@ -137,5 +141,6 @@ private:
 
 };
 
+}; // end of namespace game_ctrl
 
-#endif
+}; // end of namespace mvd

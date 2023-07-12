@@ -26,6 +26,10 @@ SOFTWARE.
 
 #include "manager.h"
 
+namespace mvd {
+
+namespace game_ctrl {
+
 Manager :: Manager(GLFWwindow* w, Camera* cam) :
     butEasy(0), butNorm(1), butHard(2), butTwoPlay(3),
     butExit(4), butResume(5), butReturn(6), butScore(7),
@@ -304,4 +308,6 @@ void Manager :: draw(){
     }
 }
 
+}; // end of namespace game_ctrl
 
+}; // end of namespace mvd

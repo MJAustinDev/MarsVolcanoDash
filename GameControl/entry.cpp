@@ -103,7 +103,7 @@ int main(){
 
     //define key game objects
     Camera camera(window, 0.0f, 0.0f, 1.0f, &(keys[4]), &(keys[5])); //give camera access to + and - keys
-    Manager manager(window, &camera);
+    mvd::game_ctrl::Manager manager(window, &camera);
 
     //force screen size to be in ratio
     forceRatio(window);
