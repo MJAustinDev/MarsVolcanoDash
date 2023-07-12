@@ -24,8 +24,9 @@ SOFTWARE.
 
 */
 
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
+
+#include <array>
 
 #include <RecompileBox2d/box2d/box2d.h>
 
@@ -58,6 +59,7 @@ public:
 
     //draw using pure opengl coordinates
     void drawPureRect(float* colour, float coords[4]); //draws a rectangle of form {top, left, bottom, right}
+    void drawPureRect(float* colour, std::array<float, 4> coords); //draws a rectangle of form {top, left, bottom, right} // TODO VERIFY
     void drawPureRectText(float* colour, unsigned int textID, float wCoords[4], float tCoords[4]); //similar to drawPureRect but allows a texture to be drawn instead
 
     //get main point in world relative to camera position
@@ -121,6 +123,3 @@ private:
     unsigned int texDust;
 
 };
-
-
-#endif

@@ -82,6 +82,17 @@ void Camera :: drawPureRect(float* colour, float coords[4]){ //coords takes form
     glEnd();
 }
 
+void Camera::drawPureRect(float* colour, std::array<float, 4> coords) {
+    float shade = 1.0f-(0.75f*glow);
+    glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, 1.0f);
+    glBegin(GL_POLYGON);
+        glVertex2f(coords[1], coords[0]);
+        glVertex2f(coords[1], coords[2]);
+        glVertex2f(coords[3], coords[2]);
+        glVertex2f(coords[3], coords[0]);
+    glEnd();
+}
+
 //draws a texture within a given rectangular range
 void Camera :: drawPureRectText(float* colour, unsigned int textID, float wCoords[4], float tCoords[4]){ //coords takes form of {top, left, bottom, right}
     if (textID != (unsigned int) -1){ //if texture loaded successfully

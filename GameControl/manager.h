@@ -26,6 +26,8 @@ SOFTWARE.
 
 #pragma once
 
+#include <array>
+
 #include "gameConfig.h"
 #include "gameManagement.h"
 
@@ -35,33 +37,22 @@ namespace mvd {
 
 namespace game_ctrl {
 
-/* Buttons allow a user to visually interact with the system,
-displaying menu options or information like score.
-The class is entirely scoped to the Manager which exclusively uses it */
-// TODO MAKE A STRUCT... AND COPE DOWN...
-class Button {
+/**
+ * TODO WORD UP
+ */
+struct MenuButton {
 
-friend class Manager;
+    MenuButton(int p_id) {m_id = p_id;};
 
-private:
-
-    Button(int id);
-    ~Button();
-
+    // TODO MOVE TO MANAGER ITSELF...
     void setCoords(float high[4], float bck[4]); //sets the coordinates for the highlight and the main backing panel of the button
-
-    void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords); //used to configure textures that are drawn on the button
-
+    void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords);
     void draw(Camera* camera, bool selected); // TODO CHANGE SCOPE...
-
-    //coordinates follow pattern of top (+y), left (-x), bottom (-y), right (+x)
-    float highlight[4]; //coordinates of highlighted border of button
-    float backing[4]; //coordinates of backing panel of button
-
     LinkedList<MenuTexture> textures; //contains all the text based textures that the button draws
 
-    int buttonID; //button identifier, used by Manager
-
+    int m_id;
+    std::array<float,4> m_highlight;
+    std::array<float,4> m_backing;
 };
 
 
@@ -80,7 +71,7 @@ public:
 
 private:
 
-    Button* getButton(int id); //returns position of menu button going of button identifier
+    MenuButton* getButton(int id); //returns position of menu button going of button identifier
 
     //configure the game's mode
     // TODO MAKE FREE FUNCTIONS
@@ -92,7 +83,7 @@ private:
     void processMenu(bool* keys); //run menu control events
     void processGame(bool* keys); //run game events
 
-    bool isSelected(Button* button); //returns if the button is currently selected or not
+    bool isSelected(MenuButton* button); //returns if the button is currently selected or not
     void buttonSelection(bool* keys, int lower, int higher); //handles button selection within given ID range
 
     void setScoreButton(int points); //sets textures for score to be visualised
@@ -108,20 +99,21 @@ private:
 
     bool onMenu = true;
     // interactable menu buttons
-    Button butEasy;
-    Button butNorm;
-    Button butHard;
-    Button butTwoPlay;
-    Button butExit;
-    Button butResume;
-    Button butReturn;
+    // store in an std::array have some access func???
+    MenuButton butEasy;
+    MenuButton butNorm;
+    MenuButton butHard;
+    MenuButton butTwoPlay;
+    MenuButton butExit;
+    MenuButton butResume;
+    MenuButton butReturn;
     // visual only menu buttons
-    Button butScore;
-    Button butWins;
+    MenuButton butScore;
+    MenuButton butWins;
     bool scoreReady = false;
     bool winsReady = false;
-    Button butBoardMenu; //main menu backing board
-    Button butBoardGame; //gameplay menu backing board
+    MenuButton butBoardMenu; //main menu backing board
+    MenuButton butBoardGame; //gameplay menu backing board
 
     bool paused = false; //game is paused
     bool dead = false; //game is over

@@ -26,30 +26,34 @@ SOFTWARE.
 
 #include "manager.h"
 
+// TODO NUKE
+
 namespace mvd {
 
 namespace game_ctrl {
 
-Button :: Button(int id){
+/*
+MenuButton :: Button(int id){
     buttonID = id;
-}
+}*/
 
+/*
 Button :: ~Button(){
     while (textures.first!=nullptr){
         textures.remFront();
     }
-}
+}*/
 
 //sets local highlight and backing panel based off parameters
-void Button :: setCoords(float high[4], float bck[4]){
+void MenuButton :: setCoords(float high[4], float bck[4]){
     for (int i=0;i<4;i++){
-        highlight[i] = high[i];
-        backing[i] = bck[i];
+        m_highlight[i] = high[i];
+        m_backing[i] = bck[i];
     }
 }
 
 //sets texture's opengl id, world draw position and texture sampling position
-void Button :: setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords){
+void MenuButton :: setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords){
     ptr->textureID = id;
     for (int i=0;i<4;i++){
         ptr->worldCoords[i] = wCoords[i];
@@ -58,7 +62,7 @@ void Button :: setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, flo
 }
 
 //draws button to the screen including textures
-void Button :: draw(Camera* camera, bool selected){
+void MenuButton :: draw(Camera* camera, bool selected){
     //set button's draw colours
     float colour[4] = COLOUR_PURPLE;
     float backColour[4] = COLOUR_PURPLE_BUTTON;
@@ -69,8 +73,8 @@ void Button :: draw(Camera* camera, bool selected){
     }
 
     //draw highlight then backing panel over it
-    camera->drawPureRect(colour, highlight);
-    camera->drawPureRect(backColour, backing);
+    camera->drawPureRect(colour, m_highlight);
+    camera->drawPureRect(backColour, m_backing);
     //draw every stored texture onto the button
     if (textures.resetCycle()){
         do {

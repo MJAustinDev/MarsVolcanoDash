@@ -41,7 +41,7 @@ Manager :: Manager(GLFWwindow* w, Camera* cam) :
     ButtonDefaults butConfig; //access button configuration values
     float textCoords[4] = {1, 0, 0, 1}; //texture coordinate bounds
 
-    Button* but;
+    MenuButton* but;
     MenuTexture* textPtr;
     //set background board positions and sizes
     for (int i=9;i<11;i++){
@@ -172,7 +172,7 @@ void Manager :: processGame(bool* keys){
 }
 
 //return's a pointer to a button from its id
-Button* Manager :: getButton(int id){
+MenuButton* Manager :: getButton(int id){
     switch(id){
         case 0 : {return &butEasy;}
         case 1 : {return &butNorm;}
@@ -191,8 +191,8 @@ Button* Manager :: getButton(int id){
 
 
 //returns if a button is selected or not, used on current graphics system
-bool Manager :: isSelected(Button* button){
-    return (button->buttonID == selected);
+bool Manager :: isSelected(MenuButton* button){
+    return (button->m_id == selected);
 }
 
 /* sets the texture on the score button to display the players score
@@ -273,7 +273,7 @@ void Manager :: draw(){
             butBoardMenu.draw(camera, true); //true so will glow
             //draw all 5 main menu buttons
             for (int i=0;i<5;i++){
-                Button* but = getButton(i);
+                MenuButton* but = getButton(i);
                 but->draw(camera, isSelected(but));
             }
         } else { //drawing gameplay
