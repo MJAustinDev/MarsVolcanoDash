@@ -43,14 +43,7 @@ Button :: ~Button(){
         textures.remFront();
     }
 }*/
-
-//sets local highlight and backing panel based off parameters
-void MenuButton :: setCoords(float high[4], float bck[4]){
-    for (int i=0;i<4;i++){
-        m_highlight[i] = high[i];
-        m_backing[i] = bck[i];
-    }
-}
+/*
 
 //sets texture's opengl id, world draw position and texture sampling position
 void MenuButton :: setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords){
@@ -84,7 +77,7 @@ void MenuButton :: draw(Camera* camera, bool selected){
         } while (textures.cycleUp());
     }
 }
-
+*/
 }; // end of namespace game_ctrl
 
 }; // end of namespace mvd

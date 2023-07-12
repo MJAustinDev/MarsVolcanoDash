@@ -57,7 +57,7 @@ void moveItem(b2Vec2* pos, float vel, float dir){
 }
 
 //updates active item positions (meteors/boulders)
-void Animation  :: process(){
+void Animation  :: process() {
 
     //update meteor positions
     for (int i=0;i<5;i++){
@@ -77,11 +77,11 @@ void Animation  :: process(){
 }
 
 //main draw method
-void Animation :: draw(Camera* camera){
+void Animation :: draw(Camera &camera){
 
     b2Vec2 posBody(0.0f, 0.0f);
     float* colour;
-    float glow = camera->getGlow();
+    float glow = camera.getGlow();
     float shade = 1.0f - glow;
     float heatShade = 0.7 - (2.0f*glow);
 
@@ -89,19 +89,19 @@ void Animation :: draw(Camera* camera){
     for (int i=0;i<5;i++){
         colour = meteorCol[i];
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
-        camera->drawHotball(meteorPos[i], meteorRad[i], colour, shade, heatShade);
+        camera.drawHotball(meteorPos[i], meteorRad[i], colour, shade, heatShade);
     }
 
     //draw far back most mountain behind the boulders
     colour = mountCol[0];
     glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
-    camera->drawB2PolygonShape(posBody, &(mountains[0]), 0.0f);
+    camera.drawB2PolygonShape(posBody, &(mountains[0]), 0.0f);
 
     //draw boulders
     for (int i=0;i<11;i++){
         colour = bouldCol[i];
         for (int j=0;j<8;j++){
-            camera->drawHotFrag(bouldPos[i], fragments[i][j], bouldAng[i], colour, shade, heatShade);
+            camera.drawHotFrag(bouldPos[i], fragments[i][j], bouldAng[i], colour, shade, heatShade);
         }
     }
 
@@ -109,14 +109,14 @@ void Animation :: draw(Camera* camera){
     for (int i=1;i<4;i++){
         colour = mountCol[i];
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
-        camera->drawB2PolygonShape(posBody, &(mountains[i]), 0.0f);
+        camera.drawB2PolygonShape(posBody, &(mountains[i]), 0.0f);
     }
 
     //draw volcano lava flow
     for (int i=0;i<3;i++){
         colour = lavaFlCol[i];
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, colour[3]);
-        camera->drawB2PolygonShape(posBody, &(lavaFlow[i]), 0.0f);
+        camera.drawB2PolygonShape(posBody, &(lavaFlow[i]), 0.0f);
     }
 
     //draw volcano burst
@@ -125,9 +125,9 @@ void Animation :: draw(Camera* camera){
         colour = burstCol[1 + (i%4)];
         glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.2f);
         glBegin(GL_POLYGON);
-            camera->placePoint(posBody, burstBase[0]);
-            camera->placePoint(posBody, burstBase[1]);
-            camera->placePoint(posBody, b2Vec2(burstRnd[i].x , burstRnd[i].y + burstShift));
+            camera.placePoint(posBody, burstBase[0]);
+            camera.placePoint(posBody, burstBase[1]);
+            camera.placePoint(posBody, b2Vec2(burstRnd[i].x , burstRnd[i].y + burstShift));
         glEnd();
     }
 
@@ -135,14 +135,14 @@ void Animation :: draw(Camera* camera){
     glColor4f(colour[0]*shade, colour[1]*shade, colour[2]*shade, shade*0.4f);
     for (int i=0;i<2;i++){
         glBegin(GL_POLYGON);
-            camera->placePoint(posBody, burstBase[0]);
-            camera->placePoint(posBody, burstBase[1]);
-            camera->placePoint(posBody, b2Vec2(burstSide[i].x, burstSide[i].y + burstShift));
+            camera.placePoint(posBody, burstBase[0]);
+            camera.placePoint(posBody, burstBase[1]);
+            camera.placePoint(posBody, b2Vec2(burstSide[i].x, burstSide[i].y + burstShift));
         glEnd();
     }
 
     //draw dust storm over animation
-    camera->drawDust();
+    camera.drawDust();
 }
 
 //sets mountain range shapes

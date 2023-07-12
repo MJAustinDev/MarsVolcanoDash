@@ -30,6 +30,9 @@ namespace mvd {
 
 namespace game_ctrl {
 
+/**
+ * Game Mode enumeration, handles all possible game modes
+ */
 enum class GameMode {
     easy,
     normal,

@@ -103,19 +103,27 @@ int main(){
 
     //define key game objects
     Camera camera(window, 0.0f, 0.0f, 1.0f, &(keys[4]), &(keys[5])); //give camera access to + and - keys
-    mvd::game_ctrl::Manager manager(window, &camera);
+    mvd::game_ctrl::Manager manager;
 
     //force screen size to be in ratio
     forceRatio(window);
 
+    double kUpdateRate = 1.0f /60.0f;
+    double timer = glfwGetTime() + kUpdateRate;
+
     //game loop, runs until glfw is told to kill the window
     while (!glfwWindowShouldClose(window)){
 
-        manager.process(keys); //attempt to process game events
+        if (timer < glfwGetTime()) {
+            camera.updateGlow();
+            manager.process(keys);
+            manager.draw(camera);
 
-        manager.draw(); //attempt to draw the game to the screen
+            glfwSwapBuffers(window);
+            glfwPollEvents(); //glfw hands events/user input
 
-        glfwPollEvents(); //glfw hands events/user input
+            timer = glfwGetTime() + kUpdateRate;
+        }
     }
 
     return 0;

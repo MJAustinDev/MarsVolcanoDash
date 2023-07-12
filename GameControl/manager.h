@@ -26,7 +26,9 @@ SOFTWARE.
 
 #pragma once
 
+#include <memory>
 #include <array>
+#include <list>
 
 #include "gameModeSettings.h"
 #include "gameManagement.h"
@@ -40,19 +42,41 @@ namespace game_ctrl {
 /**
  * TODO WORD UP
  */
+enum class MenuOptions {
+    easy_mode,
+    normal_mode,
+    hard_mode,
+    two_player_mode,
+    exit_game,
+    resume_game,
+    main_menu,
+
+    // visual only // TODO LOOK INTO MOVING INTO OWN ENUM if needed...
+    score,
+    wins,
+    back_board_menu,
+    back_board_paused
+};
+
+/**
+ * TODO WORD UP
+ */
 struct MenuButton {
 
-    MenuButton(int p_id) {m_id = p_id;};
+    // MenuButton(int p_id) {m_id = p_id;};
 
     // TODO MOVE TO MANAGER ITSELF...
-    void setCoords(float high[4], float bck[4]); //sets the coordinates for the highlight and the main backing panel of the button
-    void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords);
-    void draw(Camera* camera, bool selected); // TODO CHANGE SCOPE...
-    LinkedList<MenuTexture> textures; //contains all the text based textures that the button draws
+    // void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords);
+    // void draw(Camera* camera, bool selected); // TODO CHANGE SCOPE...
+    // LinkedList<MenuTexture> textures; //contains all the text based textures that the button draws
 
-    int m_id;
+    MenuButton(MenuOptions p_id, std::array<float,4> p_highlight, std::array<float,4> p_backing) :
+        m_id(p_id), m_highlight(p_highlight), m_backing(p_backing) {};
+
+    MenuOptions m_id;
     std::array<float,4> m_highlight;
     std::array<float,4> m_backing;
+    std::list<MenuTexture> m_textures; // TODO COME BACK TO TEXTURES
 };
 
 
@@ -63,15 +87,21 @@ class Manager{
 
 public:
 
-    Manager(GLFWwindow* w, Camera* cam);
+    Manager();
     ~Manager();
 
-    void process(bool* keys); //called to process the game/menu events
-    void draw(); //draw game/menu to viewport
+    void process(bool* keys);
+    void draw(Camera &p_camera);
 
 private:
 
-    MenuButton* getButton(int id); //returns position of menu button going of button identifier
+    MenuOptions m_selectedMenuButton;
+    std::array<MenuButton, 7> m_menuButtons;
+    // std::array<MenuButton, 4> m_visualButtons; // TODO VERIFY THIS
+    std::unique_ptr<GameManager> m_gameManager;
+    bool m_isOnMenu;
+
+    // MenuButton* getButton(int id); //returns position of menu button going of button identifier
 
     void processMenu(bool* keys); //run menu control events
     void processGame(bool* keys); //run game events
@@ -84,41 +114,29 @@ private:
     void setWinsButton(bool winPlay1); //sets the X in 'Player X Wins' to the winning player's number
     void clearWinsButton(); //resets the wins button so it is ready to be used again
 
-    int selected = 0; //button identifier of the currently selected button
-
-    //GameModeSettings m_settings; //handles game mode configuration (enemy size, etc)
-    GameManager* gameMan = nullptr; //sets up the game
-    GLFWwindow* window; //pointer to the window
-
-    bool onMenu = true;
+    //bool onMenu = true;
     bool isTwoPlayer = false;
     // interactable menu buttons
     // store in an std::array have some access func???
-    MenuButton butEasy;
-    MenuButton butNorm;
-    MenuButton butHard;
-    MenuButton butTwoPlay;
-    MenuButton butExit;
-    MenuButton butResume;
-    MenuButton butReturn;
+  //  MenuButton butEasy;
+  //  MenuButton butNorm;
+  //  MenuButton butHard;
+  //  MenuButton butTwoPlay;
+  //  MenuButton butExit;
+ //   MenuButton butResume;
+ //   MenuButton butReturn;
     // visual only menu buttons
-    MenuButton butScore;
-    MenuButton butWins;
+  //  MenuButton butScore;
+  //  MenuButton butWins;
     bool scoreReady = false;
     bool winsReady = false;
-    MenuButton butBoardMenu; //main menu backing board
-    MenuButton butBoardGame; //gameplay menu backing board
+//    MenuButton butBoardMenu; //main menu backing board
+ //   MenuButton butBoardGame; //gameplay menu backing board
 
     bool paused = false; //game is paused
     bool dead = false; //game is over
 
     Animation animateBack; //main menu's background animation controller
-
-    //game timers
-    double timerGame = 0.0; //process game events
-    double timerMenu = 0.0; //process menu events
-    double timerDraw = 0.0; //draw to screen
-    Camera* camera = nullptr; //points to main camera
 
     //vars to set the background colour
     float colBackMenu[4] = COLOUR_BACK_MENU;

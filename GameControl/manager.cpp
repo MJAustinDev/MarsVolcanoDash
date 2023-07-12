@@ -30,66 +30,65 @@ namespace mvd {
 
 namespace game_ctrl {
 
-Manager :: Manager(GLFWwindow* w, Camera* cam) :
-    butEasy(0), butNorm(1), butHard(2), butTwoPlay(3),
-    butExit(4), butResume(5), butReturn(6), butScore(7),
-    butWins(8), butBoardMenu(9), butBoardGame(10) {
+const std::array<std::array<float, 4>, 7> kHighlights = {
+    std::array<float, 4>({0.9f, -0.3f, 0.7f, 0.3f}), // easy
+    std::array<float, 4>({0.5f, -0.3f, 0.3f, 0.3f}), // normal
+    std::array<float, 4>({0.1f, -0.3f, -0.1f, 0.3f}), // hard
+    std::array<float, 4>({-0.3f, -0.3f, -0.5f, 0.3f}), // two player
+    std::array<float, 4>({-0.7f, -0.3f, -0.9f, 0.3f}), // exit
+    std::array<float, 4>({0.5f, -0.5f, 0.3f, 0.5f}), // resume
+    std::array<float, 4>({0.1f, -0.5f, -0.1f, 0.5f}) // return
+};
 
-    camera = cam;
-    window = w;
+const std::array<std::array<float, 4>, 7> kBackings = {
+    std::array<float, 4>({0.88f, -0.28f, 0.72f, 0.28f}), // easy
+    std::array<float, 4>({0.48f, -0.28f, 0.32f, 0.28f}), // normal
+    std::array<float, 4>({0.08f, -0.28f, -0.08f, 0.28f}), // hard
+    std::array<float, 4>({-0.32f, -0.28f, -0.48f, 0.28f}), // two player
+    std::array<float, 4>({-0.72f, -0.28f, -0.88f, 0.28f}), // exit
+    std::array<float, 4>({0.48f, -0.48f, 0.32f, 0.48f}), // resume
+    std::array<float, 4>({0.08f, -0.48f, -0.08f, 0.48f}), // return
+};
 
-    ButtonDefaults butConfig; //access button configuration values
-    float textCoords[4] = {1, 0, 0, 1}; //texture coordinate bounds
-
-    MenuButton* but;
-    MenuTexture* textPtr;
-    //set background board positions and sizes
-    for (int i=9;i<11;i++){
-        but = getButton(i);
-        but->setCoords(butConfig.highlights[i], butConfig.backings[i]);
-    }
-
-    //set all 9 menu buttons positions, sizes and primary textures
-    for (int i=0;i<9;i++){
-        but = getButton(i);
-        but->setCoords(butConfig.highlights[i], butConfig.backings[i]);
-        textPtr = new MenuTexture;
-        but->setTexture(textPtr, camera->getTexture(i+10), butConfig.textWorld[i], textCoords);
-        but->textures.addEnd(textPtr);
-    }
-    //add 'Player' to Player X Wins button
-    textPtr = new MenuTexture;
-    butWins.setTexture(textPtr, camera->getTexture(13), butConfig.textWorld[9], butConfig.onlyPlayer);
-    butWins.textures.addEnd(textPtr);
-
-    but = nullptr;
-    textPtr = nullptr;
+Manager::Manager() :
+    m_selectedMenuButton(MenuOptions::easy_mode),
+    m_menuButtons({
+        MenuButton(MenuOptions::easy_mode, kHighlights.at(0), kBackings.at(0)),
+        MenuButton(MenuOptions::normal_mode, kHighlights.at(1), kBackings.at(1)),
+        MenuButton(MenuOptions::hard_mode, kHighlights.at(2), kBackings.at(2)),
+        MenuButton(MenuOptions::two_player_mode, kHighlights.at(3), kBackings.at(3)),
+        MenuButton(MenuOptions::exit_game, kHighlights.at(4), kBackings.at(4)),
+        MenuButton(MenuOptions::resume_game, kHighlights.at(5), kBackings.at(5)),
+        MenuButton(MenuOptions::main_menu, kHighlights.at(6), kBackings.at(6))
+    }),
+    m_gameManager(nullptr),
+    m_isOnMenu(true) {
+    // TODO LAMBDA FOR SETTING BUTTON TEXTURES
+    // TODO COME BACK TO TEXTURES
 }
 
 
-Manager :: ~Manager(){
-    if (gameMan != nullptr){
-        delete gameMan;
-    }
+Manager :: ~Manager() {
 }
 
 
 //process events
 void Manager :: process(bool* keys){
 
+    /*
     if (onMenu && (timerMenu < glfwGetTime())) {
         processMenu(keys); //process main menu activity
         timerMenu = glfwGetTime() + 0.01;
     } else if (!onMenu && timerGame < glfwGetTime()){
         processGame(keys); //process game activity
         timerGame = glfwGetTime() + 0.01;
-    }
+    }*/
 
 }
 
 //handle menu button selection
 void Manager :: buttonSelection(bool* keys, int lower, int higher){
-
+    /*
     //W is pressed -- cycle upwards
     if (keys[2]){
         selected--;
@@ -107,12 +106,12 @@ void Manager :: buttonSelection(bool* keys, int lower, int higher){
     }
     if (selected > higher){
         selected = lower;
-    }
+    }*/
 }
 
 //process events when on main menu
 void Manager :: processMenu(bool* keys){
-
+/*
     buttonSelection(keys, 0, 4); // let user scan up/down the options
 
     //ENTER is pressed -- user has selected an option
@@ -137,13 +136,13 @@ void Manager :: processMenu(bool* keys){
         isTwoPlayer = (selected == 3); // TODO ENUM FOR BUTTONS
     }
     animateBack.process(); //update background animation
-
+*/
 }
 
 
 //process events when game is running
 void Manager :: processGame(bool* keys){
-
+/*
     //game is not over and not paused
     if (!dead && !paused){
         dead = gameMan->process(keys);
@@ -176,9 +175,9 @@ void Manager :: processGame(bool* keys){
                 case 5 : {paused = false; keys[6] = false; break;} //resume game
             }
         }
-    }
+    }*/
 }
-
+/*
 //return's a pointer to a button from its id
 MenuButton* Manager :: getButton(int id){
     switch(id){
@@ -202,10 +201,12 @@ MenuButton* Manager :: getButton(int id){
 bool Manager :: isSelected(MenuButton* button){
     return (button->m_id == selected);
 }
+*/
 
 /* sets the texture on the score button to display the players score
 does so by repeatedly adding the final digit to the back of the button space
 and then knocking the position of the next digit along */
+/*
 void Manager :: setScoreButton(int points){
 
     //catch to prevent less than zero scores or the screen being spammed
@@ -265,10 +266,19 @@ void Manager :: clearWinsButton(){
     winsReady = false;
 }
 
+*/
+// draws either the menu or the running game
+void Manager :: draw(Camera &p_camera) {
 
-//draws either the menu or the running game
-void Manager :: draw(){
+    if (m_isOnMenu) {
+        animateBack.draw(p_camera);
+        // TODO draw back menu
+        // TODO DRAW ALL 5 MENU BUTTONS
+    } else {
+        // TODO game drawing
+    }
 
+    /*
     if (timerDraw < glfwGetTime()) {
 
         //clear screen and viewport
@@ -313,7 +323,7 @@ void Manager :: draw(){
 
         timerDraw = (1.0/60.0) + glfwGetTime(); //aiming for 60 fps
         camera->updateGlow(); //update glow value
-    }
+    }*/
 }
 
 }; // end of namespace game_ctrl

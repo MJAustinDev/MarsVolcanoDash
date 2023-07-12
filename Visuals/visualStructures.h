@@ -37,6 +37,7 @@ struct MenuTexture {
 
 };
 
+// TODO REMOVE
 //Contains values for defining menu buttons and textures
 struct ButtonDefaults {
 

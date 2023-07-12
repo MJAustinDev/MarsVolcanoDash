@@ -39,7 +39,7 @@ public:
     ~Animation();
 
     void process(); //moves all active  items (meteors/boulders)
-    void draw(Camera* camera); //draws scene to the screen
+    void draw(Camera &camera); //draws scene to the screen
 
 private:
 
