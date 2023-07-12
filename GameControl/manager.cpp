@@ -210,7 +210,7 @@ void Manager :: draw(Camera &p_camera) {
             break;
         }
         case GameState::in_game_paused : {
-            m_gameManager->draw(&p_camera);
+            m_gameManager->draw(&p_camera); // TODO CHANGE TO JUST PASS CAMERA... BASE GAME MANAGER WILL CHANGE!!!
             for (auto pauseButton : m_pauseButtons) {
                 drawButton(p_camera, pauseButton, (pauseButton.m_option != m_selectedMenuButton));
             }

@@ -38,6 +38,7 @@
 		<Unit filename="GameControl/entry.cpp" />
 		<Unit filename="GameControl/gameManagement.h" />
 		<Unit filename="GameControl/gameManager.cpp" />
+		<Unit filename="GameControl/gameModeSettings.h" />
 		<Unit filename="GameControl/manager.cpp" />
 		<Unit filename="GameControl/manager.h" />
 		<Unit filename="GameEntities/Enemy/baseEnemy.cpp" />
@@ -48,7 +49,6 @@
 		<Unit filename="GameEntities/enemyManager.cpp" />
 		<Unit filename="GameEntities/gameEntities.h" />
 		<Unit filename="GameEntities/player.cpp" />
-		<Unit filename="Utility/gameConfig.h" />
 		<Unit filename="Utility/linkedList.h" />
 		<Unit filename="Utility/rangedRandom.h" />
 		<Unit filename="Visuals/Icons/gameIcon.h" />

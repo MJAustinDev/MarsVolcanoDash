@@ -18,11 +18,64 @@ An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 - pragma once...
 - yeet old linked list
 - keyboard class (Utility)
-- refactor
-- - manager
-- - gamemanger
-- - player
-- - 
+
+- refactor first pass
+- - game control
+- - - ~~manager~~
+- - - gamemanger
+- - - chunk
+- - - configGameMode/gameModeSettings
+- - - entry
+- - game entities
+- - - gameEntities (re-distribute...)
+- - - enemy manager
+- - - player
+- - - base
+- - - boulder
+- - - fireball
+- - - fragment
+- - - meteor
+- - visuals
+- - - animation
+- - - camera
+- - - button (yeet)
+- - - draw chunks...
+- - - load textures...
+- - - visual colours...
+- - - visual structures...
+- - utility
+- - - linkedlist (yeet)
+- - - ranged random
+
+
+- refactor second pass (update after first pass)
+- - game control
+- - - manager
+- - - gamemanger
+- - - chunk
+- - - configGameMode/gameModeSettings
+- - - entry
+- - game entities
+- - - gameEntities (re-distribute...)
+- - - enemy manager
+- - - player
+- - - base
+- - - boulder
+- - - fireball
+- - - fragment
+- - - meteor
+- - visuals
+- - - animation
+- - - camera
+- - - button (yeet)
+- - - draw chunks...
+- - - load textures...
+- - - visual colours...
+- - - visual structures...
+- - utility
+- - - linkedlist (yeet)
+- - - ranged random
+
 
 ---
 
