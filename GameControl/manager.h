@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2022 Matthew James Austin
+Copyright (c) 2022-23 Matthew James Austin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,6 @@ SOFTWARE.
 
 #include "gameModeSettings.h"
 #include "gameManagement.h"
-
 #include "animation.h"
 
 namespace mvd {
@@ -40,7 +39,7 @@ namespace mvd {
 namespace game_ctrl {
 
 /**
- * TODO WORD UP
+ * Defines the different options for the menu buttons
  */
 enum class MenuOptions {
     easy_mode = 0,
@@ -58,21 +57,8 @@ enum class MenuOptions {
     back_board_paused
 };
 
-/*
-MenuOptions& operator ++(MenuOptions &value) {
-    auto number = static_cast<int>(value);
-
-    return value;
-}
-
-MenuOptions& operator --(MenuOptions &value) {
-    auto number = static_cast<int>(value);
-
-    return value;
-}*/
-
 /**
- * TODO WORD UP
+ * Structure containing all values needed to draw a menu button
  */
 struct MenuButton {
     MenuButton(MenuOptions p_option, std::array<float, 4> p_highlight, std::array<float,4> p_backing) :
@@ -84,57 +70,83 @@ struct MenuButton {
     std::list<MenuTexture> m_textures; // TODO COME BACK TO TEXTURES
 };
 
+/**
+ * Defines the possible states that the game can be in.
+ */
+enum class GameState {
+    on_main_menu,
+    in_game_alive,
+    in_game_paused,
+    in_game_dead,
+    exitting_game
+};
 
-
-/* Main manager, controls drawing, menu and game options,
-and uses the GameManager to set up and run the game */
-class Manager{
-
-public:
-
-    Manager();
-    ~Manager();
-
-    void process(bool* keys);
-    void draw(Camera &p_camera);
+/**
+ * Manager class.
+ * Controls the logic of menus, gameplay, and drawing.
+ */
+class Manager {
 
 private:
 
     MenuOptions m_selectedMenuButton;
     const std::array<MenuButton, 5> m_menuButtons;
     const std::array<MenuButton, 2> m_pauseButtons;
-    // std::array<MenuButton, 4> m_visualButtons; // TODO VERIFY THIS
+    // std::array<MenuButton, 4> m_visualButtons; // TODO look into this later on
     std::unique_ptr<GameManager> m_gameManager;
-    bool m_isOnMenu; // TODO HAVE THESE HANDLED BY A GAME STATE ENUM... FUNNEL RESULT BACK TO MAIN LOOP
+    GameState m_state;
     bool m_isTwoPlayer;
-    bool m_isDead;
-    bool m_isPaused;
 
-    void processMenu(bool* keys); //run menu control events
-    void processGame(bool* keys); //run game events
-    void processButtonSelection(bool* keys, MenuOptions p_lower, MenuOptions p_higher); //handles button selection within given ID range
+    /**
+     * Processes events on the main menu
+     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
+     */
+    void processMainMenu(bool* keys);
 
-    void setScoreButton(int points); //sets textures for score to be visualised
-    void clearScoreButton(); //resets the score button so it is ready to be used again
-    void setWinsButton(bool winPlay1); //sets the X in 'Player X Wins' to the winning player's number
-    void clearWinsButton(); //resets the wins button so it is ready to be used again
+    /**
+     * Processes events during gameplay
+     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
+     */
+    void processGameplay(bool* keys);
 
-    // visual only menu buttons
-  //  MenuButton butScore;
-  //  MenuButton butWins;
-    bool scoreReady = false;
-    bool winsReady = false;
-//    MenuButton butBoardMenu; //main menu backing board
- //   MenuButton butBoardGame; //gameplay menu backing board
+    /**
+     * Processes events on the pause and death menus
+     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
+     */
+    void processGameMenu(bool* keys); //run game events
 
-    Animation animateBack; //main menu's background animation controller
+    /**
+     * Processes events on the pause and death menus
+     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
+     */
+    void processButtonSelection(bool* keys, MenuOptions p_lower, MenuOptions p_higher);
 
-    //vars to set the background colour
-    float colBackMenu[4] = COLOUR_BACK_MENU;
-    float colBackGame[4] = COLOUR_BACK_GAME;
-    float* colBack = colBackMenu;
+    Animation animateBack; // TODO REFACTOR THIS and then correctly name and place here
 
-};
+public:
+
+    Manager();
+    ~Manager() = default;
+
+    /**
+     * Processes all game events
+     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
+     */
+    void process(bool* keys);
+
+    /**
+     * Draws the game to the screen
+     * @param p_camera camera used to draw the world
+     */
+    void draw(Camera &p_camera);
+
+    /**
+     * Getter for games current state
+     * @returns The game manger's current game state
+     */
+    GameState getGameState();
+
+}; // end of Manager
 
 }; // end of namespace game_ctrl
 

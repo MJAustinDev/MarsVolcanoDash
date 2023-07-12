@@ -81,7 +81,7 @@ int main(){
     srand(time(NULL));
 
     if (!glfwInit()){
-        return -1;// Initialization failed
+        return -1; // initialization failed
     }
 
     glfwWindowHint(GLFW_MAXIMIZED, 1); //attempt to start with a maximised window
@@ -95,38 +95,58 @@ int main(){
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, inputHandler);
     glfwSetWindowSizeCallback(window, sizeHandler);
-    glClearColor(0.0f,0.0f,0.0f,1.0f); //set outside viewport clear colour
+    glClearColor(0.0f,0.0f,0.0f,1.0f); // set outside viewport clear colour
 
-    //set blending function for transparency
+    // set blending function for transparency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    //define key game objects
-    Camera camera(window, 0.0f, 0.0f, 1.0f, &(keys[4]), &(keys[5])); //give camera access to + and - keys
+    // define key game objects
+    Camera camera(window, 0.0f, 0.0f, 1.0f, &(keys[4]), &(keys[5])); // give camera access to + and - keys
     mvd::game_ctrl::Manager manager;
 
-    //force screen size to be in ratio
     forceRatio(window);
 
     double kUpdateRate = 1.0f /60.0f;
     double timer = glfwGetTime() + kUpdateRate;
 
-    //game loop, runs until glfw is told to kill the window
+    mvd::game_ctrl::GameState prevState = manager.getGameState();
+
+    // game loop, runs until glfw is told to kill the window
     while (!glfwWindowShouldClose(window)){
 
         if (timer < glfwGetTime()) {
-            //clear screen and viewport
-            glClear(GL_COLOR_BUFFER_BIT); //clear total screen creating black space behind the view port
+            // clear screen and viewport
+            glClear(GL_COLOR_BUFFER_BIT);
             // TODO DRAW THE WANTED GAME BACKGROUND COLOUR
 
             camera.updateGlow();
             manager.process(keys);
-            manager.draw(camera);
+            mvd::game_ctrl::GameState state = manager.getGameState();
 
-            glfwSwapBuffers(window);
-            glfwPollEvents(); //glfw hands events/user input
+            // TODO RE-WRITE THIS LOGIC... use switch or something
+            if (state == mvd::game_ctrl::GameState::exitting_game) {
+                glfwSetWindowShouldClose(window, GLFW_TRUE);
+            } else {
+                if (state != prevState) {
+                    if (state == mvd::game_ctrl::GameState::on_main_menu) {
+                        // TODO SET MAIN MENU BACKGROUND COLOUR
+                        camera.setCamPos(0.0f, 0.0f, 1.0f);
+                        prevState = state;
+                    }
+                    if (state == mvd::game_ctrl::GameState::in_game_alive) {
+                        // TODO SET GAMEPLAY BACKGROUND COLOUR
+                        camera.setCamPos(0.0f, 0.0f, 0.05f);
+                        prevState = state;
+                    }
+                }
+                manager.draw(camera);
 
-            timer = glfwGetTime() + kUpdateRate;
+                glfwSwapBuffers(window);
+                glfwPollEvents(); // glfw hands events/user input
+
+                timer = glfwGetTime() + kUpdateRate;
+            }
         }
     }
 
