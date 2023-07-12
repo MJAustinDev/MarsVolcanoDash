@@ -115,6 +115,10 @@ int main(){
     while (!glfwWindowShouldClose(window)){
 
         if (timer < glfwGetTime()) {
+            //clear screen and viewport
+            glClear(GL_COLOR_BUFFER_BIT); //clear total screen creating black space behind the view port
+            // TODO DRAW THE WANTED GAME BACKGROUND COLOUR
+
             camera.updateGlow();
             manager.process(keys);
             manager.draw(camera);

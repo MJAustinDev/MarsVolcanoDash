@@ -43,7 +43,7 @@ namespace game_ctrl {
  * TODO WORD UP
  */
 enum class MenuOptions {
-    easy_mode,
+    easy_mode = 0,
     normal_mode,
     hard_mode,
     two_player_mode,
@@ -58,22 +58,27 @@ enum class MenuOptions {
     back_board_paused
 };
 
+/*
+MenuOptions& operator ++(MenuOptions &value) {
+    auto number = static_cast<int>(value);
+
+    return value;
+}
+
+MenuOptions& operator --(MenuOptions &value) {
+    auto number = static_cast<int>(value);
+
+    return value;
+}*/
+
 /**
  * TODO WORD UP
  */
 struct MenuButton {
+    MenuButton(MenuOptions p_option, std::array<float,4> p_highlight, std::array<float,4> p_backing) :
+        m_option(p_option), m_highlight(p_highlight), m_backing(p_backing) {};
 
-    // MenuButton(int p_id) {m_id = p_id;};
-
-    // TODO MOVE TO MANAGER ITSELF...
-    // void setTexture(MenuTexture* ptr, unsigned int id, float* wCoords, float* tCoords);
-    // void draw(Camera* camera, bool selected); // TODO CHANGE SCOPE...
-    // LinkedList<MenuTexture> textures; //contains all the text based textures that the button draws
-
-    MenuButton(MenuOptions p_id, std::array<float,4> p_highlight, std::array<float,4> p_backing) :
-        m_id(p_id), m_highlight(p_highlight), m_backing(p_backing) {};
-
-    MenuOptions m_id;
+    MenuOptions m_option;
     std::array<float,4> m_highlight;
     std::array<float,4> m_backing;
     std::list<MenuTexture> m_textures; // TODO COME BACK TO TEXTURES
@@ -96,35 +101,26 @@ public:
 private:
 
     MenuOptions m_selectedMenuButton;
-    std::array<MenuButton, 7> m_menuButtons;
+    std::array<MenuButton, 5> m_menuButtons;
+    // std::array<MenuButton, 2> m_pauseButtons; // TODO VERIFY THIS
     // std::array<MenuButton, 4> m_visualButtons; // TODO VERIFY THIS
     std::unique_ptr<GameManager> m_gameManager;
     bool m_isOnMenu;
+    bool m_isTwoPlayer;
 
     // MenuButton* getButton(int id); //returns position of menu button going of button identifier
 
     void processMenu(bool* keys); //run menu control events
     void processGame(bool* keys); //run game events
+    void processButtonSelection(bool* keys, MenuOptions p_lower, MenuOptions p_higher); //handles button selection within given ID range
 
     bool isSelected(MenuButton* button); //returns if the button is currently selected or not
-    void buttonSelection(bool* keys, int lower, int higher); //handles button selection within given ID range
 
     void setScoreButton(int points); //sets textures for score to be visualised
     void clearScoreButton(); //resets the score button so it is ready to be used again
     void setWinsButton(bool winPlay1); //sets the X in 'Player X Wins' to the winning player's number
     void clearWinsButton(); //resets the wins button so it is ready to be used again
 
-    //bool onMenu = true;
-    bool isTwoPlayer = false;
-    // interactable menu buttons
-    // store in an std::array have some access func???
-  //  MenuButton butEasy;
-  //  MenuButton butNorm;
-  //  MenuButton butHard;
-  //  MenuButton butTwoPlay;
-  //  MenuButton butExit;
- //   MenuButton butResume;
- //   MenuButton butReturn;
     // visual only menu buttons
   //  MenuButton butScore;
   //  MenuButton butWins;

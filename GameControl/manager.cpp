@@ -57,12 +57,12 @@ Manager::Manager() :
         MenuButton(MenuOptions::normal_mode, kHighlights.at(1), kBackings.at(1)),
         MenuButton(MenuOptions::hard_mode, kHighlights.at(2), kBackings.at(2)),
         MenuButton(MenuOptions::two_player_mode, kHighlights.at(3), kBackings.at(3)),
-        MenuButton(MenuOptions::exit_game, kHighlights.at(4), kBackings.at(4)),
-        MenuButton(MenuOptions::resume_game, kHighlights.at(5), kBackings.at(5)),
-        MenuButton(MenuOptions::main_menu, kHighlights.at(6), kBackings.at(6))
+        MenuButton(MenuOptions::exit_game, kHighlights.at(4), kBackings.at(4))
     }),
     m_gameManager(nullptr),
-    m_isOnMenu(true) {
+    m_isOnMenu(true),
+    m_isTwoPlayer(false) {
+
     // TODO LAMBDA FOR SETTING BUTTON TEXTURES
     // TODO COME BACK TO TEXTURES
 }
@@ -72,71 +72,64 @@ Manager :: ~Manager() {
 }
 
 
-//process events
-void Manager :: process(bool* keys){
-
-    /*
-    if (onMenu && (timerMenu < glfwGetTime())) {
-        processMenu(keys); //process main menu activity
-        timerMenu = glfwGetTime() + 0.01;
-    } else if (!onMenu && timerGame < glfwGetTime()){
-        processGame(keys); //process game activity
-        timerGame = glfwGetTime() + 0.01;
-    }*/
-
+void Manager :: process(bool* keys) {
+    if (m_isOnMenu) {
+        processMenu(keys);
+    } else {
+        processGame(keys);
+    }
 }
 
-//handle menu button selection
-void Manager :: buttonSelection(bool* keys, int lower, int higher){
-    /*
-    //W is pressed -- cycle upwards
-    if (keys[2]){
+void Manager::processButtonSelection(bool* keys, MenuOptions p_lower, MenuOptions p_higher) {
+    // TODO REWORD THIS SO IT'S CLEANER.. MAYBE OVERLOAD FOR MENUOPTIONS TYPE???
+    auto selected = static_cast<int>(m_selectedMenuButton);
+    auto lower = static_cast<int>(p_lower);
+    auto higher = static_cast<int>(p_higher);
+
+    if (keys[2]) { // W is pressed -- cycle upwards
         selected--;
         keys[2] = false; //prevent button selection from cycling uncontrollably
     }
-    //S is pressed -- cycle downwards
-    if (keys[3]){
+
+    if (keys[3]) { // S is pressed -- cycle downwards
         selected++;
         keys[3] = false; //prevent button selection from cycling uncontrollably
     }
 
     //catch selected
-    if (selected<lower){
+    if (selected < lower) {
         selected = higher;
     }
-    if (selected > higher){
+    if (selected > higher) {
         selected = lower;
-    }*/
+    }
+    m_selectedMenuButton = static_cast<MenuOptions>(selected);
 }
 
 //process events when on main menu
-void Manager :: processMenu(bool* keys){
-/*
-    buttonSelection(keys, 0, 4); // let user scan up/down the options
+void Manager::processMenu(bool* keys){
 
-    //ENTER is pressed -- user has selected an option
-    if (keys[6]){
+    processButtonSelection(keys, MenuOptions::easy_mode, MenuOptions::exit_game);
+
+    if (keys[6]) { // ENTER is pressed -- user has selected an option
 
         GameModeSettings settings;
         GameMode gameMode;
-        switch (selected) { // TODO ENUM FOR BUTTONS
-            case 0 : {gameMode = GameMode::easy; break;}
-            case 1 : {gameMode = GameMode::normal; break;}
-            case 2 : {gameMode = GameMode::hard; break;}
-            case 3 : {gameMode = GameMode::two_player; break;}
-            case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); return;}
+        switch (m_selectedMenuButton) {
+            case MenuOptions::easy_mode : {gameMode = GameMode::easy; break;}
+            case MenuOptions::normal_mode : {gameMode = GameMode::normal; break;}
+            case MenuOptions::hard_mode : {gameMode = GameMode::hard; break;}
+            case MenuOptions::two_player_mode : {gameMode = GameMode::two_player; break;}
+            case MenuOptions::exit_game : {return;} // TODO NEW EXIT METHOD
+            default : {throw std::runtime_error("invalid menu selection");}
         }
+        // TODO BACK GROUND COLOURING
         setGameMode(gameMode, settings);
-
-        selected = 5; //set selected for in game resume option
-        colBack = colBackGame; //set background colour to game background colour
-        camera->setCamPos(0.0f, 0.0f, 0.05f); //focus camera with default in game zoom
-        gameMan = new GameManager(&settings); // TODO REMOVE NEW/DELETE... USE SMART POINTERS
-        onMenu = false;
-        isTwoPlayer = (selected == 3); // TODO ENUM FOR BUTTONS
+        m_gameManager = std::make_unique<GameManager>(&settings);
+        m_isOnMenu = false;
+        m_isTwoPlayer = (m_selectedMenuButton == MenuOptions::two_player_mode);
     }
     animateBack.process(); //update background animation
-*/
 }
 
 
@@ -273,18 +266,29 @@ void Manager :: draw(Camera &p_camera) {
     if (m_isOnMenu) {
         animateBack.draw(p_camera);
         // TODO draw back menu
-        // TODO DRAW ALL 5 MENU BUTTONS
+
+        // TODO wrap this into a function
+        for (auto menuButton : m_menuButtons) {
+            //set button's draw colours
+            float colour[4] = COLOUR_PURPLE;
+            float backColour[4] = COLOUR_PURPLE_BUTTON;
+            if (menuButton.m_option != m_selectedMenuButton) {
+                for (int i=0;i<3;i++){
+                    colour[i] *= 0.5f; //dull main colour if not selected
+                }
+            }
+
+            //draw highlight then backing panel over it
+            p_camera.drawPureRect(colour, menuButton.m_highlight);
+            p_camera.drawPureRect(backColour, menuButton.m_backing);
+            // TODO TEXTURES...
+        }
     } else {
         // TODO game drawing
     }
 
     /*
     if (timerDraw < glfwGetTime()) {
-
-        //clear screen and viewport
-        glClear(GL_COLOR_BUFFER_BIT); //clear total screen creating black space behind the view port
-        float viewport[4] = {1.0f,-1.0f,-1.0f,1.0f};
-        camera->drawPureRect(colBack, viewport); //clears the view port to the given background colour
 
         if (onMenu){ //drawing main menu
             animateBack.draw(camera); //draw back ground splash animation
@@ -319,10 +323,6 @@ void Manager :: draw(Camera &p_camera) {
                 }
             }
         }
-        glfwSwapBuffers(window);
-
-        timerDraw = (1.0/60.0) + glfwGetTime(); //aiming for 60 fps
-        camera->updateGlow(); //update glow value
     }*/
 }
 
