@@ -117,16 +117,20 @@ void Manager :: processMenu(bool* keys){
 
     //ENTER is pressed -- user has selected an option
     if (keys[6]){
+        GameModeSettings settings;
         switch(selected){
-            case 0 : {configEasy(); break;}
-            case 1 : {configNormal(); break;}
-            case 2 : {configHard(); break;}
-            case 3 : {configTwoPlayer(); break;}
-            case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); break;} //exit button kill game loop
+            case 0 : {setGameModeEasy(settings); break;}
+            case 1 : {setGameModeNormal(settings); break;}
+            case 2 : {setGameModeHard(settings); break;}
+            case 3 : {setGameModeTwoPlayer(settings); break;}
+            case 4 : {glfwSetWindowShouldClose(window, GL_TRUE); return;} //exit button kill game loop
         }
         selected = 5; //set selected for in game resume option
         colBack = colBackGame; //set background colour to game background colour
         camera->setCamPos(0.0f, 0.0f, 0.05f); //focus camera with default in game zoom
+        gameMan = new GameManager(&settings); // TODO REMOVE NEW/DELETE... USE SMART POINTERS
+        onMenu = false;
+        isTwoPlayer = (selected == 3); // TODO ENUM FOR BUTTONS
     }
     animateBack.process(); //update background animation
 
@@ -285,7 +289,7 @@ void Manager :: draw(){
                 butBoardGame.draw(camera, true); //draw backing panel of pause/death menu
                 butReturn.draw(camera, isSelected(&butReturn));
                 if (dead) { //game is over show death screen
-                    if (config.twoPlayer){ //2 players so display winning player's number
+                    if (isTwoPlayer){ //2 players so display winning player's number
                         if (!winsReady){
                             setWinsButton(gameMan->getWinnerP1()); //set up win button's player number
                         }

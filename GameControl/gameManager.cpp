@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "visualColours.h"
 
-GameManager :: GameManager(GameConfig* config) {
+GameManager :: GameManager(mvd::game_ctrl::GameModeSettings* config) {
 
     //define world
     b2Vec2 gravity(0.0f,-9.81);

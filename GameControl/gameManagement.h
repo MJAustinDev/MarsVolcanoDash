@@ -74,7 +74,7 @@ class GameManager{
 
 public:
 
-    GameManager(GameConfig* config);
+    GameManager(mvd::game_ctrl::GameModeSettings* config);
     ~GameManager();
 
     bool process(bool* keys); //process game events

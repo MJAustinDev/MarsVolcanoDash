@@ -32,115 +32,104 @@ namespace mvd {
 namespace game_ctrl {
 
 /*
+TODO REWORD/YEET THIS
 Contains game mode configuration settings -- feel free to change and recompile on your own pull down!
 Most of the names are intuitive enough, but you can look at the gameConfig.h file for more details
 
 Kept most of the code sprawled out so it's easier to modify for more custom game modes.
 For example the i=0 to i<9 for loop could call a function that sets all meteor and boulder spawns to the same parameter passed values,
-but this way it's easier to add verity in spawns. e.g. config.spawns[0][i] = 128 + (i%4);
+but this way it's easier to add verity in spawns. e.g. p_settings.spawns[0][i] = 128 + (i%4);
 */
 
+// TODO NEW FUNC FOR SETTING BASED ON AN ENUM... HAVE CALLED DIRECTLY RATHER THAN PASSED AROUND
+
+
 //configure easy mode's settings
-void Manager :: configEasy(){
+void setGameModeEasy(GameModeSettings &p_settings) {
 
-    config.twoPlayer = false;
+    p_settings.twoPlayer = false;
 
-    config.spawnTimes[0] = 3000;
-    config.maxSizes[0] = 2;
-    config.forces[0] = 1000;
+    p_settings.spawnTimes[0] = 3000;
+    p_settings.maxSizes[0] = 2;
+    p_settings.forces[0] = 1000;
 
-    config.spawnTimes[1] = 2000;
-    config.maxSizes[1] = 2;
-    config.forces[1] = 2250;
+    p_settings.spawnTimes[1] = 2000;
+    p_settings.maxSizes[1] = 2;
+    p_settings.forces[1] = 2250;
 
     for (int i=0;i<9;i++){
-        config.ttls[0][i] = randRanged(config.spawnTimes[0],(4*config.spawnTimes[0]));
-        config.spawns[0][i] = 128;
-        config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
-        config.spawns[1][i] = 96;
+        p_settings.ttls[0][i] = randRanged(p_settings.spawnTimes[0],(4*p_settings.spawnTimes[0]));
+        p_settings.spawns[0][i] = 128;
+        p_settings.ttls[1][i] = randRanged(p_settings.spawnTimes[1],(4*p_settings.spawnTimes[1]));
+        p_settings.spawns[1][i] = 96;
     }
-    config.lavaSpeed = 0.1f;
-
-    gameMan = new GameManager(&config);
-    onMenu = false;
-
+    p_settings.lavaSpeed = 0.1f;
 }
 
 //configure normal mode's settings
-void Manager :: configNormal(){
+void setGameModeNormal(GameModeSettings &p_settings) {
 
-    config.twoPlayer = false;
+    p_settings.twoPlayer = false;
 
-    config.spawnTimes[0] = 1500;
-    config.maxSizes[0] = 5;
-    config.forces[0] = 3000;
+    p_settings.spawnTimes[0] = 1500;
+    p_settings.maxSizes[0] = 5;
+    p_settings.forces[0] = 3000;
 
-    config.spawnTimes[1] = 1000;
-    config.maxSizes[1] = 9;
-    config.forces[1] = 4500;
+    p_settings.spawnTimes[1] = 1000;
+    p_settings.maxSizes[1] = 9;
+    p_settings.forces[1] = 4500;
 
     for (int i=0;i<9;i++){
-        config.ttls[0][i] = randRanged(config.spawnTimes[0],(4*config.spawnTimes[0]));
-        config.spawns[0][i] = 128;
-        config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
-        config.spawns[1][i] = 96;
+        p_settings.ttls[0][i] = randRanged(p_settings.spawnTimes[0],(4*p_settings.spawnTimes[0]));
+        p_settings.spawns[0][i] = 128;
+        p_settings.ttls[1][i] = randRanged(p_settings.spawnTimes[1],(4*p_settings.spawnTimes[1]));
+        p_settings.spawns[1][i] = 96;
     }
-    config.lavaSpeed = 0.15f;
-
-    gameMan = new GameManager(&config);
-    onMenu = false;
-
+    p_settings.lavaSpeed = 0.15f;
 }
 
 //configure hard mode's settings
-void Manager :: configHard(){
+void setGameModeHard(GameModeSettings &p_settings) {
 
-    config.twoPlayer = false;
+    p_settings.twoPlayer = false;
 
-    config.spawnTimes[0] = 750;
-    config.maxSizes[0] = 9;
-    config.forces[0] = 6000;
+    p_settings.spawnTimes[0] = 750;
+    p_settings.maxSizes[0] = 9;
+    p_settings.forces[0] = 6000;
 
 
-    config.spawnTimes[1] = 500;
-    config.maxSizes[1] = 19;
-    config.forces[1] = 9000;
+    p_settings.spawnTimes[1] = 500;
+    p_settings.maxSizes[1] = 19;
+    p_settings.forces[1] = 9000;
 
     for (int i=0;i<9;i++){
-        config.ttls[0][i] = randRanged(config.spawnTimes[0],(4*config.spawnTimes[0]));
-        config.spawns[0][i] = 96;
-        config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
-        config.spawns[1][i] = 80;
+        p_settings.ttls[0][i] = randRanged(p_settings.spawnTimes[0],(4*p_settings.spawnTimes[0]));
+        p_settings.spawns[0][i] = 96;
+        p_settings.ttls[1][i] = randRanged(p_settings.spawnTimes[1],(4*p_settings.spawnTimes[1]));
+        p_settings.spawns[1][i] = 80;
     }
-    config.lavaSpeed = 0.2f;
-
-    gameMan = new GameManager(&config);
-    onMenu = false;
-
+    p_settings.lavaSpeed = 0.2f;
 }
 
 //configure two player mode's settings
-void Manager :: configTwoPlayer() {
+void setGameModeTwoPlayer(GameModeSettings &p_settings) {
 
-    config.twoPlayer = true;
-    config.spawnTimes[0] = 1500;
-    config.maxSizes[0] = 5;
-    config.forces[0] = 3000;
+    p_settings.twoPlayer = true;
+    p_settings.spawnTimes[0] = 1500;
+    p_settings.maxSizes[0] = 5;
+    p_settings.forces[0] = 3000;
 
-    config.spawnTimes[1] = 1000;
-    config.maxSizes[1] = 9;
-    config.forces[1] = 4500;
+    p_settings.spawnTimes[1] = 1000;
+    p_settings.maxSizes[1] = 9;
+    p_settings.forces[1] = 4500;
 
     for (int i=0;i<9;i++){
-        config.ttls[0][i] = randRanged(config.spawnTimes[0],(4*config.spawnTimes[0]));
-        config.spawns[0][i] = 128;
-        config.ttls[1][i] = randRanged(config.spawnTimes[1],(4*config.spawnTimes[1]));
-        config.spawns[1][i] = 96;
+        p_settings.ttls[0][i] = randRanged(p_settings.spawnTimes[0],(4*p_settings.spawnTimes[0]));
+        p_settings.spawns[0][i] = 128;
+        p_settings.ttls[1][i] = randRanged(p_settings.spawnTimes[1],(4*p_settings.spawnTimes[1]));
+        p_settings.spawns[1][i] = 96;
     }
-    config.lavaSpeed = 0.05f;
-
-    gameMan = new GameManager(&config);
-    onMenu = false;
+    p_settings.lavaSpeed = 0.05f;
 }
 
 }; // end of namespace game_ctrl

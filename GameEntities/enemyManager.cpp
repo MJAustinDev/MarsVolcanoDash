@@ -46,11 +46,11 @@ float cosignRuleAngle(b2Vec2 pos){
 
 }
 
-EnemyManager :: EnemyManager(b2World* w, Player** p, GameConfig* cfig){
+EnemyManager :: EnemyManager(b2World* w, Player** p, mvd::game_ctrl::GameModeSettings* cfig){
 
     world = w;
     player = p;
-    config = cfig;
+    config = new mvd::game_ctrl::GameModeSettings(*cfig);
 
     lavaX = (*player)->getPos().x - 128;
     lavaSpeed = config->lavaSpeed;
@@ -108,7 +108,7 @@ EnemyManager :: ~EnemyManager(){
     while(boulders.first!=nullptr){
         boulders.remFront();
     }
-
+    delete config;
 }
 
 //spawn a large enemy type, either meteor or boulder

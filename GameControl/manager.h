@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include <array>
 
-#include "gameConfig.h"
+#include "gameModeSettings.h"
 #include "gameManagement.h"
 
 #include "animation.h"
@@ -73,13 +73,6 @@ private:
 
     MenuButton* getButton(int id); //returns position of menu button going of button identifier
 
-    //configure the game's mode
-    // TODO MAKE FREE FUNCTIONS
-    void configEasy();
-    void configNormal();
-    void configHard();
-    void configTwoPlayer();
-
     void processMenu(bool* keys); //run menu control events
     void processGame(bool* keys); //run game events
 
@@ -93,11 +86,12 @@ private:
 
     int selected = 0; //button identifier of the currently selected button
 
-    GameConfig config; //handles game mode configuration (enemy size, etc)
+    //GameModeSettings m_settings; //handles game mode configuration (enemy size, etc)
     GameManager* gameMan = nullptr; //sets up the game
     GLFWwindow* window; //pointer to the window
 
     bool onMenu = true;
+    bool isTwoPlayer = false;
     // interactable menu buttons
     // store in an std::array have some access func???
     MenuButton butEasy;
