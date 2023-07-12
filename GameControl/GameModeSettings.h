@@ -60,7 +60,7 @@ struct GameModeSettings {
 };
 
 /**
- * @brief Sets the game mode settings depending on the passed enumeration
+ * Sets the game mode settings depending on the passed enumeration
  * @param p_gameMode Enumeration that determines the game mode
  * @param p_settings Game Mode Settings structure to be configured
  * @throws invalid_argument If an unsupported game mode is passed
@@ -68,25 +68,25 @@ struct GameModeSettings {
 void setGameMode(GameMode p_gameMode, GameModeSettings &p_settings);
 
 /**
- * @brief Modifies the values in the passed structure for easy mode
+ * Modifies the values in the passed structure for easy mode
  * @param p_settings Game Mode Settings structure to be configured
  */
 void setGameModeEasy(GameModeSettings &p_settings);
 
 /**
- * @brief Modifies the values in the passed structure for normal mode
+ * Modifies the values in the passed structure for normal mode
  * @param p_settings Game Mode Settings structure to be configured
  */
 void setGameModeNormal(GameModeSettings &p_settings);
 
 /**
- * @brief Modifies the values in the passed structure for hard mode
+ * Modifies the values in the passed structure for hard mode
  * @param p_settings Game Mode Settings structure to be configured
  */
 void setGameModeHard(GameModeSettings &p_settings);
 
 /**
- * @brief Modifies the values in the passed structure for two player mode
+ * Modifies the values in the passed structure for two player mode
  * @param p_settings Game Mode Settings structure to be configured
  */
 void setGameModeTwoPlayer(GameModeSettings &p_settings);
