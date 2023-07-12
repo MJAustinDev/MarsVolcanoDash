@@ -75,7 +75,7 @@ MenuOptions& operator --(MenuOptions &value) {
  * TODO WORD UP
  */
 struct MenuButton {
-    MenuButton(MenuOptions p_option, std::array<float,4> p_highlight, std::array<float,4> p_backing) :
+    MenuButton(MenuOptions p_option, std::array<float, 4> p_highlight, std::array<float,4> p_backing) :
         m_option(p_option), m_highlight(p_highlight), m_backing(p_backing) {};
 
     MenuOptions m_option;
@@ -101,20 +101,18 @@ public:
 private:
 
     MenuOptions m_selectedMenuButton;
-    std::array<MenuButton, 5> m_menuButtons;
-    // std::array<MenuButton, 2> m_pauseButtons; // TODO VERIFY THIS
+    const std::array<MenuButton, 5> m_menuButtons;
+    const std::array<MenuButton, 2> m_pauseButtons;
     // std::array<MenuButton, 4> m_visualButtons; // TODO VERIFY THIS
     std::unique_ptr<GameManager> m_gameManager;
-    bool m_isOnMenu;
+    bool m_isOnMenu; // TODO HAVE THESE HANDLED BY A GAME STATE ENUM... FUNNEL RESULT BACK TO MAIN LOOP
     bool m_isTwoPlayer;
-
-    // MenuButton* getButton(int id); //returns position of menu button going of button identifier
+    bool m_isDead;
+    bool m_isPaused;
 
     void processMenu(bool* keys); //run menu control events
     void processGame(bool* keys); //run game events
     void processButtonSelection(bool* keys, MenuOptions p_lower, MenuOptions p_higher); //handles button selection within given ID range
-
-    bool isSelected(MenuButton* button); //returns if the button is currently selected or not
 
     void setScoreButton(int points); //sets textures for score to be visualised
     void clearScoreButton(); //resets the score button so it is ready to be used again
@@ -128,9 +126,6 @@ private:
     bool winsReady = false;
 //    MenuButton butBoardMenu; //main menu backing board
  //   MenuButton butBoardGame; //gameplay menu backing board
-
-    bool paused = false; //game is paused
-    bool dead = false; //game is over
 
     Animation animateBack; //main menu's background animation controller
 

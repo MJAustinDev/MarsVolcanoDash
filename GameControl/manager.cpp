@@ -59,9 +59,15 @@ Manager::Manager() :
         MenuButton(MenuOptions::two_player_mode, kHighlights.at(3), kBackings.at(3)),
         MenuButton(MenuOptions::exit_game, kHighlights.at(4), kBackings.at(4))
     }),
+    m_pauseButtons({
+        MenuButton(MenuOptions::resume_game, kHighlights.at(5), kBackings.at(5)),
+        MenuButton(MenuOptions::main_menu, kHighlights.at(6), kBackings.at(6)),
+    }),
     m_gameManager(nullptr),
     m_isOnMenu(true),
-    m_isTwoPlayer(false) {
+    m_isTwoPlayer(false),
+    m_isDead(false),
+    m_isPaused(false) {
 
     // TODO LAMBDA FOR SETTING BUTTON TEXTURES
     // TODO COME BACK TO TEXTURES
@@ -85,6 +91,8 @@ void Manager::processButtonSelection(bool* keys, MenuOptions p_lower, MenuOption
     auto selected = static_cast<int>(m_selectedMenuButton);
     auto lower = static_cast<int>(p_lower);
     auto higher = static_cast<int>(p_higher);
+
+    assert(lower <= higher);
 
     if (keys[2]) { // W is pressed -- cycle upwards
         selected--;
@@ -114,14 +122,14 @@ void Manager::processMenu(bool* keys){
     if (keys[6]) { // ENTER is pressed -- user has selected an option
 
         GameModeSettings settings;
-        GameMode gameMode;
+        GameMode gameMode; // TODO SOME KIND OF CASE BETWEEN THE ENUM TYPES INSTEAD...
         switch (m_selectedMenuButton) {
             case MenuOptions::easy_mode : {gameMode = GameMode::easy; break;}
             case MenuOptions::normal_mode : {gameMode = GameMode::normal; break;}
             case MenuOptions::hard_mode : {gameMode = GameMode::hard; break;}
             case MenuOptions::two_player_mode : {gameMode = GameMode::two_player; break;}
             case MenuOptions::exit_game : {return;} // TODO NEW EXIT METHOD
-            default : {throw std::runtime_error("invalid menu selection");}
+            default : {throw std::runtime_error("invalid menu selection");} // should never be hit
         }
         // TODO BACK GROUND COLOURING
         setGameMode(gameMode, settings);
@@ -135,66 +143,37 @@ void Manager::processMenu(bool* keys){
 
 //process events when game is running
 void Manager :: processGame(bool* keys){
-/*
     //game is not over and not paused
-    if (!dead && !paused){
-        dead = gameMan->process(keys);
-        //ESCAPE is pressed -- user has paused game
-         if (keys[7]){
-            paused = true;
-         }
+    if (!m_isDead && !m_isPaused){
+        m_isDead = m_gameManager->process(keys); // TODO CHANGE THIS so new function returns instead
+        if (keys[7]){ // ESCAPE is pressed -- user has paused game
+            m_isPaused = true; // TODO WHEN USING NAMED VALUES FOR KEYS... m_isPaused == isPressedEsc... or something
+            m_selectedMenuButton = MenuOptions::resume_game;
+        }
     } else {
         //either dead or paused
-        if (dead){
-            buttonSelection(keys, 6, 6); //only return to menu is a valid option
-        } else {
-            buttonSelection(keys, 5, 6); //resume and return to menu are valid options
-        }
-        //ENTER is pressed -- user has selected an option
-        if (keys[6]){
-            switch (selected) {
-                case 6 : { //return to main menu
-                    dead = false;
-                    selected = 0;
-                    delete gameMan;
-                    gameMan = nullptr;
-                    onMenu = true;
-                    colBack = colBackMenu; //set to menu background colour
-                    camera->setCamPos(0.0f, 0.0f, 1.0f); //set camera position and zoom for the main menu
-                    if (scoreReady){clearScoreButton();} //reset score button's extra textures
-                    if (winsReady){clearWinsButton();} //reset wins button's extra textures
-                    //don't break as want to execute case 5 code as well
+        processButtonSelection(keys,
+                               (m_isDead) ? MenuOptions::main_menu : MenuOptions::resume_game,
+                               MenuOptions::main_menu);
+        if (keys[6]) {
+            switch (m_selectedMenuButton) {
+                case MenuOptions::main_menu : {
+                    m_isDead = false;
+                    m_gameManager.reset();
+                    m_selectedMenuButton = MenuOptions::easy_mode;
+                    m_isOnMenu = true;
+                    // fall through so resume_game code executes
                 }
-                case 5 : {paused = false; keys[6] = false; break;} //resume game
+                case MenuOptions::resume_game : {
+                    m_isPaused = false;
+                    keys[6] = false;
+                    break;
+                }
+                default : {throw std::runtime_error("invalid menu selection");} // should never be hit
             }
         }
-    }*/
-}
-/*
-//return's a pointer to a button from its id
-MenuButton* Manager :: getButton(int id){
-    switch(id){
-        case 0 : {return &butEasy;}
-        case 1 : {return &butNorm;}
-        case 2 : {return &butHard;}
-        case 3 : {return &butTwoPlay;}
-        case 4 : {return &butExit;}
-        case 5 : {return &butResume;}
-        case 6 : {return &butReturn;}
-        case 7 : {return &butScore;}
-        case 8 : {return &butWins;}
-        case 9 : {return &butBoardMenu;}
-        case 10 : {return &butBoardGame;}
-        default : {return nullptr;}
     }
 }
-
-
-//returns if a button is selected or not, used on current graphics system
-bool Manager :: isSelected(MenuButton* button){
-    return (button->m_id == selected);
-}
-*/
 
 /* sets the texture on the score button to display the players score
 does so by repeatedly adding the final digit to the back of the button space
@@ -260,44 +239,51 @@ void Manager :: clearWinsButton(){
 }
 
 */
+
+// TODO THIS UP PROPERLY
+void drawButton(Camera &p_camera, MenuButton &p_button, bool p_highlight) {
+    float colour[4] = COLOUR_PURPLE;
+    float backColour[4] = COLOUR_PURPLE_BUTTON;
+    if (p_highlight) {
+        for (int i=0;i<3;i++){
+            colour[i] *= 0.5f; //dull main colour if not selected
+        }
+    }
+    //draw highlight then backing panel over it
+    p_camera.drawPureRect(colour, p_button.m_highlight);
+    p_camera.drawPureRect(backColour, p_button.m_backing);
+}
+
 // draws either the menu or the running game
 void Manager :: draw(Camera &p_camera) {
 
     if (m_isOnMenu) {
         animateBack.draw(p_camera);
         // TODO draw back menu
-
-        // TODO wrap this into a function
         for (auto menuButton : m_menuButtons) {
-            //set button's draw colours
-            float colour[4] = COLOUR_PURPLE;
-            float backColour[4] = COLOUR_PURPLE_BUTTON;
-            if (menuButton.m_option != m_selectedMenuButton) {
-                for (int i=0;i<3;i++){
-                    colour[i] *= 0.5f; //dull main colour if not selected
-                }
-            }
-
-            //draw highlight then backing panel over it
-            p_camera.drawPureRect(colour, menuButton.m_highlight);
-            p_camera.drawPureRect(backColour, menuButton.m_backing);
-            // TODO TEXTURES...
+            drawButton(p_camera, menuButton, (menuButton.m_option != m_selectedMenuButton));
         }
     } else {
         // TODO game drawing
+        if (!m_isDead && !m_isPaused) {
+            p_camera.processInput(); // only move the camera if game is running
+        }
+
+        m_gameManager->draw(&p_camera);
+
+        if (m_isDead || m_isPaused){
+            // draw pause menu
+            for (auto pauseButton : m_pauseButtons) {
+                drawButton(p_camera, pauseButton, (pauseButton.m_option != m_selectedMenuButton));
+            }
+        }
     }
 
     /*
     if (timerDraw < glfwGetTime()) {
 
         if (onMenu){ //drawing main menu
-            animateBack.draw(camera); //draw back ground splash animation
-            butBoardMenu.draw(camera, true); //true so will glow
-            //draw all 5 main menu buttons
-            for (int i=0;i<5;i++){
-                MenuButton* but = getButton(i);
-                but->draw(camera, isSelected(but));
-            }
+
         } else { //drawing gameplay
             if (!dead && !paused){
                 camera->processInput(); //let camera move if player is not dead and if game is not paused
