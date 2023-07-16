@@ -24,24 +24,27 @@ SOFTWARE.
 
 */
 
+#include <cassert>
 
-#include "gameManagement.h"
 #include "chunk.h"
+#include "rangedRandom.h"
 
 namespace mvd {
 
 namespace game_ctrl {
 
-Chunk :: Chunk(b2World* w, int segID, GLfloat x, GLfloat y){
+Chunk::Chunk(b2World* p_world, int p_id, b2Vec2 p_pos) :
+    m_changeInY(0.0f),
+    m_body(nullptr),
+    m_shapes() {
 
-    world = w;
     b2BodyDef defBody;
     defBody.type = b2_staticBody;
-    defBody.position.Set(x, y);
-    body = world->CreateBody(&defBody);
+    defBody.position = p_pos;
+    m_body = p_world->CreateBody(&defBody);
 
     //define shapes via switch
-    switch(segID){
+    switch(p_id){
         case -1 : {defSegmentStart(); break;}
         case 0 : {defSegment0(); break;}
         case 1 : {defSegment1(); break;}
@@ -54,69 +57,68 @@ Chunk :: Chunk(b2World* w, int segID, GLfloat x, GLfloat y){
     }
 }
 
-
-Chunk :: ~Chunk(){
-    world->DestroyBody(body); //body has to be destroyed by the b2World
+Chunk::~Chunk() {
+    // must clear box2d body via box2d destructors
+    m_body->GetWorld()->DestroyBody(m_body);
 }
 
-//camera tries to draw chunk to world
-void Chunk :: draw(Camera* camera){
+b2Vec2 Chunk::getPosition() {
+    return m_body->GetPosition();
+}
 
-    //cycle through and draw all attached shapes inside of the linked list
+float Chunk::getChangeInY() {
+    return m_changeInY;
+}
+
+void Chunk::draw(Camera &p_camera) {
+
+    // cycle through and draw all attached shapes inside of the list
     for (auto &shape : m_shapes) {
         // TODO REWORD THIS..
         float baseColour[4] = {0.73f, 0.0f, 0.0f, 1.0f}; // CURSED
-        float shade = 1.0f - camera->getGlow();
+        float shade = 1.0f - p_camera.getGlow();
 
         glBegin(GL_POLYGON);
             glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, baseColour[3]);
             for (int i=0; i<shape.m_count; i++) {
-                camera->placePoint(camera->getCamBodyPos(body), shape.m_points.at(i));
+                p_camera.placePoint(p_camera.getCamBodyPos(m_body), shape.m_points.at(i));
             }
         glEnd();
     }
 }
 
-/**
- * TODO WORD UP
- */
 void Chunk::addShape(std::array<b2Vec2, 8> p_points, int p_count, int p_id) {
     b2PolygonShape shape;
     shape.Set(p_points.begin(), p_count);
-    body->CreateFixture(&shape, 0.0f);
+    m_body->CreateFixture(&shape, 0.0f);
 
     m_shapes.push_back(DrawShape(p_points, p_count, p_id));
 }
 
-//adds a rock (series of connected shapes with varying height) over a space on the main chunk ground
-/*
-x - x position relative to chunk's b2body
-y - series of y coordinates that represent the upper edge of the chunk's ground (series for slopped main chunks)
-num - number of 2 meter separated points to build the rock from
-minMag - minimum size of rock points off the ground
-mag - passed as maximum magnitude that points of the rock should reach off the ground
-*/
-void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
+void Chunk::addRock(float p_x, std::vector<float> &p_yCoords, std::vector<float> &p_magnitudes, float p_minimumMagnitude) {
+    // y coordinate and magnitude vectors must be equal
+    assert(p_yCoords.size() == p_magnitudes.size());
 
-    //increase all magnitudes randomly
-    for (int i=0;i<num;i++){
-        if (mag[i] != 0.0f){
-            mag[i] = randRanged(minMag,mag[i]);
+    // set all magnitures within the min to ... REWORD
+    for (auto &magnitude : p_magnitudes) {
+        if (magnitude != 0.0f) {
+            magnitude = randRanged(p_minimumMagnitude, magnitude);
         }
     }
 
-    //breaking down into segments so concave shapes can be draw as multiple convex without having to program triangle splitting on the graphics front
-    b2Vec2 points[8];
-    for (int i=0;i<num-1;i++){
-        points[0].Set(x, y[i]);
-        points[1].Set(x+2, y[i+1]);
-        points[2].Set(x+2, y[i+1] + mag[i+1]);
-        points[3].Set(x, y[i] + mag[i]);
-        // addShape(points, 4, 2);
-        x+=2;
+    for (unsigned int i=0; i < p_yCoords.size()-1; i++) {
+        std::array<b2Vec2, 8> points = {
+            b2Vec2(p_x, p_yCoords.at(i)),
+            b2Vec2(p_x+2, p_yCoords.at(i+1)),
+            b2Vec2(p_x+2, p_yCoords.at(i+1) + p_magnitudes.at(i+1)),
+            b2Vec2(p_x, p_yCoords.at(i) + p_magnitudes.at(i))
+        };
+        addShape(points, 4, 2);
+        p_x += 2.0f;
     }
 }
 
+// TODO RE THINK THIS
 std::array<b2Vec2, 8> getDefaultBase() {
     std::array<b2Vec2, 8> points = {
         b2Vec2(-32.0f, 0.0f),
@@ -127,15 +129,21 @@ std::array<b2Vec2, 8> getDefaultBase() {
     return points;
 }
 
-//just a flat platform used when invalid numbers are entered as segment identifier
-void Chunk :: defSegmentDefault(){
+// TODO RE THINK THIS
+void changeHeight(std::vector<float> &p_coords, float p_change) {
+    for (auto &coord: p_coords) {
+        coord += p_change;
+    }
+}
+
+// just a flat platform used when invalid numbers are entered as segment identifier
+void Chunk::defSegmentDefault() {
     std::array<b2Vec2, 8> points = getDefaultBase();
     addShape(points, 4, 0);
 }
 
-//define starting segment
-void Chunk :: defSegmentStart(){
-
+// define starting segment
+void Chunk::defSegmentStart() {
     // main base plate
     std::array<b2Vec2, 8> points = {
         b2Vec2(-200.0f, 0.0f),
@@ -179,24 +187,26 @@ void Chunk :: defSegmentStart(){
     addShape(points, 5, 1);
 }
 
-
-//flat base with randomly assigned rocks
-void Chunk :: defSegment0(){
+// flat base with randomly assigned rocks
+void Chunk::defSegment0() {
 
     std::array<b2Vec2, 8> points = getDefaultBase();
     addShape(points, 4, 0);
 
-    /* float x = -32;
-    float y[9] = {0,0,0,0,0,0,0,0,0};
-    for (int i=0;i<4;i++){
-        float mag[9] = {0,1,1,1,1,1,1,1,0};
-        addRock(x,y,9,0.2,mag);
-        x += 16;
-    } */
+    float x = -32.0f;
+    std::vector<float> yCoords(9, 0.0f);
+
+    for (int i=0; i < 4; i++) {
+        std::vector<float> magnitudes = {
+            0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f
+        };
+        addRock(x, yCoords, magnitudes, 0.2f);
+        x += 16.0f;
+    }
 }
 
-//downward slope
-void Chunk :: defSegment1(){
+// downward slope
+void Chunk::defSegment1() {
 
     std::array<b2Vec2, 8> points = {
         b2Vec2(-32.0f, 0.0f),
@@ -206,23 +216,24 @@ void Chunk :: defSegment1(){
     };
     addShape(points, 4, 0);
 
-    /*
-    float x = -32;
-    float y[9] = {0, -0.5, -1, -1.5, -2, -2.5, -3, -3.5, -4};
-    for (int i=0;i<4;i++){
-        float mag[9] = {0,1,1,1,1,1,1,1,0};
-        addRock(x,y,9,0.2,mag);
-        x += 16;
-        for (int j=0;j<9;j++){
-            y[j] -= 4;
-        }
+    float x = -32.0f;
+    std::vector<float> yCoords = {
+        0.0f, -0.5f, -1.0f, -1.5f, -2.0f, -2.5f, -3.0f, -3.5f, -4.0f
+    };
+
+    for (int i=0; i < 4; i++) {
+        std::vector<float> magnitudes = {
+            0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f
+        };
+        addRock(x, yCoords, magnitudes, 0.2f);
+        x += 16.0f;
+        changeHeight(yCoords, -4.0f);
     }
-    */
-    changeY = -16;
+    m_changeInY = -16;
 }
 
-//upward slope
-void Chunk :: defSegment2(){
+// upward slope
+void Chunk::defSegment2() {
 
     std::array<b2Vec2, 8> points = {
         b2Vec2(-32.0f, 0.0f),
@@ -232,22 +243,24 @@ void Chunk :: defSegment2(){
     };
     addShape(points, 4, 0);
 
-    /*
-    float x = -32;
-    float y[9] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4};
-    for (int i=0;i<4;i++){
-        float mag[9] = {0,1,1,1,1,1,1,1,0};
-        addRock(x,y,9,0.2,mag);
-        x += 16;
-        for (int j=0;j<9;j++){
-            y[j] += 4;
-        }
-    } */
-    changeY = 16;
+    float x = -32.0f;
+    std::vector<float> yCoords = {
+        0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f
+    };
+
+    for (int i=0; i < 4; i++) {
+        std::vector<float> magnitudes = {
+            0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f
+        };
+        addRock(x, yCoords, magnitudes, 0.2f);
+        x += 16.0f;
+        changeHeight(yCoords, 4.0f);
+    }
+    m_changeInY = 16;
 }
 
-//greater downward slope with more ragid rocks
-void Chunk :: defSegment3(){
+// greater downward slope with more ragid rocks
+void Chunk::defSegment3() {
 
     std::array<b2Vec2, 8> points = {
         b2Vec2(-32.0f, 0.0f),
@@ -255,24 +268,26 @@ void Chunk :: defSegment3(){
         b2Vec2(32.0f, -35.0f),
         b2Vec2(32.0f, -32.0f)
     };
-    addShape(points,4,0);
+    addShape(points, 4, 0);
 
-    /*
-    float x = -32;
-    float y[9] = {0, -1, -2, -3, -4, -5, -6, -7, -8};
-    for (int i=0;i<4;i++){
-        float mag[9] = {0,2,4,1,3,1,4,2,0};
-        addRock(x,y,9,0.2,mag);
-        x += 16;
-        for (int j=0;j<9;j++){
-            y[j] -= 8;
-        }
-    }*/
-    changeY = -32;
+    float x = -32.0f;
+    std::vector<float> yCoords = {
+        0.0f, -1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f, -8.0f
+    };
+
+    for (int i=0; i < 4; i++) {
+        std::vector<float> magnitudes = {
+            0.0f, 2.0f, 4.0f, 1.0f, 3.0f, 1.0f, 4.0f, 2.0f, 0.0f
+        };
+        addRock(x, yCoords, magnitudes, 0.2f);
+        x += 16.0f;
+        changeHeight(yCoords, -8.0f);
+    }
+    m_changeInY = -32;
 }
 
-//flat base with more raged randomly assigned rocks
-void Chunk :: defSegment4(){
+// flat base with more raged randomly assigned rocks
+void Chunk::defSegment4() {
 
     std::array<b2Vec2, 8> points = {
         b2Vec2(-32,0.0),
@@ -280,21 +295,22 @@ void Chunk :: defSegment4(){
         b2Vec2(32,-3.0),
         b2Vec2(32,0.0)
     };
-    addShape(points,4,0);
+    addShape(points, 4, 0);
 
-    /*
-    float x = -32;
-    float y[9] = {0,0,0,0,0,0,0,0,0};
+    float x = -32.0f;
+    std::vector<float> yCoords(9, 0.0f);
 
-    for (int i=0;i<4;i++){
-        float mag[9] = {0,1,2,3,2,3,2,1,0};
-        addRock(x,y,9,0.2,mag);
-        x += 16;
-    }*/
+    for (int i=0; i < 4; i++) {
+        std::vector<float> magnitudes = {
+            0.0f, 1.0f, 2.0f, 3.0f, 2.0f, 3.0f, 2.0f, 1.0f, 0.0f
+        };
+        addRock(x, yCoords, magnitudes, 0.2f);
+        x += 16.0f;
+    }
 }
 
-//ramp with a pit
-void Chunk :: defSegment5(){
+// ramp with a pit
+void Chunk::defSegment5() {
 
     std::array<b2Vec2, 8> points = {
         b2Vec2(-32.0f, 0.0f),
@@ -302,14 +318,16 @@ void Chunk :: defSegment5(){
         b2Vec2(32.0f, -3.0f),
         b2Vec2(32.0f, 0.0f)
     };
-    addShape(points,4,0);
+    addShape(points, 4, 0);
 
-    //rocks in the gap, want drawn under both ramps
-   // float y1[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-  //  float mag1[9] = {5,4,3,2,1,1,1,2,3};
-   // addRock(0.0f, y1, 9, 0.2f, mag1);
+    // rocks in the gap, want drawn under both ramps
+    std::vector<float> yCoords(9, 0.0f);
+    std::vector<float> magnitudes = {
+        5.0f, 4.0f, 3.0f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 3.0f
+    };
+    addRock(0.0f, yCoords, magnitudes, 0.2f);
 
-    //ramp up
+    // ramp up
     points = {
         b2Vec2(-32.0f, 0.0f),
         b2Vec2(0.0f, 10.0f),
@@ -317,12 +335,16 @@ void Chunk :: defSegment5(){
     };
     addShape(points, 3, -1);
 
+    yCoords = {
+        0.0f, 0.625f, 1.25f, 1.875f, 2.5f, 3.125f,
+        3.75f, 4.375f, 5.0f, 5.625f, 6.25f, 6.875f,
+        7.5f, 8.125f, 8.75f, 9.375f, 10.0f
+    };
+    magnitudes = std::vector<float>(17 ,1.0f);
+    magnitudes.at(0) = 0.0f; // {0.0f, 1.0f, 1.0f, ..., 1.0f}
+    addRock(-32.0f, yCoords, magnitudes, 0.2f);
 
-    //float y2[17] = {0, 0.625, 1.25, 1.875, 2.5, 3.125, 3.75, 4.375, 5, 5.625, 6.25, 6.875, 7.5, 8.125, 8.75, 9.375, 10};
-   // float mag2[17] = {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-   // addRock(-32.0f, y2, 17, 0.2f, mag2);
-
-    //down ramp
+    // down ramp
     points = {
         b2Vec2(16.0f, 6.0f),
         b2Vec2(15.7f, 0.0f),
@@ -330,11 +352,13 @@ void Chunk :: defSegment5(){
     };
     addShape(points, 3, -1);
 
-
-   // float y3[9] = {6, 5.25, 4.5, 3.75, 3, 2.25, 1.5, 0.75, 0};
-  //  float mag3[9] = {0,1,1,1,1,1,1,1,0};
-   // addRock(16.0f, y3, 9, 0.2f, mag3);
-
+    yCoords = {
+        6.0f, 5.25f, 4.5f, 3.75f, 3.0f, 2.25f, 1.5f, 0.75f, 0.0f
+    };
+    magnitudes = {
+        0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f
+    };
+    addRock(16.0f, yCoords, magnitudes, 0.2f);
 }
 
 }; // end of namespace game_ctrl

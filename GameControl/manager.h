@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2022-23 Matthew James Austin
+Copyright (c) 2022-2023 Matthew James Austin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -87,6 +87,29 @@ enum class GameState {
  */
 class Manager {
 
+public:
+
+    Manager();
+    ~Manager() = default;
+
+    /**
+     * Processes all game events
+     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
+     */
+    void process(bool* keys);
+
+    /**
+     * Draws the game to the screen
+     * @param p_camera camera used to draw the world
+     */
+    void draw(Camera &p_camera);
+
+    /**
+     * Getter for games current state
+     * @returns The game manger's current game state
+     */
+    GameState getGameState();
+
 private:
 
     MenuOptions m_selectedMenuButton;
@@ -122,29 +145,6 @@ private:
     void processButtonSelection(bool* keys, MenuOptions p_lower, MenuOptions p_higher);
 
     Animation animateBack; // TODO REFACTOR THIS and then correctly name and place here
-
-public:
-
-    Manager();
-    ~Manager() = default;
-
-    /**
-     * Processes all game events
-     * @param keys ptr to key booleans, TODO REPLACE THIS SYSTEM
-     */
-    void process(bool* keys);
-
-    /**
-     * Draws the game to the screen
-     * @param p_camera camera used to draw the world
-     */
-    void draw(Camera &p_camera);
-
-    /**
-     * Getter for games current state
-     * @returns The game manger's current game state
-     */
-    GameState getGameState();
 
 }; // end of Manager
 

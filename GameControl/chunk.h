@@ -27,47 +27,70 @@ SOFTWARE.
 #pragma once
 
 #include <RecompileBox2d/box2d/box2d.h>
-
 #include <array>
+#include <list>
+#include <vector>
 
 #include "camera.h"
-#include "linkedList.h" // TODO REMOVE THIS
 
 namespace mvd {
 
 namespace game_ctrl {
 
-//world chunk, contains terrain for player car to drive across
-// TODO MOVE TO OWN FILE
+/**
+ * Chunk class handles allocation, deallocation and drawing of game terrain.
+ */
 class Chunk{
-
-friend class GameManager; // YEETE
-friend class Node<Chunk>; // YEET
 
 public:
 
-    Chunk(b2World* p_world, int p_id, float p_posX, float p_posY);
+    /**
+     * Constructor for Chunk objects
+     * @param p_world pointer to the box2d world that the chunk exists within
+     * @param p_id chunk id, used to generate different chunks
+     * @param p_pos position in the world that the body exists at
+     */
+    Chunk(b2World* p_world, int p_id, b2Vec2 p_pos);
     ~Chunk();
+
+    /**
+     * Getter for chunk's position
+     * @returns position of chunk's body relative to the world
+     */
+    b2Vec2 getPosition();
+
+    /**
+     * Getter for chunk's y axis change
+     * @returns change in y axis due to chunk's gradient
+     */
+    float getChangeInY();
+
+    /**
+     * Draws the chunk to the screen
+     * @param p_camera camera used to draw the chunk
+     */
+    void draw(Camera &p_camera);
 
 private:
 
     /**
-     * TODO WORD UP
+     * Structure that contains draw information for all attached shapes
      */
     struct DrawShape {
         DrawShape(std::array<b2Vec2, 8> &p_points, int p_count, int p_id) :
             m_points(p_points), m_count(p_count), m_id(p_id) {};
 
         std::array<b2Vec2, 8> m_points;
-        int m_count = 0;
+        int m_count;
         int m_id;
     };
 
-    b2Vec2 getPos(){return body->GetPosition();};
-
-    void draw(Camera* camera); //draw each shape attached to main body
+    float m_changeInY = 0.0f;
+    b2Body* m_body;
+    std::list<DrawShape> m_shapes;
 
     //define what the world chunk should be
+    // TODO RECONSIDER... NOT IDEAL... MAYBE USE RUN TIME POLYGNOMIALISM?? MORE CONTROL/BETTER CONTROL OVER DRAWING TOO?...
     void defSegmentDefault();
     void defSegmentStart();
     void defSegment0();
@@ -77,17 +100,25 @@ private:
     void defSegment4();
     void defSegment5();
 
+    /**
+     * Adds a new piece of terrain to the chunk.
+     * Handles box2d fixture generation and stores the shape's points for drawing
+     * @param p_points array containing all the points that make up the shape
+     * @param p_count total number of points that the shape has
+     * @param p_id unique id that effects drawing of the shape
+     */
     void addShape(std::array<b2Vec2, 8> p_points, int p_count, int p_id);
-    //void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
-    void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
 
-    b2World* world;
-    b2Body* body;
-    std::list<DrawShape> m_shapes;
-    //LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
-    float changeY = 0.0f;
+    /**
+     * Adds a series of small surface shapes to a chunk (rocks/dust)
+     * @param p_x starting x coordinate of the series
+     * @param p_yCoords vector containing all y coordinates along surface of the chunk
+     * @param p_magnitudes vector containg maximum height of the rock at each y coordinate
+     * @param p_minimumMagnitude minimum height of any rock
+     */
+    void addRock(float p_x, std::vector<float> &p_yCoords, std::vector<float> &p_magnitudes, float p_minimumMagnitude);
 
-};
+}; // end of class Chunk
 
 }; // end of namespace game_ctrl
 

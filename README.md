@@ -24,7 +24,7 @@ An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 - - game control
 - - - ~~manager~~
 - - - gamemanger .. DOING NOW
-- - - chunk .. DOING NOW
+- - - ~~chunk~~
 - - - configGameMode/gameModeSettings
 - - - entry
 - - game entities

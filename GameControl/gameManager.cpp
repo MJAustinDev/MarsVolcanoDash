@@ -68,11 +68,11 @@ GameManager :: ~GameManager() {
 //adds new chunk to the linked list, handles memory allocation and pointers
 void GameManager :: addChunk(int chunkID){
 
-    Chunk* chunk = new Chunk(&m_world, chunkID, nextChunkX, nextChunkY); //define chunk in memory
+    Chunk* chunk = new Chunk(&m_world, chunkID, b2Vec2(nextChunkX, nextChunkY)); //define chunk in memory
     chunks.addEnd(chunk); //add to the linked list
     //update next chunk position
-    nextChunkX += 64.0f;
-    nextChunkY += chunk->changeY;
+    nextChunkX += 64.0f; // all chunks are assumed to be 64.0f meters long
+    nextChunkY += chunk->getChangeInY();
     chunk = nullptr; //clear pointer, chunk is stored in the linked list
 
 }
@@ -109,7 +109,7 @@ void GameManager :: processChunkAddition() {
     //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
     while (nextChunkX<=playerLead->getPos().x+256){
         addChunk(randModRanged(6)); // USE CONSTANT FOR MAXIMUM...
-        // addChunk(-2); // TODO RE IMPLEMENT RANGED
+        // addChunk(0); // TODO RE IMPLEMENT RANGED
     }
 }
 
@@ -120,7 +120,7 @@ void GameManager :: processChunkRemoval() {
         bool repeat = true;
         //remove chunks from the front of the linked list until no chunks are behind the lava
         while (repeat){
-            if (chunks.first->obj->getPos().x <= m_enemyManager.lavaX - 128) {
+            if (chunks.first->obj->getPosition().x <= m_enemyManager.lavaX - 128) {
                 chunks.remFront();
                 if (chunks.first==nullptr){
                     repeat = false; //safety catch, shouldn't be hit. Was an issue before death mechanic
@@ -150,7 +150,7 @@ void GameManager :: draw(Camera* camera){
     //draw terrain
     if (chunks.resetCycle()){
         do {
-            chunks.cycle->obj->draw(camera);
+            chunks.cycle->obj->draw(*camera);
         } while (chunks.cycleUp());
     }
 }
