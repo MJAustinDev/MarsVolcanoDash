@@ -161,7 +161,7 @@ class GameManager; // TODO FIX THIS...
 };};
 
 
-
+// TODO YEET NAME SPACE AROUND PLAYER... ONCE IN SAME SPACE
 
 //controls enemy spawning and behaviour
 class EnemyManager {
@@ -170,7 +170,7 @@ friend class mvd::game_ctrl::GameManager; // CURSED... TODO YEET THIS FRIEND STU
 
 private:
 
-    EnemyManager(b2World* w, Player** p, mvd::game_ctrl::GameModeSettings* cfig);
+    EnemyManager(b2World* w, mvd::game_entity::Player** p, mvd::game_ctrl::GameModeSettings* cfig);
     ~EnemyManager();
 
     void attemptSpawn(); //spawn big enemy if correct ticks to live have reached zero
@@ -186,7 +186,7 @@ private:
     mvd::game_ctrl::GameModeSettings* config; //game configuration settings pointer, controls size of enemies, their spawn times, etc
 
     b2World* world;
-    Player** player; //ultimately points to the player in the lead
+    mvd::game_entity::Player** player; //ultimately points to the player in the lead
 
     float lavaX; //x position of lava
     float lavaSpeed; //speed lava moves along

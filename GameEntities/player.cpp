@@ -24,7 +24,11 @@ SOFTWARE.
 
 */
 
-#include "gameEntities.h"
+#include "player.h"
+
+namespace mvd {
+
+namespace game_entity {
 
 Player :: Player(b2World* world, float* col){
 
@@ -220,3 +224,7 @@ void Player :: draw(Camera* camera){
         posBody = camera->getCamBodyPos(wheelBack);
     }
 }
+
+}; // end of namespace game_entity
+
+}; // end of namespace mvd

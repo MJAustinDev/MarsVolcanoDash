@@ -45,7 +45,7 @@ float cosignRuleAngle(b2Vec2 pos){
 
 }
 
-EnemyManager :: EnemyManager(b2World* w, Player** p, mvd::game_ctrl::GameModeSettings* cfig){
+EnemyManager :: EnemyManager(b2World* w, mvd::game_entity::Player** p, mvd::game_ctrl::GameModeSettings* cfig){
     world = w;
     player = p;
     config = new mvd::game_ctrl::GameModeSettings(*cfig);

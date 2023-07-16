@@ -66,9 +66,9 @@ private:
     float score = 0.0; //end score of the player
 
     b2World m_world;
-    Player* player; // TODO CHANGE type
-    Player* player2; // TODO CHANGE type
-    Player* playerLead; // TODO YEET points to who ever is in the lead
+    game_entity::Player* player; // TODO CHANGE type
+    game_entity::Player* player2; // TODO CHANGE type
+    game_entity::Player* playerLead; // TODO YEET points to who ever is in the lead
     EnemyManager m_enemyManager;
 
 };

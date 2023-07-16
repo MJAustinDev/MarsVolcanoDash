@@ -26,6 +26,14 @@ SOFTWARE.
 
 #pragma once
 
+#include <RecompileBox2d/box2d/box2d.h>
+
+#include "camera.h"
+
+namespace mvd {
+
+namespace game_entity {
+
 //player's car class
 class Player {
 
@@ -57,3 +65,7 @@ private:
     b2WheelJoint* motorFront;
 
 };
+
+}; // end of namespace game_entity
+
+}; // end of namespace mvd

@@ -44,10 +44,10 @@ GameManager :: GameManager(mvd::game_ctrl::GameModeSettings* p_settings) :
 
     //define player // TODO YEET THIS code...
     float colour[4] = COLOUR_PURPLE;
-    player = new Player(&m_world, colour);
+    player = new game_entity::Player(&m_world, colour);
     if (p_settings->twoPlayer){
         float colour2[4] = COLOUR_ORANGE;
-        player2 = new Player(&m_world, colour2);
+        player2 = new game_entity::Player(&m_world, colour2);
     } else {
         player2 = nullptr;
     }
