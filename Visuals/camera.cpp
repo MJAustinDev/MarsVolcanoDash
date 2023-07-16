@@ -37,7 +37,7 @@ void Camera :: processInput(){
     if (*(keyMinus)){
         zoom = zoom - 0.001;
     }
-    catchZoom();
+    // catchZoom(); // TODO REIMPLENT
 }
 
 //set camera position and zoom

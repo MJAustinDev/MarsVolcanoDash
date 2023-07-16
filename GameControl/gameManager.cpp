@@ -41,7 +41,6 @@ GameManager :: GameManager(mvd::game_ctrl::GameModeSettings* p_settings) :
     addChunk(-1); //starting chunk // TODO USE NAMED ENUM...
     addChunk(-2); //flat platform
     addChunk(-2); //flat platform
-    addChunk(-2); //flat platform
 
     //define player // TODO YEET THIS code...
     float colour[4] = COLOUR_PURPLE;
@@ -56,29 +55,19 @@ GameManager :: GameManager(mvd::game_ctrl::GameModeSettings* p_settings) :
 }
 
 GameManager :: ~GameManager() {
-
-    while (chunks.first!=nullptr){
-        chunks.remFront(); //have to destroy via linked list to prevent world attempting to delete bodies multiple times
-    }
-
+    m_chunks.clear(); // must deallocate before b2World is destroyed
     delete player; // TODO YEET
-
 }
 
 //adds new chunk to the linked list, handles memory allocation and pointers
-void GameManager :: addChunk(int chunkID){
-
-    Chunk* chunk = new Chunk(m_world, chunkID, b2Vec2(nextChunkX, nextChunkY)); //define chunk in memory
-    chunks.addEnd(chunk); //add to the linked list
-    //update next chunk position
-    nextChunkX += 64.0f; // all chunks are assumed to be 64.0f meters long
-    nextChunkY += chunk->getChangeInY();
-    chunk = nullptr; //clear pointer, chunk is stored in the linked list
-
+void GameManager :: addChunk(int chunkID) {
+    m_chunks.push_back(std::make_unique<Chunk>(m_world, chunkID, b2Vec2(nextChunkX, nextChunkY)));
+    nextChunkX += 64.0f;
+    nextChunkY += m_chunks.back()->getChangeInY();
 }
 
 //handle game events
-bool GameManager :: process(bool* keys){
+bool GameManager :: process(bool* keys) {
     //handle user input
     player->processInput(keys[2], keys[3], keys[0], keys[1]);
     score = player->getPos().x;
@@ -107,7 +96,7 @@ bool GameManager :: process(bool* keys){
 //check if new terrain should be added
 void GameManager :: processChunkAddition() {
     //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
-    while (nextChunkX<=playerLead->getPos().x+256){
+   while (nextChunkX<=playerLead->getPos().x+256){
         addChunk(randModRanged(6)); // USE CONSTANT FOR MAXIMUM...
         // addChunk(0); // TODO RE IMPLEMENT RANGED
     }
@@ -115,25 +104,14 @@ void GameManager :: processChunkAddition() {
 
 //removes chunks if they are 128 meters behind the lava
 void GameManager :: processChunkRemoval() {
-    //safety catch, but chunks should never be empty (needed in very early testing stages, but you cant die being too careful)
-    if (chunks.first!=nullptr){
-        bool repeat = true;
-        //remove chunks from the front of the linked list until no chunks are behind the lava
-        while (repeat){
-            if (chunks.first->obj->getPosition().x <= m_enemyManager.lavaX - 128) {
-                chunks.remFront();
-                if (chunks.first==nullptr){
-                    repeat = false; //safety catch, shouldn't be hit. Was an issue before death mechanic
-                }
-            } else {
-                repeat = false;
-            }
-        }
+    assert(!m_chunks.empty());
+    while (m_chunks.front()->getPosition().x <= m_enemyManager.lavaX -128) {
+        m_chunks.pop_front();
     }
 }
 
 //draw world and game objects to the screen
-void GameManager :: draw(Camera* camera){
+void GameManager :: draw(Camera* camera) {
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
 
     m_enemyManager.draw(camera); //draw enemies before player and terrain
@@ -148,10 +126,8 @@ void GameManager :: draw(Camera* camera){
     camera->drawDust(); //draw dust storm over all entities and lava
 
     //draw terrain
-    if (chunks.resetCycle()){
-        do {
-            chunks.cycle->obj->draw(*camera);
-        } while (chunks.cycleUp());
+    for (auto &chunk : m_chunks) {
+        chunk->draw(*camera);
     }
 }
 

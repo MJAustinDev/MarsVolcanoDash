@@ -27,6 +27,7 @@ SOFTWARE.
 #pragma once
 
 #include <list>
+#include <memory>
 
 #include "chunk.h"
 #include "gameEntities.h"
@@ -56,8 +57,8 @@ private:
     void processChunkAddition(); //check if new terrain needs to be added
     void processChunkRemoval(); //removes terrain if behind lava
 
-     LinkedList<Chunk> chunks; //stores terrain chunks in linked list // CHANGE TO STD LIST...
-    //std::list<chunk> m_chunks;
+     //LinkedList<Chunk> chunks; //stores terrain chunks in linked list // CHANGE TO STD LIST...
+    std::list<std::unique_ptr<Chunk>> m_chunks;
 
     float nextChunkX = 0.0f; //x position of the next chunk to be added
     float nextChunkY = 0.0f; //y position of the next chunk to be added
@@ -70,14 +71,6 @@ private:
     Player* playerLead; // TODO YEET points to who ever is in the lead
     EnemyManager m_enemyManager;
 
-
-    /*
-    b2World* world;
-    Player* player;
-    Player* player2;
-    Player* playerLead; //points to who ever is in the lead
-    EnemyManager* enemies; //handles all enemy activity
-    */
 };
 
 }; // end of namespace game_ctrl
