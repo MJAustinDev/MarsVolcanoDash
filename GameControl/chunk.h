@@ -26,6 +26,12 @@ SOFTWARE.
 
 #pragma once
 
+#include <RecompileBox2d/box2d/box2d.h>
+
+#include <array>
+
+#include "camera.h"
+#include "linkedList.h" // TODO REMOVE THIS
 
 namespace mvd {
 

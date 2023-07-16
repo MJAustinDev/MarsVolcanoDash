@@ -98,7 +98,7 @@ bool GameManager :: process(bool* keys){
     processChunkRemoval(); //remove old chunks if needed
 
     //check if game is over
-    if (score < (m_enemyManager.lavaX - 18.5f)){ //while in  game score is viewed as players x position
+    if (score < (m_enemyManager.lavaX - 18.5f)) { //while in  game score is viewed as players x position
         return true;
     }
     return false;
@@ -108,8 +108,8 @@ bool GameManager :: process(bool* keys){
 void GameManager :: processChunkAddition() {
     //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
     while (nextChunkX<=playerLead->getPos().x+256){
-        // addChunk(randModRanged(6)); // USE CONSTANT FOR MAXIMUM...
-        addChunk(-2); // TODO RE IMPLEMENT RANGED
+        addChunk(randModRanged(6)); // USE CONSTANT FOR MAXIMUM...
+        // addChunk(-2); // TODO RE IMPLEMENT RANGED
     }
 }
 
