@@ -68,7 +68,7 @@ GameManager :: ~GameManager() {
 //adds new chunk to the linked list, handles memory allocation and pointers
 void GameManager :: addChunk(int chunkID){
 
-    Chunk* chunk = new Chunk(&m_world, chunkID, b2Vec2(nextChunkX, nextChunkY)); //define chunk in memory
+    Chunk* chunk = new Chunk(m_world, chunkID, b2Vec2(nextChunkX, nextChunkY)); //define chunk in memory
     chunks.addEnd(chunk); //add to the linked list
     //update next chunk position
     nextChunkX += 64.0f; // all chunks are assumed to be 64.0f meters long

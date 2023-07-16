@@ -46,11 +46,11 @@ public:
 
     /**
      * Constructor for Chunk objects
-     * @param p_world pointer to the box2d world that the chunk exists within
+     * @param p_world box2d world that the chunk exists within
      * @param p_id chunk id, used to generate different chunks
      * @param p_pos position in the world that the body exists at
      */
-    Chunk(b2World* p_world, int p_id, b2Vec2 p_pos);
+    Chunk(b2World &p_world, int p_id, b2Vec2 p_pos);
     ~Chunk();
 
     /**

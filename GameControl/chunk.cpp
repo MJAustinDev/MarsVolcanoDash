@@ -33,7 +33,7 @@ namespace mvd {
 
 namespace game_ctrl {
 
-Chunk::Chunk(b2World* p_world, int p_id, b2Vec2 p_pos) :
+Chunk::Chunk(b2World &p_world, int p_id, b2Vec2 p_pos) :
     m_changeInY(0.0f),
     m_body(nullptr),
     m_shapes() {
@@ -41,7 +41,7 @@ Chunk::Chunk(b2World* p_world, int p_id, b2Vec2 p_pos) :
     b2BodyDef defBody;
     defBody.type = b2_staticBody;
     defBody.position = p_pos;
-    m_body = p_world->CreateBody(&defBody);
+    m_body = p_world.CreateBody(&defBody);
 
     //define shapes via switch
     switch(p_id){
