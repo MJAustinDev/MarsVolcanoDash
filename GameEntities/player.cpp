@@ -32,7 +32,7 @@ Player :: Player(b2World* world, float* col){
 
     //default spawn point
     float x = 0.0f;
-    float y = 5.0f;
+    float y = 15.0f;
     //set base colour
     for (int i=0;i<3;i++){
         colour[i] = col[i];

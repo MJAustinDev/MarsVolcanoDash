@@ -24,7 +24,6 @@ SOFTWARE.
 
 */
 
-
 #include "gameEntities.h"
 
 #include "visualColours.h"
@@ -47,12 +46,11 @@ float cosignRuleAngle(b2Vec2 pos){
 }
 
 EnemyManager :: EnemyManager(b2World* w, Player** p, mvd::game_ctrl::GameModeSettings* cfig){
-
     world = w;
     player = p;
     config = new mvd::game_ctrl::GameModeSettings(*cfig);
-
-    lavaX = (*player)->getPos().x - 128;
+    // lavaX = (*player)->getPos().x - 128;
+    lavaX = 0.0f - 128.0f; // 0.0f is the player's x ... TODO change when refactoring this
     lavaSpeed = config->lavaSpeed;
 
     //set random draw points inside of lava polygon

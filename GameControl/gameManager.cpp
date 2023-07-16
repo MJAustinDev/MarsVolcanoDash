@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2022 Matthew James Austin
+Copyright (c) 2022-2023 Matthew James Austin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,35 +25,34 @@ SOFTWARE.
 */
 
 #include "gameManagement.h"
-
 #include "visualColours.h"
 
-GameManager :: GameManager(mvd::game_ctrl::GameModeSettings* config) {
+namespace mvd {
 
-    //define world
-    b2Vec2 gravity(0.0f,-9.81);
-    world = new b2World(gravity);
+namespace game_ctrl {
 
-    //add terrain to world
-    addChunk(-1); //starting chunk
+b2Vec2 kGravity(0.0f, -9.81f);
+
+GameManager :: GameManager(mvd::game_ctrl::GameModeSettings* p_settings) :
+    m_world(kGravity),
+    m_enemyManager(&m_world, &playerLead, p_settings) {
+
+    // TODO BETTER WAY OF DOING THIS... add terrain to world
+    addChunk(-1); //starting chunk // TODO USE NAMED ENUM...
     addChunk(-2); //flat platform
     addChunk(-2); //flat platform
     addChunk(-2); //flat platform
 
-    //define player
+    //define player // TODO YEET THIS code...
     float colour[4] = COLOUR_PURPLE;
-    player = new Player(world, colour);
-    if (config->twoPlayer){
+    player = new Player(&m_world, colour);
+    if (p_settings->twoPlayer){
         float colour2[4] = COLOUR_ORANGE;
-        player2 = new Player(world, colour2);
+        player2 = new Player(&m_world, colour2);
     } else {
         player2 = nullptr;
     }
     playerLead = player;
-
-    //define enemy controller
-    enemies = new EnemyManager(world, &playerLead, config);
-
 }
 
 GameManager :: ~GameManager() {
@@ -61,16 +60,15 @@ GameManager :: ~GameManager() {
     while (chunks.first!=nullptr){
         chunks.remFront(); //have to destroy via linked list to prevent world attempting to delete bodies multiple times
     }
-    delete enemies;
-    delete player;
-    delete world;
+
+    delete player; // TODO YEET
 
 }
 
 //adds new chunk to the linked list, handles memory allocation and pointers
 void GameManager :: addChunk(int chunkID){
 
-    Chunk* chunk = new Chunk(world, chunkID, nextChunkX, nextChunkY); //define chunk in memory
+    Chunk* chunk = new Chunk(&m_world, chunkID, nextChunkX, nextChunkY); //define chunk in memory
     chunks.addEnd(chunk); //add to the linked list
     //update next chunk position
     nextChunkX += 64.0f;
@@ -94,13 +92,13 @@ bool GameManager :: process(bool* keys){
         }
     }
 
-    world->Step((1.0f/60.0f), 8, 3); //run physics simulation
+    m_world.Step((1.0f/60.0f), 8, 3); //run physics simulation
     processChunkAddition(); //check if new chunks need to be generated
-    enemies->process(); //process enemy activity
+    m_enemyManager.process(); //process enemy activity
     processChunkRemoval(); //remove old chunks if needed
 
     //check if game is over
-    if (score < (enemies->lavaX - 18.5f)){ //while in  game score is viewed as players x position
+    if (score < (m_enemyManager.lavaX - 18.5f)){ //while in  game score is viewed as players x position
         return true;
     }
     return false;
@@ -110,7 +108,8 @@ bool GameManager :: process(bool* keys){
 void GameManager :: processChunkAddition() {
     //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
     while (nextChunkX<=playerLead->getPos().x+256){
-        addChunk(randModRanged(6));
+        // addChunk(randModRanged(6)); // USE CONSTANT FOR MAXIMUM...
+        addChunk(-2); // TODO RE IMPLEMENT RANGED
     }
 }
 
@@ -121,7 +120,7 @@ void GameManager :: processChunkRemoval() {
         bool repeat = true;
         //remove chunks from the front of the linked list until no chunks are behind the lava
         while (repeat){
-            if (chunks.first->obj->getPos().x <= enemies->lavaX - 128) {
+            if (chunks.first->obj->getPos().x <= m_enemyManager.lavaX - 128) {
                 chunks.remFront();
                 if (chunks.first==nullptr){
                     repeat = false; //safety catch, shouldn't be hit. Was an issue before death mechanic
@@ -137,14 +136,14 @@ void GameManager :: processChunkRemoval() {
 void GameManager :: draw(Camera* camera){
     camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
 
-    enemies->draw(camera); //draw enemies before player and terrain
+    m_enemyManager.draw(camera); //draw enemies before player and terrain
 
     //draw player/players
     player->draw(camera);
     if (player2!=nullptr){
         player2->draw(camera);
     }
-    enemies->drawLava(camera); //draw lava after player
+    m_enemyManager.drawLava(camera); //draw lava after player
 
     camera->drawDust(); //draw dust storm over all entities and lava
 
@@ -156,4 +155,6 @@ void GameManager :: draw(Camera* camera){
     }
 }
 
+}; // end of namespace game_ctrl
 
+}; // end of namespace mvd

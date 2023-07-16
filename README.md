@@ -18,12 +18,13 @@ An endless runner game that uses the Box2D physics engine, GLFW and stb_image.
 - pragma once...
 - yeet old linked list
 - keyboard class (Utility)
+- int specifics... maybe...
 
 - refactor first pass
 - - game control
 - - - ~~manager~~
-- - - gamemanger
-- - - chunk
+- - - gamemanger .. DOING NOW
+- - - chunk .. DOING NOW
 - - - configGameMode/gameModeSettings
 - - - entry
 - - game entities

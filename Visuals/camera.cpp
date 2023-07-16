@@ -157,14 +157,13 @@ void Camera :: placeCirclePoints(int res, int lower, int upper, b2Vec2 posBody, 
 }
 
 //marks down a solid polygon, assumes colour has been set externally
-void Camera :: drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle){
+void Camera :: drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle) {
 
     glBegin(GL_POLYGON);
         for (int i=0;i<shape->m_count;i++){
             placeRotatePoint(posBody,shape->m_vertices[i],angle);
         }
     glEnd();
-
 }
 
 //draws a circle with different shaded centre and circumference

@@ -96,14 +96,13 @@ struct ButtonDefaults {
 };
 
 
+/*
 //Contains information to draw world chunk shapes
 struct DrawShape {
-
     b2Vec2 shapePoints[8];
     int pointCount = 0;
     int drawId;
-
-};
+};*/
 
 //Contains information to draw player car details
 struct CarDetails {

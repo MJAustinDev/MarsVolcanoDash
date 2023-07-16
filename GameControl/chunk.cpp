@@ -27,6 +27,9 @@ SOFTWARE.
 
 #include "gameManagement.h"
 
+namespace mvd {
+
+namespace game_ctrl {
 
 Chunk :: Chunk(b2World* w, int segID, GLfloat x, GLfloat y){
 
@@ -59,16 +62,37 @@ Chunk :: ~Chunk(){
 void Chunk :: draw(Camera* camera){
 
     //cycle through and draw all attached shapes inside of the linked list
-    if (shapes.resetCycle()){
-        do {
-            camera->drawChunkShape(body, shapes.cycle->obj);
-        } while (shapes.cycleUp());
+    for (auto &shape : m_shapes) {
+        // TODO REWORD THIS..
+        float baseColour[4] = {0.73f, 0.0f, 0.0f, 1.0f}; // CURSED
+        float shade = 1.0f - camera->getGlow();
+
+        glBegin(GL_POLYGON);
+            glColor4f(baseColour[0]*shade, baseColour[1]*shade, baseColour[2]*shade, baseColour[3]);
+            for (int i=0; i<shape.m_count; i++) {
+                camera->placePoint(camera->getCamBodyPos(body), shape.m_points.at(i));
+            }
+        glEnd();
     }
 }
 
+void Chunk::addShape(std::array<b2Vec2, 8> p_points, int p_count, int p_id) {
+    b2PolygonShape shape;
+    shape.Set(p_points.begin(), p_count);
+    body->CreateFixture(&shape, 0.0f);
+
+    m_shapes.push_back(DrawShape(p_points, p_count, p_id));
+}
 
 //creates polygon shape from series of passed points, adding it to the linked list, handles dynamic allocation and pointers
-void Chunk :: addShape(b2Vec2* points, int num, int drawId){
+//void Chunk :: addShape(b2Vec2* points, int num, int drawId){
+
+  //  std::array<b2Vec2, 8> zzz;
+   // b2PolygonShape shape;
+  //  shape.Set(&zzz.at(0), 3);
+    // shape.Set((b2Vec2*)(&zzz.at(0)), 3);
+
+    /*
     DrawShape* drawShape = new DrawShape;
     for (int i=0;i<num;i++){
         drawShape->shapePoints[i] = points[i]; //set all points
@@ -80,7 +104,8 @@ void Chunk :: addShape(b2Vec2* points, int num, int drawId){
     body->CreateFixture(&shape,0.0f); //create box2d fixture from shape
     shapes.addEnd(drawShape); //store shape position in linked list
     drawShape = nullptr; //render pointer null as object is remembered by linked list
-}
+    */
+//}
 
 //adds a rock (series of connected shapes with varying height) over a space on the main chunk ground
 /*
@@ -106,7 +131,7 @@ void Chunk :: addRock(float x, float* y, int num, float minMag, float* mag){
         points[1].Set(x+2, y[i+1]);
         points[2].Set(x+2, y[i+1] + mag[i+1]);
         points[3].Set(x, y[i] + mag[i]);
-        addShape(points, 4, 2);
+        // addShape(points, 4, 2);
         x+=2;
     }
 }
@@ -118,7 +143,10 @@ void Chunk :: defSegmentDefault(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4,0);
+  //  addShape(points,4,0);
+    std::array<b2Vec2, 8> z = {b2Vec2(-32.0f, 0.0f), b2Vec2(-32.0f, -3.0f), b2Vec2(32.0f, -3.0f), b2Vec2(32.0f, 0.0f)};
+    addShape(z, 4, 0);
+
 }
 
 //define starting segment
@@ -129,23 +157,29 @@ void Chunk :: defSegmentStart(){
     points[1].Set(-200,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4,0); //use ground chunk shading
+
+    std::array<b2Vec2, 8> z = {b2Vec2(-200.0f, 0.0f), b2Vec2(-200.0f, -3.0f), b2Vec2(32.0f, -3.0f), b2Vec2(32.0f, 0.0f)};
+    addShape(z, 4, 0);
+
+ //   addShape(points,4,0); //use ground chunk shading
 
     //start of mountain slope
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-20.0f,0.0f);
     points[2].Set(-25.0f,3.0f);
-    addShape(points,3,-1); //use default shading
+  //  addShape(points,3,-1); //use default shading
+    std::array<b2Vec2, 8> z2 = {b2Vec2(-32.0f,0.0f), b2Vec2(-20.0f,0.0f), b2Vec2(-25.0f,3.0f)};
+    addShape(z2, 3, 0);
 
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-25.0f,3.0f);
     points[2].Set(-30.0f,10.0f);
-    addShape(points,3,-1); //use default shading
+   // addShape(points,3,-1); //use default shading
 
     points[0].Set(-32.0f,0.0f);
     points[1].Set(-30.0f,10.0f);
     points[2].Set(-32.0f,32.0f);
-    addShape(points,3,-1); //use default shading
+  //  addShape(points,3,-1); //use default shading
 
     //backing of mountain slope
     points[0].Set(-32.0f, 0.0f);
@@ -153,7 +187,7 @@ void Chunk :: defSegmentStart(){
     points[2].Set(-100.0f, 400.0f);
     points[3].Set(-200.0f, 400.0f);
     points[4].Set(-200.0f, 0.0f);
-    addShape(points, 5, 1); //use backing mountain shading
+   // addShape(points, 5, 1); //use backing mountain shading
 }
 
 
@@ -165,7 +199,7 @@ void Chunk :: defSegment0(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4,0);
+  //  addShape(points,4,0);
 
     float x = -32;
     float y[9] = {0,0,0,0,0,0,0,0,0};
@@ -184,7 +218,7 @@ void Chunk :: defSegment1(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-19.0);
     points[3].Set(32,-16.0);
-    addShape(points,4,0);
+ //   addShape(points,4,0);
 
     float x = -32;
     float y[9] = {0, -0.5, -1, -1.5, -2, -2.5, -3, -3.5, -4};
@@ -207,7 +241,7 @@ void Chunk :: defSegment2(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,13.0);
     points[3].Set(32,16.0);
-    addShape(points,4,0);
+   // addShape(points,4,0);
 
     float x = -32;
     float y[9] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4};
@@ -230,7 +264,7 @@ void Chunk :: defSegment3(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-35.0);
     points[3].Set(32,-32.0);
-    addShape(points,4,0);
+  //  addShape(points,4,0);
 
     float x = -32;
     float y[9] = {0, -1, -2, -3, -4, -5, -6, -7, -8};
@@ -253,7 +287,7 @@ void Chunk :: defSegment4(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4,0);
+  //  addShape(points,4,0);
 
     float x = -32;
     float y[9] = {0,0,0,0,0,0,0,0,0};
@@ -273,7 +307,7 @@ void Chunk :: defSegment5(){
     points[1].Set(-32,-3.0);
     points[2].Set(32,-3.0);
     points[3].Set(32,0.0);
-    addShape(points,4,0);
+  //  addShape(points,4,0);
 
     //rocks in the gap, want drawn under both ramps
     float y1[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -283,7 +317,7 @@ void Chunk :: defSegment5(){
     //ramp up
     points[1].Set(0.0f, 10.0f);
     points[2].Set(0.1f, 0.0f);
-    addShape(points, 3, -1);
+  //  addShape(points, 3, -1);
     float y2[17] = {0, 0.625, 1.25, 1.875, 2.5, 3.125, 3.75, 4.375, 5, 5.625, 6.25, 6.875, 7.5, 8.125, 8.75, 9.375, 10};
     float mag2[17] = {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
     addRock(-32.0f, y2, 17, 0.2f, mag2);
@@ -292,9 +326,13 @@ void Chunk :: defSegment5(){
     points[0].Set(16, 6.0f);
     points[1].Set(15.7f, 0.0f);
     points[2].Set(32.0f, 0.0f);
-    addShape(points, 3, -1);
+ //   addShape(points, 3, -1);
     float y3[9] = {6, 5.25, 4.5, 3.75, 3, 2.25, 1.5, 0.75, 0};
     float mag3[9] = {0,1,1,1,1,1,1,1,0};
     addRock(16.0f, y3, 9, 0.2f, mag3);
 
 }
+
+}; // end of namespace game_ctrl
+
+}; // end of namespace mvd

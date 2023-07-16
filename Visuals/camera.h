@@ -75,7 +75,7 @@ public:
     void drawB2PolygonShape(b2Vec2 posBody, b2PolygonShape* shape, float angle); //draw b2PolygonShape from body position and angle
     void drawHotball(b2Vec2 posBody, float radius, float* colour, float glowCen, float glowOut); //draws circle with different colours at centre and circumfrence
     void drawHotFrag(b2Vec2 posBody, b2Vec2* points, float angle, float* colour, float glowCen, float glowOut);
-    void drawChunkShape(b2Body* body, DrawShape* drawShape); //draw terrain shapes
+    // void drawChunkShape(b2Body* body, DrawShape* drawShape); //draw terrain shapes
 
     //draws martian dust over the viewport
     void drawDust();

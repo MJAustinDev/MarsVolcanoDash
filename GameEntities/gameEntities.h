@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2022 Matthew James Austin
+Copyright (c) 2022-2023 Matthew James Austin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -151,11 +151,18 @@ private:
 
 };
 
+// FIGURE OUT WHATS HAPPENING HERE...
+// TEMP ADDED TO GET TO COMPILE..
+namespace mvd {
+namespace game_ctrl {
+class GameManager; // TODO FIX THIS...
+};};
+
 
 //player's car class
 class Player {
 
-friend class GameManager;
+friend class mvd::game_ctrl::GameManager; // CURSED... TODO YEET THIS FRIEND STUFF
 friend class EnemyManager;
 
 private:
@@ -189,7 +196,7 @@ private:
 //controls enemy spawning and behaviour
 class EnemyManager {
 
-friend class GameManager;
+friend class mvd::game_ctrl::GameManager; // CURSED... TODO YEET THIS FRIEND STUFF
 
 private:
 

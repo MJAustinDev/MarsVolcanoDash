@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2022 Matthew James Austin
+Copyright (c) 2022-2023 Matthew James Austin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,25 +24,42 @@ SOFTWARE.
 
 */
 
-#ifndef GAMEMANAGEMENT_H
-#define GAMEMANAGEMENT_H
+#pragma once
+
+#include <list>
 
 #include "gameEntities.h"
-
 #include "visualStructures.h" //contains the DrawShape structure
 
+namespace mvd {
 
+namespace game_ctrl {
 
 //world chunk, contains terrain for player car to drive across
+// TODO MOVE TO OWN FILE
 class Chunk{
 
-friend class GameManager;
-friend class Node<Chunk>;
+friend class GameManager; // YEETE
+friend class Node<Chunk>; // YEET
+
+public:
+
+    Chunk(b2World* p_world, int p_id, float p_posX, float p_posY);
+    ~Chunk();
 
 private:
 
-    Chunk(b2World* w, int segID, float x, float y);
-    ~Chunk();
+    /**
+     * TODO WORD UP
+     */
+    struct DrawShape {
+        DrawShape(std::array<b2Vec2, 8> &p_points, int p_count, int p_id) :
+            m_points(p_points), m_count(p_count), m_id(p_id) {};
+
+        std::array<b2Vec2, 8> m_points;
+        int m_count = 0;
+        int m_id;
+    };
 
     b2Vec2 getPos(){return body->GetPosition();};
 
@@ -58,19 +75,21 @@ private:
     void defSegment4();
     void defSegment5();
 
-    void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
+    void addShape(std::array<b2Vec2, 8> p_points, int p_count, int p_id);
+    //void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
     void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
 
     b2World* world;
     b2Body* body;
-    LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
+    std::list<DrawShape> m_shapes;
+    //LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
     float changeY = 0.0f;
 
 };
 
 
 //stores game objects and handles all game events
-class GameManager{
+class GameManager {
 
 public:
 
@@ -85,25 +104,35 @@ public:
 
 private:
 
+    // TODO REWORD THESE 3
     void addChunk(int chunkID); //dynamically adds new terrain to the world
     void processChunkAddition(); //check if new terrain needs to be added
     void processChunkRemoval(); //removes terrain if behind lava
 
-    LinkedList<Chunk> chunks; //stores terrain chunks in linked list
+     LinkedList<Chunk> chunks; //stores terrain chunks in linked list // CHANGE TO LINKED LIST...
+    //std::list<chunk> m_chunks;
 
     float nextChunkX = 0.0f; //x position of the next chunk to be added
     float nextChunkY = 0.0f; //y position of the next chunk to be added
 
     float score = 0.0; //end score of the player
 
+    b2World m_world;
+    Player* player; // TODO CHANGE type
+    Player* player2; // TODO CHANGE type
+    Player* playerLead; // TODO YEET points to who ever is in the lead
+    EnemyManager m_enemyManager;
+
+
+    /*
     b2World* world;
     Player* player;
     Player* player2;
     Player* playerLead; //points to who ever is in the lead
     EnemyManager* enemies; //handles all enemy activity
-
+    */
 };
 
+}; // end of namespace game_ctrl
 
-
-#endif
+}; // end of namespace mvd

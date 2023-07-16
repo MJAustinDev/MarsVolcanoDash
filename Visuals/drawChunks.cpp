@@ -30,6 +30,7 @@ SOFTWARE.
 #include "visualColours.h"
 
 
+/*
 //solid fills in the chunk shape with glow
 void drawDefaultChunkShape(Camera* camera, b2Vec2 posBody, DrawShape* drawShape){
 
@@ -42,7 +43,7 @@ void drawDefaultChunkShape(Camera* camera, b2Vec2 posBody, DrawShape* drawShape)
             camera->placePoint(posBody, drawShape->shapePoints[i]);
         }
     glEnd();
-}
+}*/
 
 
 //basic ground chunk
@@ -115,6 +116,8 @@ void drawChunkId2(Camera* camera, b2Vec2 posBody, b2Vec2* points) {
 
 }
 
+
+/* // WHY WOULD I DO IT LIKE THIS????
 //switch based method for drawing chunk shapes
 void Camera :: drawChunkShape(b2Body* body, DrawShape* drawShape){
 
@@ -127,3 +130,4 @@ void Camera :: drawChunkShape(b2Body* body, DrawShape* drawShape){
         default : {drawDefaultChunkShape(this, posBody, drawShape);} //default shape shading
     }
 }
+*/
