@@ -122,14 +122,14 @@ void EnemyManager :: attemptSpawn(){
 
     //for each possible spawn position
     for (int i=0;i<9;i++){
-        b2Vec2 pos((i*8)-32+(*player)->getPos().x,0); //get world x position relative to the player
+        b2Vec2 pos((i*8)-32+(*player)->getPosition().x,0); //get world x position relative to the player
         //for each enemy type
         for(int j=0;j<2;j++){
             config->ttls[j][i] --; //lower ticks to live
             //if should spawn or not
             if (config->ttls[j][i] <= 0){
                 config->ttls[j][i] = randRanged(config->spawnTimes[j], 4.0f*config->spawnTimes[j]); //reset ttl
-                pos.y = (*player)->getPos().y + config->spawns[j][i]; //get world y position relative to player
+                pos.y = (*player)->getPosition().y + config->spawns[j][i]; //get world y position relative to player
                 //switch for potential future enemy types
                 switch (j){
                     case 0 : {spawnBigEnemy(&meteors, pos, config->maxSizes[j], config->forces[j]); break;}
@@ -159,8 +159,8 @@ void EnemyManager :: process(){
     afterProcessBreakable(&boulders, &fragments);
 
     //handle lava movement
-    if (lavaX < (*player)->getPos().x -128){
-        lavaX = (*player)->getPos().x -128;
+    if (lavaX < (*player)->getPosition().x -128){
+        lavaX = (*player)->getPosition().x -128;
     } else {
         lavaX += lavaSpeed;
     }
@@ -242,7 +242,7 @@ void EnemyManager :: draw(Camera* camera){
 //draws the lava quadrilateral
 void EnemyManager :: drawLava(Camera* camera){
 
-    b2Vec2 posBody = camera->getCamPos(b2Vec2(lavaX, (*player)->getPos().y));
+    b2Vec2 posBody = camera->getCamPos(b2Vec2(lavaX, (*player)->getPosition().y));
     float shade = 0.95f-(camera->getGlow());
     float alphaEdge = 0.11f-(camera->getGlow());
     float alphaInner = (camera->getGlow())*0.125;

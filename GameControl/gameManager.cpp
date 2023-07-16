@@ -70,11 +70,11 @@ void GameManager :: addChunk(int chunkID) {
 bool GameManager :: process(bool* keys) {
     //handle user input
     player->processInput(keys[2], keys[3], keys[0], keys[1]);
-    score = player->getPos().x;
+    score = player->getPosition().x;
     if (player2!=nullptr){
         player2->processInput(keys[10], keys[11], keys[8], keys[9]);
-        if (score > player2->getPos().x){
-            score = player2->getPos().x;
+        if (score > player2->getPosition().x){
+            score = player2->getPosition().x;
             playerLead = player; //player 1 is in the lead
         } else {
             playerLead = player2; //player 2 is in the lead
@@ -96,7 +96,7 @@ bool GameManager :: process(bool* keys) {
 //check if new terrain should be added
 void GameManager :: processChunkAddition() {
     //add new chunk if the leading player is 256 meters behind the next chunk's spawn point
-   while (nextChunkX<=playerLead->getPos().x+256){
+   while (nextChunkX<=playerLead->getPosition().x+256){
         addChunk(randModRanged(6)); // USE CONSTANT FOR MAXIMUM...
         // addChunk(0); // TODO RE IMPLEMENT RANGED
     }
@@ -112,7 +112,7 @@ void GameManager :: processChunkRemoval() {
 
 //draw world and game objects to the screen
 void GameManager :: draw(Camera* camera) {
-    camera->centreCam(playerLead->mainBody->GetPosition()); //centre camera around the in lead player
+    camera->centreCam(playerLead->getPosition()); //centre camera around the in lead player
 
     m_enemyManager.draw(camera); //draw enemies before player and terrain
 

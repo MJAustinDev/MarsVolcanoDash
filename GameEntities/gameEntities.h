@@ -34,6 +34,8 @@ SOFTWARE.
 #include "rangedRandom.h"
 #include "gameModeSettings.h"
 
+#include "player.h"
+
 //base class all enemies are built off
 class BaseEnemy {
 
@@ -159,38 +161,6 @@ class GameManager; // TODO FIX THIS...
 };};
 
 
-//player's car class
-class Player {
-
-friend class mvd::game_ctrl::GameManager; // CURSED... TODO YEET THIS FRIEND STUFF
-friend class EnemyManager;
-
-private:
-
-    Player(b2World* world, float* col);
-    ~Player();
-
-    b2Vec2 getPos(){return mainBody->GetPosition();};
-
-    void processInput(bool keyW, bool keyS, bool keyA, bool keyD);
-    void draw(Camera* camera);
-
-    float colour[4];
-    float wheelDrawAng = 0.0f; //angle to draw wheels at (prevent rapid flickering when using real angle)
-    CarDetails detail; //used to draw details on top of the car body
-
-    b2Body* mainBody;
-    b2Body* wheelBack;
-    b2Body* wheelFront;
-
-    b2PolygonShape mainShape;
-    b2PolygonShape roofShape;
-    b2CircleShape wheelShape;
-
-    b2WheelJoint* motorBack;
-    b2WheelJoint* motorFront;
-
-};
 
 
 //controls enemy spawning and behaviour
