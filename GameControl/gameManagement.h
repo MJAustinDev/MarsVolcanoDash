@@ -28,65 +28,12 @@ SOFTWARE.
 
 #include <list>
 
+#include "chunk.h"
 #include "gameEntities.h"
-#include "visualStructures.h" //contains the DrawShape structure
 
 namespace mvd {
 
 namespace game_ctrl {
-
-//world chunk, contains terrain for player car to drive across
-// TODO MOVE TO OWN FILE
-class Chunk{
-
-friend class GameManager; // YEETE
-friend class Node<Chunk>; // YEET
-
-public:
-
-    Chunk(b2World* p_world, int p_id, float p_posX, float p_posY);
-    ~Chunk();
-
-private:
-
-    /**
-     * TODO WORD UP
-     */
-    struct DrawShape {
-        DrawShape(std::array<b2Vec2, 8> &p_points, int p_count, int p_id) :
-            m_points(p_points), m_count(p_count), m_id(p_id) {};
-
-        std::array<b2Vec2, 8> m_points;
-        int m_count = 0;
-        int m_id;
-    };
-
-    b2Vec2 getPos(){return body->GetPosition();};
-
-    void draw(Camera* camera); //draw each shape attached to main body
-
-    //define what the world chunk should be
-    void defSegmentDefault();
-    void defSegmentStart();
-    void defSegment0();
-    void defSegment1();
-    void defSegment2();
-    void defSegment3();
-    void defSegment4();
-    void defSegment5();
-
-    void addShape(std::array<b2Vec2, 8> p_points, int p_count, int p_id);
-    //void addShape(b2Vec2* points, int num, int drawId); //adds polygon shape to linked list
-    void addRock(float x, float* y, int points, float minMag, float* manMag); //adds a rock over a space on the chunk's ground
-
-    b2World* world;
-    b2Body* body;
-    std::list<DrawShape> m_shapes;
-    //LinkedList<DrawShape> shapes; //shapes that body's fixture are comprised of, stored so can be drawn
-    float changeY = 0.0f;
-
-};
-
 
 //stores game objects and handles all game events
 class GameManager {
@@ -109,7 +56,7 @@ private:
     void processChunkAddition(); //check if new terrain needs to be added
     void processChunkRemoval(); //removes terrain if behind lava
 
-     LinkedList<Chunk> chunks; //stores terrain chunks in linked list // CHANGE TO LINKED LIST...
+     LinkedList<Chunk> chunks; //stores terrain chunks in linked list // CHANGE TO STD LIST...
     //std::list<chunk> m_chunks;
 
     float nextChunkX = 0.0f; //x position of the next chunk to be added
